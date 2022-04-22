@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".SharePost">
+
+    <!-- TODO: Update blank fragment layout -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <TextView
+            android:id="@+id/share_detail_postButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/shareButton_text"
+            android:textColor="@color/share_post_textColor"
+            android:textSize="@dimen/share_post_textSize"
+            android:layout_gravity="right"
+            android:layout_marginRight="@dimen/share_post_marginRight" />
+        <EditText
+            android:id="@+id/share_edit_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/share_post_title_defaultText"
+            android:textSize="@dimen/share_detail_title_TextSize"
+            android:theme="@style/share_post_input"
+            android:imeOptions="actionDone"
+            android:maxLines="1"
+            android:inputType="text"/>
+        <EditText
+            android:id="@+id/share_edit_content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/share_post_content_defaultText"
+            android:textSize="@dimen/share_detail_content_TextSize"
+            android:theme="@style/share_post_input"/>
+
+    </LinearLayout>
+
+</FrameLayout>

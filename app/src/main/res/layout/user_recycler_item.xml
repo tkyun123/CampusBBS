@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:background="@drawable/item_background"
+    android:layout_marginBottom="@dimen/user_browse_recycler_item_marginBottom">
+
+    <ImageView
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:src="@drawable/test_profile_photo"
+        android:layout_weight="@dimen/user_profile_photo_weight"/>
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="@dimen/user_text_weight"
+        android:orientation="vertical">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="@dimen/user_nickName_label_weight"
+                android:text="@string/follow_user_nickName_label"/>
+            <TextView
+                android:id="@+id/user_browse_item_nickName"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="@dimen/user_nickName_weight"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <Button
+                android:id="@+id/user_browse_share_button"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="@dimen/user_browse_share_weight"
+                android:text="@string/follow_user_browse_share_text"/>
+            <Button
+                android:id="@+id/user_follow_state_button"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="@dimen/user_follow_state_weight"
+                android:text="@string/follow"/>
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="@dimen/user_placeTaken_weight"/>
+        </LinearLayout>
+    </LinearLayout>
+
+
+</LinearLayout>

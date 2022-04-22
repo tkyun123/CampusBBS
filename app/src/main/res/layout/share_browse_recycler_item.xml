@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@drawable/item_background"
+    android:paddingLeft="@dimen/share_browse_recycler_item_text_paddingLeft"
+    android:layout_marginBottom="@dimen/share_browse_recycler_item_marginBottom">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <ImageView
+            android:layout_width="@dimen/share_browse_recycler_item_photo_size"
+            android:layout_height="@dimen/share_browse_recycler_item_photo_size"
+            android:src="@drawable/test_profile_photo"/>
+        <TextView
+            android:id="@+id/share_browse_recycler_item_nickName"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="欧米牛坦"
+            android:gravity="center_vertical"
+            android:textSize="@dimen/share_browse_recycler_item_nickName_textSize"/>
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textStyle="bold"
+        android:textSize="@dimen/share_browse_recycler_item_titleSize"
+        android:id="@+id/share_browse_recycler_item_title"/>
+
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/share_browse_recycler_item_contentSize"
+        android:id="@+id/share_browse_recycler_item_content" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="@dimen/share_info_marginTop">
+        <TextView
+            android:id="@+id/share_location"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="@dimen/share_location_weight"
+            android:gravity="center"
+            android:text="北京海淀"/>
+        <TextView
+            android:id="@+id/share_time"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="@dimen/share_time_weight"
+            android:gravity="center"
+            android:text="2022-4-16"/>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="@dimen/share_like_weight"
+            android:orientation="horizontal"
+            android:gravity="center">
+            <ImageView
+                android:src="@drawable/like_icon"
+                android:layout_width="@dimen/share_like_iconSize"
+                android:layout_height="@dimen/share_like_iconSize" />
+            <TextView
+                android:id="@+id/share_like_num"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="134"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="@dimen/share_comment_weight"
+            android:orientation="horizontal">
+            <ImageView
+                android:layout_width="@dimen/share_comment_iconSize"
+                android:layout_height="@dimen/share_comment_iconSize"
+                android:src="@drawable/share_comment_icon"/>
+            <TextView
+                android:id="@+id/share_comment_num"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="204"/>
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>

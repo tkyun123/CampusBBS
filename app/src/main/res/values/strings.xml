@@ -1,0 +1,38 @@
+<resources>
+    <string name="app_name">My Application</string>
+    <string name="tab_browse">动态浏览</string>
+    <string name="tab_follow">关注</string>
+    <string name="tab_post">发布</string>
+    <string name="tab_search">搜索</string>
+    <string name="tab_personInfo">个人信息</string>
+    <string name="tab_browse_all">所有动态</string>
+    <string name="tab_browse_follow">关注的人</string>
+    <string name="title_activity_share_browse_detail">动态详情</string>
+
+    <string name="shareButton_text">发布</string>
+
+    <string name="share_post_title_defaultText">输入标题</string>
+    <string name="share_post_content_defaultText">输入内容</string>
+
+    <string name="search_hint">搜索</string>
+    <string name="search_select_type1">动态</string>
+    <string name="search_select_type2">用户</string>
+    <string name="search_result_text">搜索结果</string>
+    <string name="search_empty_text">无</string>
+
+    <string name="follow_user_nickName_label">用户名:</string>
+    <string name="follow_user_browse_share_text">查看动态</string>
+    <string name="follow">已关注</string>
+    <string name="unfollow">未关注</string>
+
+    <string name="title_activity_user_share">动态</string>
+
+    <string name="sort_by_time_text">按时间</string>
+    <string name="sort_by_wave_text">按热度</string>
+
+    <string name="user_info_following_text">关注</string>
+    <string name="user_info_followed_text">粉丝</string>
+    <string name="user_info_share_text">动态</string>
+
+    <string name="comment_label">评论</string>
+</resources>
