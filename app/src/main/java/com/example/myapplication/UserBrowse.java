@@ -64,5 +64,4 @@ public class UserBrowse extends Fragment {
     public interface loadData {
         public void loadData(List<Map<String, String>> data_list, int load_num);
     }
-
 }

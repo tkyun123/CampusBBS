@@ -19,6 +19,4 @@ public class CommentRecyclerViewHolder extends RecyclerView.ViewHolder{
         content_textView = itemView.findViewById(R.id.comment_recycler_item_content);
         nickName_textView = itemView.findViewById(R.id.comment_recycler_item_nickName);
     }
-
-
 }

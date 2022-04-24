@@ -4,16 +4,23 @@ import android.content.Intent;
 import android.graphics.drawable.Icon;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -21,6 +28,10 @@ import java.util.Map;
 
 public class ShareBrowseDetailActivity extends AppCompatActivity {
     private int comment_span_state = 0;  // 0:unspanned, 1:spanned
+
+    private List<Map<String, String>> list_data = new ArrayList<>();
+    private final int load_num = 10;
+    private int sort_type = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,7 +42,6 @@ public class ShareBrowseDetailActivity extends AppCompatActivity {
         tool_bar.setTitle(R.string.title_activity_share_browse_detail);
         setSupportActionBar(tool_bar);
         tool_bar.setNavigationIcon(R.drawable.back_icon);
-
         tool_bar.setNavigationOnClickListener(view->{
             this.finish();
         });
@@ -44,48 +54,110 @@ public class ShareBrowseDetailActivity extends AppCompatActivity {
         TextView sharedPost_content = findViewById(R.id.sharedPost_content);
         sharedPost_content.setText(intent.getStringExtra("share_content"));
 
-        getSupportFragmentManager().beginTransaction().replace(R.id.share_detail_comment,
-                new CommentBrowse(new CommentBrowse.loadData() {
-                    @Override
-                    public void loadDataSortByTime(List<Map<String, String>> data_list, int load_num) {
-                        while(load_num>0){
-                            Map<String, String> data = new HashMap<>();
-                            data.put("nickName","欧米牛坦");
-                            data.put("content","评论(按时间)");
-                            data_list.add(data);
-                            load_num--;
-                        }
-                    }
+        RecyclerView floor_list = findViewById(R.id.share_detail_floor_list);
 
-                    @Override
-                    public void loadDataSortByWave(List<Map<String, String>> data_list, int load_num) {
-                        while(load_num>0){
-                            Map<String, String> data = new HashMap<>();
-                            data.put("nickName","欧米牛坦");
-                            data.put("content","评论(按热度");
-                            data_list.add(data);
-                            load_num--;
-                        }
-                    }
-                })).commit();
+        loadDataSortByTime(list_data, load_num);
+        FloorListAdapter adapter = new FloorListAdapter(ShareBrowseDetailActivity.this,
+                list_data, this);
+        floor_list.setAdapter(adapter);
+        floor_list.setLayoutManager(new LinearLayoutManager(ShareBrowseDetailActivity.this));
 
-        LinearLayout comment_span_layout = findViewById(R.id.comment_span_layout);
-        ImageView comment_span_state_icon = findViewById(R.id.comment_span_state_icon);
-        RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams)
-                comment_span_layout.getLayoutParams();
-        comment_span_layout.setOnClickListener(view -> {
-            comment_span_state = 1-comment_span_state;
-            if(comment_span_state == 0) {
-                comment_span_state_icon.setImageResource(R.drawable.span_icon);
-                lp.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+        RelativeLayout floor_sort_layout = findViewById(R.id.floor_sort_layout);
+        TextView sort_text = findViewById(R.id.floor_sort_text);
+        floor_sort_layout.setOnClickListener(view -> {
+            sort_type = 1-sort_type;
+            list_data.clear();
+            if(sort_type == 0){
+                sort_text.setText(R.string.sort_by_time_text);
+                loadDataSortByTime(list_data, load_num);
             }
             else{
-                comment_span_state_icon.setImageResource(R.drawable.unspan_icon);
-                lp.removeRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+                sort_text.setText(R.string.sort_by_wave_text);
+                loadDataSortByWave(list_data, load_num);
             }
-            comment_span_layout.setLayoutParams(lp);
+            adapter.notifyDataSetChanged();
+            floor_list.scrollToPosition(0);
         });
 
+        floor_list.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                if(!recyclerView.canScrollVertically(1)){
+                    if(sort_type == 0){
+                        loadDataSortByTime(list_data, load_num);
+                    }
+                    else{
+                        loadDataSortByWave(list_data, load_num);
+                    }
+                    adapter.notifyDataSetChanged();
+                }
+            }
+        });
+
+
+
+
+//        getSupportFragmentManager().beginTransaction().replace(R.id.share_detail_comment,
+//                new CommentBrowse(new CommentBrowse.loadData() {
+//                    @Override
+//                    public void loadDataSortByTime(List<Map<String, String>> data_list, int load_num) {
+//                        while(load_num>0){
+//                            Map<String, String> data = new HashMap<>();
+//                            data.put("nickName","欧米牛坦");
+//                            data.put("content","评论(按时间)");
+//                            data_list.add(data);
+//                            load_num--;
+//                        }
+//                    }
+//
+//                    @Override
+//                    public void loadDataSortByWave(List<Map<String, String>> data_list, int load_num) {
+//                        while(load_num>0){
+//                            Map<String, String> data = new HashMap<>();
+//                            data.put("nickName","欧米牛坦");
+//                            data.put("content","评论(按热度");
+//                            data_list.add(data);
+//                            load_num--;
+//                        }
+//                    }
+//                })).commit();
+
+//        LinearLayout comment_span_layout = findViewById(R.id.comment_span_layout);
+//        ImageView comment_span_state_icon = findViewById(R.id.comment_span_state_icon);
+//        RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams)
+//                comment_span_layout.getLayoutParams();
+//        comment_span_layout.setOnClickListener(view -> {
+//            comment_span_state = 1-comment_span_state;
+//            if(comment_span_state == 0) {
+//                comment_span_state_icon.setImageResource(R.drawable.span_icon);
+//                lp.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+//            }
+//            else{
+//                comment_span_state_icon.setImageResource(R.drawable.unspan_icon);
+//                lp.removeRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+//            }
+//            comment_span_layout.setLayoutParams(lp);
+//        });
     }
 
+    public void loadDataSortByTime(List<Map<String, String>> data_list, int load_num){
+        while(load_num>0){
+            Map<String, String> data = new HashMap<>();
+            data.put("nickName","欧米牛坦");
+            data.put("content","内容(按时间)");
+            data_list.add(data);
+            load_num--;
+        }
+    }
+
+    public void loadDataSortByWave(List<Map<String, String>> data_list, int load_num){
+        while(load_num>0){
+            Map<String, String> data = new HashMap<>();
+            data.put("nickName","欧米牛坦");
+            data.put("content","内容(按热度)");
+            data_list.add(data);
+            load_num--;
+        }
+    }
 }

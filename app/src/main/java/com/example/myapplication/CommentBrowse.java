@@ -47,6 +47,7 @@ public class CommentBrowse extends Fragment {
 
         interface_data_load = data_load;
         interface_data_load.loadDataSortByTime(list_data, load_num);
+        Log.d("da",String.valueOf(list_data.size()));
     }
 
     @Override

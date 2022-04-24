@@ -19,6 +19,7 @@
     <dimen name="share_browse_recycler_item_photo_marginTop">10dp</dimen>
     <dimen name="share_browse_recycler_item_nickName_textSize">15sp</dimen>
 
+    <dimen name="share_detail_height">300dp</dimen>
     <dimen name="share_detail_marginTop">20dp</dimen>
     <dimen name="share_detail_padding">20dp</dimen>
     <dimen name="share_detail_title_TextSize">30sp</dimen>
@@ -86,8 +87,9 @@
     <dimen name="comment_recycler_item_photo_size">40dp</dimen>
     <dimen name="comment_recycler_item_nickName_textSize">15sp</dimen>
     <dimen name="comment_recycler_item_contentSize">20sp</dimen>
-    <dimen name="comment_recycler_item_paddingLeftAndRight">30dp</dimen>
+    <dimen name="comment_recycler_item_paddingLeftAndRight">20dp</dimen>
     <dimen name="comment_info_marginTop">20dp</dimen>
+    <dimen name="comment_location_weight">1</dimen>
     <dimen name="comment_time_weight">1</dimen>
     <dimen name="comment_like_weight">1</dimen>
     <dimen name="comment_like_iconSize">20dp</dimen>
@@ -95,6 +97,21 @@
     <dimen name="comment_sort_height">20dp</dimen>
     <dimen name="comment_sort_marginRight">10dp</dimen>
 
+    <dimen name="floor_sort_height">20dp</dimen>
+    <dimen name="floor_sort_marginRight">10dp</dimen>
+    <dimen name="floor_label_marginLeft">10dp</dimen>
+    <dimen name="floor_marginTop">10dp</dimen>
 
+    <dimen name="floor_item_paddingLeftAndRight">20dp</dimen>
+    <dimen name="floor_item_photo_size">40dp</dimen>
+    <dimen name="floor_item_nickName_textSize">15sp</dimen>
+    <dimen name="floor_item_contentSize">20sp</dimen>
+    <dimen name="floor_info_marginTop">20dp</dimen>
+    <dimen name="floor_location_weight">1</dimen>
+    <dimen name="floor_time_weight">1</dimen>
+    <dimen name="floor_like_weight">1</dimen>
+    <dimen name="floor_comment_weight">1</dimen>
+    <dimen name="floor_like_iconSize">20dp</dimen>
 
+    <dimen name="floor_show_comment_textWeight"></dimen>
 </resources>

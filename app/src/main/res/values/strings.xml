@@ -35,4 +35,9 @@
     <string name="user_info_share_text">动态</string>
 
     <string name="comment_label">评论</string>
+    <string name="floor_label">楼层</string>
+    <string name="floor_show_comment_text">显示评论</string>
+    <string name="floor_no_comment_text">暂无评论</string>
+
+    <string name="title_activity_comment">评论</string>
 </resources>

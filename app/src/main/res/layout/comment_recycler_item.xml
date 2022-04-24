@@ -47,29 +47,34 @@
         android:layout_marginTop="@dimen/comment_info_marginTop">
 
         <TextView
+            android:id="@+id/comment_location"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:layout_weight="@dimen/comment_location_weight"
+            android:text="北京海淀"/>
+        <TextView
             android:id="@+id/comment_time"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="@dimen/comment_time_weight"
             android:gravity="center"
             android:text="2022-4-16"/>
-
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="@dimen/comment_like_weight"
-            android:gravity="center"
-            android:orientation="horizontal">
-            <ImageView
-                android:src="@drawable/like_icon"
-                android:layout_width="@dimen/comment_like_iconSize"
-                android:layout_height="@dimen/comment_like_iconSize" />
-            <TextView
-                android:id="@+id/comment_like_num"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:text="134"/>
-        </LinearLayout>
-
+<!--        <LinearLayout-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="match_parent"-->
+<!--            android:layout_weight="@dimen/comment_like_weight"-->
+<!--            android:gravity="center"-->
+<!--            android:orientation="horizontal">-->
+<!--            <ImageView-->
+<!--                android:src="@drawable/like_icon"-->
+<!--                android:layout_width="@dimen/comment_like_iconSize"-->
+<!--                android:layout_height="@dimen/comment_like_iconSize" />-->
+<!--            <TextView-->
+<!--                android:id="@+id/comment_like_num"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="match_parent"-->
+<!--                android:text="134"/>-->
+<!--        </LinearLayout>-->
     </LinearLayout>
 </LinearLayout>

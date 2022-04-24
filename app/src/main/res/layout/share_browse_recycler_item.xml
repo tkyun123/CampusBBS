@@ -83,7 +83,7 @@
             <ImageView
                 android:layout_width="@dimen/share_comment_iconSize"
                 android:layout_height="@dimen/share_comment_iconSize"
-                android:src="@drawable/share_comment_icon"/>
+                android:src="@drawable/comment_icon"/>
             <TextView
                 android:id="@+id/share_comment_num"
                 android:layout_width="wrap_content"
