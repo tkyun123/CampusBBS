@@ -14,7 +14,8 @@
         <ImageView
             android:layout_width="@dimen/share_browse_recycler_item_photo_size"
             android:layout_height="@dimen/share_browse_recycler_item_photo_size"
-            android:src="@drawable/test_profile_photo"/>
+            android:src="@drawable/test_profile_photo"
+            android:scaleType="fitCenter"/>
         <TextView
             android:id="@+id/share_browse_recycler_item_nickName"
             android:layout_width="wrap_content"
@@ -65,7 +66,7 @@
             android:orientation="horizontal"
             android:gravity="center">
             <ImageView
-                android:src="@drawable/like_icon"
+                android:src="@drawable/unlike_icon"
                 android:layout_width="@dimen/share_like_iconSize"
                 android:layout_height="@dimen/share_like_iconSize" />
             <TextView

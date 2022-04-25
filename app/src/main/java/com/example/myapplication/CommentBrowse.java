@@ -47,7 +47,6 @@ public class CommentBrowse extends Fragment {
 
         interface_data_load = data_load;
         interface_data_load.loadDataSortByTime(list_data, load_num);
-        Log.d("da",String.valueOf(list_data.size()));
     }
 
     @Override
@@ -73,7 +72,6 @@ public class CommentBrowse extends Fragment {
                         interface_data_load.loadDataSortByWave(list_data, load_num);
                     }
                     recycler_adapter.notifyDataSetChanged();
-                    Log.d("", "onScrollStateChanged: ");
                 }
             }
         });

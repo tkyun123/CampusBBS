@@ -2,11 +2,15 @@ package com.example.myapplication;
 
 import android.content.Intent;
 import android.graphics.drawable.Icon;
+import android.media.Image;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.widget.NestedScrollView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -18,6 +22,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -33,6 +38,7 @@ public class ShareBrowseDetailActivity extends AppCompatActivity {
     private final int load_num = 10;
     private int sort_type = 0;
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -79,24 +85,20 @@ public class ShareBrowseDetailActivity extends AppCompatActivity {
             floor_list.scrollToPosition(0);
         });
 
-        floor_list.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
-                super.onScrollStateChanged(recyclerView, newState);
-                if(!recyclerView.canScrollVertically(1)){
-                    if(sort_type == 0){
-                        loadDataSortByTime(list_data, load_num);
-                    }
-                    else{
-                        loadDataSortByWave(list_data, load_num);
-                    }
-                    adapter.notifyDataSetChanged();
+
+        NestedScrollView scrollView = findViewById(R.id.detail_layout);
+        scrollView.setOnScrollChangeListener((View.OnScrollChangeListener)
+                (view, i, i1, i2, i3) -> {
+            if(!scrollView.canScrollVertically(1)){
+                if(sort_type == 0){
+                    loadDataSortByTime(list_data, load_num);
                 }
+                else{
+                    loadDataSortByWave(list_data, load_num);
+                }
+                adapter.notifyDataSetChanged();
             }
         });
-
-
-
 
 //        getSupportFragmentManager().beginTransaction().replace(R.id.share_detail_comment,
 //                new CommentBrowse(new CommentBrowse.loadData() {

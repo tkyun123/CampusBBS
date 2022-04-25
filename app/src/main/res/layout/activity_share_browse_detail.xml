@@ -13,189 +13,148 @@
         android:background="?attr/colorPrimary"
         android:minHeight="?attr/actionBarSize"/>
 
-    <ScrollView
+    <androidx.core.widget.NestedScrollView
         android:id="@+id/detail_layout"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/share_detail_height"
+        android:layout_height="match_parent"
         android:layout_marginTop="@dimen/share_detail_marginTop"
         android:orientation="vertical"
-        android:layout_below="@id/share_detail_tool_bar">
+        android:layout_below="@id/share_detail_tool_bar"
+        android:scrollbars="none">
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:paddingLeft="@dimen/share_detail_padding"
-            android:paddingRight="@dimen/share_detail_padding">
-            <TextView
-                android:id="@+id/sharedPost_title"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textSize="@dimen/share_detail_title_TextSize"
-                android:textStyle="bold" />
-
+            android:layout_height="match_parent"
+            android:orientation="vertical">
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
-                <ImageView
-                    android:id="@+id/share_detail_photo"
-                    android:layout_width="@dimen/share_detail_photo_size"
-                    android:layout_height="@dimen/share_detail_photo_size"
-                    android:src="@drawable/test_profile_photo"/>
+                android:orientation="vertical"
+                android:paddingLeft="@dimen/share_detail_padding"
+                android:paddingRight="@dimen/share_detail_padding">
                 <TextView
-                    android:id="@+id/share_detail_nickName"
+                    android:id="@+id/sharedPost_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/share_detail_title_TextSize"
+                    android:textStyle="bold" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <ImageView
+                        android:id="@+id/share_detail_photo"
+                        android:layout_width="@dimen/share_detail_photo_size"
+                        android:layout_height="@dimen/share_detail_photo_size"
+                        android:src="@drawable/test_profile_photo"
+                        android:scaleType="fitCenter"/>
+                    <TextView
+                        android:id="@+id/share_detail_nickName"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:text="欧米牛坦"
+                        android:gravity="center_vertical"
+                        android:textSize="@dimen/share_detail_nickName_textSize"/>
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/sharedPost_content"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/share_detail_content_marginTop"
+                    android:textSize="@dimen/share_detail_content_TextSize"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="@dimen/share_detail_info_marginTop">
+                    <TextView
+                        android:id="@+id/share_detail_location"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="@dimen/share_location_weight"
+                        android:gravity="center"
+                        android:text="北京海淀"/>
+
+                    <TextView
+                        android:id="@+id/share_detail_time"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="@dimen/share_time_weight"
+                        android:gravity="center"
+                        android:text="2022-4-16"/>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="@dimen/share_like_weight"
+                        android:orientation="horizontal"
+                        android:gravity="center">
+                        <ImageView
+                            android:id="@+id/share_detail_like_icon"
+                            android:src="@drawable/unlike_icon"
+                            android:layout_width="@dimen/share_like_iconSize"
+                            android:layout_height="@dimen/share_like_iconSize" />
+                        <TextView
+                            android:id="@+id/share_detail_like_num"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:text="134"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="@dimen/share_comment_weight"
+                        android:orientation="horizontal"
+                        android:gravity="center">
+                        <ImageView
+                            android:layout_width="@dimen/share_comment_iconSize"
+                            android:layout_height="@dimen/share_comment_iconSize"
+                            android:src="@drawable/comment_icon"/>
+                        <TextView
+                            android:id="@+id/share_detail_comment_num"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:text="204"/>
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/line_width"
+                android:background="@color/third_dark_line_color"
+                android:layout_marginTop="@dimen/floor_marginTop"/>
+            <RelativeLayout
+                android:id="@+id/floor_sort_layout"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/floor_sort_height"
+                android:layout_marginRight="@dimen/floor_sort_marginRight">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/floor_label_marginLeft"
+                    android:text="@string/floor_label"/>
+                <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:text="欧米牛坦"
-                    android:gravity="center_vertical"
-                    android:textSize="@dimen/share_detail_nickName_textSize"/>
-            </LinearLayout>
-
-            <TextView
-                android:id="@+id/sharedPost_content"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/share_detail_content_marginTop"
-                android:textSize="@dimen/share_detail_content_TextSize"/>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginTop="@dimen/share_detail_info_marginTop">
+                    android:src="@drawable/sort_icon"
+                    android:layout_toLeftOf="@id/floor_sort_text"/>
                 <TextView
-                    android:id="@+id/share_detail_location"
-                    android:layout_width="0dp"
+                    android:id="@+id/floor_sort_text"
+                    android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:layout_weight="@dimen/share_location_weight"
-                    android:gravity="center"
-                    android:text="北京海淀"/>
+                    android:text="@string/sort_by_time_text"
+                    android:layout_alignParentRight="true"
+                    android:gravity="center"/>
+            </RelativeLayout>
 
-                <TextView
-                    android:id="@+id/share_detail_time"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="@dimen/share_time_weight"
-                    android:gravity="center"
-                    android:text="2022-4-16"/>
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="@dimen/share_like_weight"
-                    android:orientation="horizontal"
-                    android:gravity="center">
-                    <ImageView
-                        android:src="@drawable/like_icon"
-                        android:layout_width="@dimen/share_like_iconSize"
-                        android:layout_height="@dimen/share_like_iconSize" />
-                    <TextView
-                        android:id="@+id/share_detail_like_num"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:text="134"/>
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="@dimen/share_comment_weight"
-                    android:orientation="horizontal"
-                    android:gravity="center">
-                    <ImageView
-                        android:layout_width="@dimen/share_comment_iconSize"
-                        android:layout_height="@dimen/share_comment_iconSize"
-                        android:src="@drawable/comment_icon"/>
-                    <TextView
-                        android:id="@+id/share_detail_comment_num"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:text="204"/>
-                </LinearLayout>
-            </LinearLayout>
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/share_detail_floor_list"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
         </LinearLayout>
-    </ScrollView>
-
-    <LinearLayout
-        android:id="@+id/floor_layout"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="@dimen/floor_marginTop"
-        android:orientation="vertical"
-        android:layout_below="@id/detail_layout">
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/line_width"
-            android:background="@color/third_dark_line_color"
-            android:layout_marginTop="@dimen/floor_marginTop"/>
-        <RelativeLayout
-            android:id="@+id/floor_sort_layout"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/floor_sort_height"
-            android:layout_marginRight="@dimen/floor_sort_marginRight">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/floor_label_marginLeft"
-                android:text="@string/floor_label"/>
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:src="@drawable/sort_icon"
-                android:layout_toLeftOf="@id/floor_sort_text"/>
-            <TextView
-                android:id="@+id/floor_sort_text"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:text="@string/sort_by_time_text"
-                android:layout_alignParentRight="true"
-                android:gravity="center"/>
-        </RelativeLayout>
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/share_detail_floor_list"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
-    </LinearLayout>
-
-
-<!--    <LinearLayout-->
-<!--        android:id="@+id/comment_span_layout"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:orientation="vertical"-->
-<!--        android:layout_marginTop="@dimen/comment_span_layout_spanned_marginTop"-->
-<!--        android:layout_alignParentBottom="true"-->
-<!--        android:background="@color/white">-->
-<!--        <LinearLayout-->
-<!--            android:id="@+id/split_line"-->
-<!--            android:orientation="horizontal"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="@dimen/line_width"-->
-<!--            android:background="@color/second_dark_line_color"/>-->
-<!--        <LinearLayout-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:orientation="horizontal">-->
-<!--            <TextView-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:text="@string/comment_label"-->
-<!--                android:textSize="@dimen/comment_label_textSize"-->
-<!--                android:gravity="center"/>-->
-<!--            <ImageView-->
-<!--                android:id="@+id/comment_span_state_icon"-->
-<!--                android:layout_width="@dimen/comment_span_state_iconSize"-->
-<!--                android:layout_height="@dimen/comment_span_state_iconSize"-->
-<!--                android:src="@drawable/span_icon" />-->
-<!--        </LinearLayout>-->
-<!--    </LinearLayout>-->
-
-<!--    <androidx.fragment.app.FragmentContainerView-->
-<!--        android:id="@+id/share_detail_comment"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="match_parent"-->
-<!--        android:layout_below="@id/comment_span_layout"/>-->
-
-
+    </androidx.core.widget.NestedScrollView>
 </RelativeLayout>
