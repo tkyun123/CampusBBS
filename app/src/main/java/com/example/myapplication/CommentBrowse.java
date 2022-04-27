@@ -13,6 +13,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -20,6 +23,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -60,17 +65,32 @@ public class CommentBrowse extends Fragment {
         recycler.setAdapter(recycler_adapter);
         recycler.setLayoutManager(new LinearLayoutManager(getContext()));
 
+        ImageView loading_icon = view.findViewById(R.id.comment_loading_icon);
+        Animation rotate = AnimationUtils.loadAnimation(getContext(), R.anim.loading_anim);
+
         recycler.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
+                // 下拉加载
                 if(!recyclerView.canScrollVertically(1)){
-                    if(sort_type == 0){
-                        interface_data_load.loadDataSortByTime(list_data, load_num);
-                    }
-                    else{
-                        interface_data_load.loadDataSortByWave(list_data, load_num);
-                    }
+                    loadData();
+                    recycler_adapter.notifyDataSetChanged();
+                }
+                // 上拉刷新
+                if(!recyclerView.canScrollVertically(-1)
+                        && newState == RecyclerView.SCROLL_STATE_SETTLING){
+                    loading_icon.setAnimation(rotate);
+                    list_data.clear();
+                    loadData();
+                    TimerTask task = new TimerTask() {
+                        @Override
+                        public void run() {
+                            loading_icon.setAnimation(null);
+                        }
+                    };
+                    Timer timer = new Timer();
+                    timer.schedule(task, 500);
                     recycler_adapter.notifyDataSetChanged();
                 }
             }
@@ -82,17 +102,21 @@ public class CommentBrowse extends Fragment {
             sort_type = 1-sort_type;
             sort_text.setText(sort_map.get(sort_type));
             list_data.clear();
-            if(sort_type == 0){ //按时间
-                interface_data_load.loadDataSortByTime(list_data, load_num);
-            }
-            else{ //按时间
-                interface_data_load.loadDataSortByWave(list_data, load_num);
-            }
+            loadData();
             recycler_adapter.notifyDataSetChanged();
             recycler.scrollToPosition(0);
         });
 
         return view;
+    }
+
+    public void loadData(){
+        if(sort_type == 0){
+            interface_data_load.loadDataSortByTime(list_data, load_num);
+        }
+        else{
+            interface_data_load.loadDataSortByWave(list_data, load_num);
+        }
     }
 
     public interface loadData {

@@ -1,5 +1,6 @@
 package com.example.myapplication;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.drawable.Icon;
 import android.media.Image;
@@ -17,6 +18,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -29,6 +32,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
 
 
 public class ShareBrowseDetailActivity extends AppCompatActivity {
@@ -73,30 +78,46 @@ public class ShareBrowseDetailActivity extends AppCompatActivity {
         floor_sort_layout.setOnClickListener(view -> {
             sort_type = 1-sort_type;
             list_data.clear();
-            if(sort_type == 0){
-                sort_text.setText(R.string.sort_by_time_text);
-                loadDataSortByTime(list_data, load_num);
-            }
-            else{
-                sort_text.setText(R.string.sort_by_wave_text);
-                loadDataSortByWave(list_data, load_num);
-            }
+            loadData();
+            sort_text.setText(sort_type == 0?R.string.sort_by_time_text:
+                        R.string.sort_by_wave_text);
             adapter.notifyDataSetChanged();
             floor_list.scrollToPosition(0);
         });
 
+        ImageView loading_icon = findViewById(R.id.share_detail_loading_icon);
+        Animation rotate = AnimationUtils.loadAnimation(this, R.anim.loading_anim);
 
         NestedScrollView scrollView = findViewById(R.id.detail_layout);
         scrollView.setOnScrollChangeListener((View.OnScrollChangeListener)
-                (view, i, i1, i2, i3) -> {
+                (view, x, y, ox, oy) -> {
+            // 下拉加载
             if(!scrollView.canScrollVertically(1)){
-                if(sort_type == 0){
-                    loadDataSortByTime(list_data, load_num);
-                }
-                else{
-                    loadDataSortByWave(list_data, load_num);
-                }
+                loadData();
                 adapter.notifyDataSetChanged();
+            }
+        });
+
+        floor_list.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                if(!scrollView.canScrollVertically(-1)   // 上拉刷新
+                        && newState == RecyclerView.SCROLL_STATE_SETTLING){
+                    loading_icon.setAnimation(rotate);
+                    list_data.clear();
+                    loadData();
+                    TimerTask task = new TimerTask() {
+                        @Override
+                        public void run() {
+                            loading_icon.setAnimation(null);
+                        }
+                    };
+                    Timer timer = new Timer();
+                    timer.schedule(task, 500);
+//                    loading_icon.setAnimation(null);
+                    adapter.notifyDataSetChanged();
+                }
             }
         });
 
@@ -141,6 +162,15 @@ public class ShareBrowseDetailActivity extends AppCompatActivity {
 //            }
 //            comment_span_layout.setLayoutParams(lp);
 //        });
+    }
+
+    public void loadData(){
+        if(sort_type == 0){
+            loadDataSortByTime(list_data, load_num);
+        }
+        else{
+            loadDataSortByWave(list_data, load_num);
+        }
     }
 
     public void loadDataSortByTime(List<Map<String, String>> data_list, int load_num){

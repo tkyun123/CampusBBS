@@ -1,6 +1,7 @@
 package com.example.myapplication;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -42,7 +43,10 @@ public class SharePost extends Fragment {
             share_title = edit_share_title.getText().toString();
             share_content = edit_share_content.getText().toString();
             if(share_title.equals("") || share_content.equals("")){
-                Toast.makeText(getContext(), "标题或内容不能为空", Toast.LENGTH_SHORT).show();
+                AlertDialog message = new AlertDialog.Builder(getContext())
+                        .setMessage("标题或内容不能为空").create();
+                message.show();
+//                Toast.makeText(getContext(), "标题或内容不能为空", Toast.LENGTH_SHORT).show();
                 return;
             }
             edit_share_title.setText("");
