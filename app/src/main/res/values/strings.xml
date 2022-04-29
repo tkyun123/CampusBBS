@@ -40,4 +40,9 @@
     <string name="floor_no_comment_text">暂无评论</string>
 
     <string name="title_activity_comment">评论</string>
+
+    <string name="image_delete_text">移除</string>
+
+    <string name="show_location_text">显示位置</string>
+    <string name="not_show_location_text">不显示位置</string>
 </resources>

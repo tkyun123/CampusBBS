@@ -6,37 +6,87 @@
     tools:context=".SharePost">
 
     <!-- TODO: Update blank fragment layout -->
-    <LinearLayout
+    <ScrollView
+        android:id="@+id/share_detail_scrollView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
-        <TextView
-            android:id="@+id/share_detail_postButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/shareButton_text"
-            android:textColor="@color/share_post_textColor"
-            android:textSize="@dimen/share_post_textSize"
-            android:layout_gravity="right"
-            android:layout_marginRight="@dimen/share_post_marginRight" />
-        <EditText
-            android:id="@+id/share_edit_title"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/share_post_title_defaultText"
-            android:textSize="@dimen/share_detail_title_TextSize"
-            android:theme="@style/share_post_input"
-            android:imeOptions="actionDone"
-            android:maxLines="1"
-            android:inputType="text"/>
-        <EditText
-            android:id="@+id/share_edit_content"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/share_post_content_defaultText"
-            android:textSize="@dimen/share_detail_content_TextSize"
-            android:theme="@style/share_post_input"/>
+        android:scrollbars="none">
 
-    </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:focusable="true"
+            android:focusableInTouchMode="true">
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <androidx.appcompat.widget.SwitchCompat
+                    android:id="@+id/show_location_switch"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"/>
+                <TextView
+                    android:id="@+id/show_location_textView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:text="@string/not_show_location_text"
+                    android:layout_toRightOf="@id/show_location_switch"
+                    android:layout_centerInParent="true"/>
+                <TextView
+                    android:id="@+id/share_detail_postButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:text="@string/shareButton_text"
+                    android:textColor="@color/share_post_textColor"
+                    android:textSize="@dimen/share_post_textSize"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginEnd="@dimen/share_post_marginRight" />
+            </RelativeLayout>
+
+            <EditText
+                android:id="@+id/share_edit_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/share_post_title_defaultText"
+                android:textSize="@dimen/share_detail_title_TextSize"
+                android:theme="@style/share_post_input"
+                android:imeOptions="actionDone"
+                android:maxLines="1"
+                android:inputType="text" />
+            <EditText
+                android:id="@+id/share_edit_content"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/share_post_content_defaultText"
+                android:textSize="@dimen/share_detail_content_TextSize"
+                android:theme="@style/share_post_input" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/share_post_new_add_multimedia_layout"
+                android:orientation="vertical">
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <ImageView
+                    android:id="@+id/share_post_image_add_icon"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:src="@drawable/image_add_icon"/>
+                <ImageView
+                    android:id="@+id/share_post_video_add_icon"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:src="@drawable/video_add_icon"/>
+            </LinearLayout>
+
+        </LinearLayout>
+    </ScrollView>
 
 </FrameLayout>
