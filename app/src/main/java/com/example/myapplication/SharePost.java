@@ -66,6 +66,8 @@ public class SharePost extends Fragment {
     private int image_num = 0;
     private int video_num = 0;
 
+    private String location = "";
+
     public SharePost() {
         // Required empty public constructor
     }
@@ -90,7 +92,6 @@ public class SharePost extends Fragment {
                 AlertDialog message = new AlertDialog.Builder(getContext())
                         .setMessage("标题或内容不能为空").create();
                 message.show();
-//                Toast.makeText(getContext(), "标题或内容不能为空", Toast.LENGTH_SHORT).show();
                 return;
             }
             edit_share_title.setText("");
@@ -115,11 +116,14 @@ public class SharePost extends Fragment {
         location_switch.setOnClickListener(view1 -> {
             if (location_switch.isChecked()) {
                 location_textView.setText(R.string.show_location_text);
-                getLocation();
+                if(location.equals("")){
+                    location = SystemService.getLocation(getActivity().getApplicationContext());
+                }
             } else {
                 location_textView.setText(R.string.not_show_location_text);
             }
         });
+
         return view;
     }
 
@@ -151,7 +155,7 @@ public class SharePost extends Fragment {
             VideoView new_add_videoView = new_add_view.findViewById(R.id.new_add_videoView);
             new_add_videoView.setMediaController(new MediaController(this.getContext()));
             new_add_videoView.setVideoURI(uri);
-            new_add_videoView.start();
+//            new_add_videoView.start();
         }
 
         ImageView delete_icon = new_add_view.findViewById(R.id.image_delete_icon);
@@ -173,56 +177,6 @@ public class SharePost extends Fragment {
                 scrollView.fullScroll(View.FOCUS_DOWN);
             }
         });
-    }
-
-    public void getLocation() {
-        // 模拟器调试存在问题
-        LocationManager locationManager = (LocationManager) getContext().getSystemService(
-                Context.LOCATION_SERVICE);
-        Criteria criteria = new Criteria();
-        criteria.setAccuracy(Criteria.ACCURACY_FINE);
-        criteria.setPowerRequirement(Criteria.POWER_LOW); // 设置相对省电
-        criteria.setAltitudeRequired(false);
-        criteria.setSpeedRequired(false);
-        criteria.setCostAllowed(false);
-
-        String best_provider = locationManager.getBestProvider(criteria, true);
-        if (best_provider == null) {
-            List<String> providers = locationManager.getProviders(true);
-            if (providers != null && providers.size() > 0) {
-                best_provider = providers.get(0);
-            }
-        }
-        if (best_provider == null) {
-            Log.d("", "未找到provider");
-            return;
-        }
-
-        if (ActivityCompat.checkSelfPermission(getContext(),
-                Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
-                && ActivityCompat.checkSelfPermission(getContext(),
-                Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            Log.d("", "权限不支持");
-            return;
-        }
-        Location location = locationManager.getLastKnownLocation(best_provider);
-        if(location == null){
-            Log.d("", "未找到location");
-            return;
-        }
-
-        Geocoder geocoder = new Geocoder(getContext(), Locale.CHINESE);
-
-        try {
-            List<Address> addresses = geocoder.getFromLocation(
-                    location.getLatitude(), location.getLongitude(), 1
-            );
-            Address address = addresses.get(0);
-            Log.d("地址:", address.getAddressLine(1));
-        }catch (IOException e){
-            Log.d("error:", String.valueOf(e));
-        }
-
     }
 
 }

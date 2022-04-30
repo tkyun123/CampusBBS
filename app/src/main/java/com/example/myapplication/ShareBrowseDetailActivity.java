@@ -120,48 +120,6 @@ public class ShareBrowseDetailActivity extends AppCompatActivity {
                 }
             }
         });
-
-//        getSupportFragmentManager().beginTransaction().replace(R.id.share_detail_comment,
-//                new CommentBrowse(new CommentBrowse.loadData() {
-//                    @Override
-//                    public void loadDataSortByTime(List<Map<String, String>> data_list, int load_num) {
-//                        while(load_num>0){
-//                            Map<String, String> data = new HashMap<>();
-//                            data.put("nickName","欧米牛坦");
-//                            data.put("content","评论(按时间)");
-//                            data_list.add(data);
-//                            load_num--;
-//                        }
-//                    }
-//
-//                    @Override
-//                    public void loadDataSortByWave(List<Map<String, String>> data_list, int load_num) {
-//                        while(load_num>0){
-//                            Map<String, String> data = new HashMap<>();
-//                            data.put("nickName","欧米牛坦");
-//                            data.put("content","评论(按热度");
-//                            data_list.add(data);
-//                            load_num--;
-//                        }
-//                    }
-//                })).commit();
-
-//        LinearLayout comment_span_layout = findViewById(R.id.comment_span_layout);
-//        ImageView comment_span_state_icon = findViewById(R.id.comment_span_state_icon);
-//        RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams)
-//                comment_span_layout.getLayoutParams();
-//        comment_span_layout.setOnClickListener(view -> {
-//            comment_span_state = 1-comment_span_state;
-//            if(comment_span_state == 0) {
-//                comment_span_state_icon.setImageResource(R.drawable.span_icon);
-//                lp.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
-//            }
-//            else{
-//                comment_span_state_icon.setImageResource(R.drawable.unspan_icon);
-//                lp.removeRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
-//            }
-//            comment_span_layout.setLayoutParams(lp);
-//        });
     }
 
     public void loadData(){

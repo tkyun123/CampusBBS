@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".CommentAddActivity">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/comment_add_tool_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/colorPrimary"
+        android:minHeight="?attr/actionBarSize"/>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbars="none"
+        android:layout_below="@id/comment_add_tool_bar">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <androidx.appcompat.widget.SwitchCompat
+                    android:id="@+id/show_location_switch"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"/>
+                <TextView
+                    android:id="@+id/show_location_textView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:text="@string/not_show_location_text"
+                    android:layout_toRightOf="@id/show_location_switch"
+                    android:layout_centerInParent="true"/>
+                <TextView
+                    android:id="@+id/comment_add_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:text="@string/comment_add_confirm_text"
+                    android:textColor="@color/share_post_textColor"
+                    android:textSize="@dimen/share_post_textSize"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginEnd="@dimen/share_post_marginRight" />
+            </RelativeLayout>
+
+            <EditText
+                android:id="@+id/comment_edit_content"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/comment_add_content_defaultText"
+                android:textSize="@dimen/comment_add_content_textSize"
+                android:theme="@style/share_post_input" />
+        </LinearLayout>
+    </ScrollView>
+
+
+
+
+</RelativeLayout>

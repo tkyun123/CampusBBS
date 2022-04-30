@@ -121,4 +121,6 @@
     <dimen name="add_multimedia_height">250dp</dimen>
     <dimen name="add_multimedia_marginTop">20dp</dimen>
 
+    <dimen name="comment_add_content_textSize">20sp</dimen>
+
 </resources>

@@ -45,4 +45,8 @@
 
     <string name="show_location_text">显示位置</string>
     <string name="not_show_location_text">不显示位置</string>
+
+    <string name="comment_add_confirm_text">确定</string>
+    <string name="comment_add_content_defaultText">输入内容</string>
+    <string name="title_activity_comment_add">添加评论</string>
 </resources>
