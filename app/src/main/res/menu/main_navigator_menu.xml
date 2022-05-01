@@ -3,9 +3,9 @@
     <item android:id="@+id/tab_browse"
         android:icon="@drawable/share_browse_icon"
         android:title="@string/tab_browse"/>
-    <item android:id="@+id/tab_follow"
-        android:icon="@drawable/share_browse_follow_icon"
-        android:title="@string/tab_follow"/>
+    <item android:id="@+id/tab_message"
+        android:icon="@drawable/message_browse_icon"
+        android:title="@string/tab_message"/>
     <item android:id="@+id/tab_post"
         android:icon="@drawable/share_post_icon"
         android:title="" />

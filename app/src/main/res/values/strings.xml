@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">My Application</string>
     <string name="tab_browse">动态浏览</string>
+    <string name="tab_message">消息</string>
     <string name="tab_follow">关注</string>
     <string name="tab_post">发布</string>
     <string name="tab_search">搜索</string>
@@ -49,4 +50,6 @@
     <string name="comment_add_confirm_text">确定</string>
     <string name="comment_add_content_defaultText">输入内容</string>
     <string name="title_activity_comment_add">添加评论</string>
+
+    <string name="message_clearAll_text">清空</string>
 </resources>

@@ -7,11 +7,13 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.viewpager.widget.ViewPager;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 
 import com.google.android.material.bottomnavigation.BottomNavigationItemView;
@@ -43,9 +45,10 @@ public class MainActivity extends AppCompatActivity {
         adapter = new PagerAdapter(getSupportFragmentManager(),navigator.getMaxItemCount());
         pager.setAdapter(adapter);
 
+
         Map<Integer, Integer> map = new HashMap<>();
         map.put(R.id.tab_browse, 0);
-        map.put(R.id.tab_follow, 1);
+        map.put(R.id.tab_message, 1);
         map.put(R.id.tab_post, 2);
         map.put(R.id.tab_search,3);
         map.put(R.id.tab_personInfo,4);

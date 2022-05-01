@@ -6,9 +6,9 @@
             <solid android:color="@color/item_background_border_color"/>
         </shape>
     </item>
-    <item android:top="1dp" android:bottom="1dp">
+    <item android:top="1.5dp">
         <shape>
-            <!--    边框里面的颜色    -->
+            <!--    填充颜色    -->
             <solid android:color="@color/white"/>
         </shape>
     </item>

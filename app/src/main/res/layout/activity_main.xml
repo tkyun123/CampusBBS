@@ -20,16 +20,22 @@
         android:layout_alignParentBottom="true"
         android:background="@color/color_main_navigator"
         app:labelVisibilityMode="labeled"
-
         app:menu="@menu/main_navigator_menu">
     </com.google.android.material.bottomnavigation.BottomNavigationView>
 
 
-    <androidx.viewpager.widget.ViewPager
+    <com.example.myapplication.myViewPager
         android:id="@+id/main_pager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/main_tool_bar"
-        android:layout_above="@id/main_navigator"/>
+        android:layout_above="@id/main_navigator" />
+
+<!--    <androidx.viewpager.widget.ViewPager-->
+<!--        android:id="@+id/main_pager"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent"-->
+<!--        android:layout_below="@id/main_tool_bar"-->
+<!--        android:layout_above="@id/main_navigator" />-->
 
 </RelativeLayout>

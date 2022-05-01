@@ -14,7 +14,7 @@ import java.util.Map;
 public class PagerAdapter extends FragmentPagerAdapter {
     int mNumOfTabs;
     public static ShareBrowse share_browse;
-    public static UserBrowse user_browse;
+    public static MessageBrowse message_browse;
     public PagerAdapter(FragmentManager fm, int NumOfTabs) {
         super(fm);
         this.mNumOfTabs = NumOfTabs;
@@ -50,15 +50,17 @@ public class PagerAdapter extends FragmentPagerAdapter {
                 });
                 return share_browse;
             case 1:
-                user_browse = new UserBrowse((data_list, load_num) -> {
-                    while(load_num>0){
-                        Map<String, String> data = new HashMap<>();
-                        data.put("nickName","欧米牛坦");
-                        data_list.add(data);
-                        load_num--;
+                message_browse = new MessageBrowse((data_list, load_num) -> {
+                    if(load_num == -1){
+                        for(int i=0;i<10;i++){
+                            Map<String, String> data = new HashMap<>();
+                            data.put("content","**点赞了你的动态");
+                            data.put("time","2022-5-1");
+                            data_list.add(data);
+                        }
                     }
                 });
-                return user_browse;
+                return message_browse;
             case 2: return new SharePost();
             case 3:
                 return new ShareSearch();
