@@ -1,5 +1,8 @@
 package com.example.myapplication;
 
+import android.app.Activity;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Build;
 
 import androidx.annotation.RequiresApi;
@@ -15,7 +18,8 @@ public class PagerAdapter extends FragmentPagerAdapter {
     int mNumOfTabs;
     public static ShareBrowse share_browse;
     public static MessageBrowse message_browse;
-    public PagerAdapter(FragmentManager fm, int NumOfTabs) {
+    private Activity my_activity;
+    public PagerAdapter(FragmentManager fm, int NumOfTabs, Activity activity) {
         super(fm);
         this.mNumOfTabs = NumOfTabs;
     }
@@ -61,11 +65,12 @@ public class PagerAdapter extends FragmentPagerAdapter {
                     }
                 });
                 return message_browse;
-            case 2: return new SharePost();
+            case 2:
+                return new SharePost();
             case 3:
                 return new ShareSearch();
             case 4:
-                return new UserInfo();
+                return new UserInfo(0);
             default: return null;
         }
     }
@@ -74,4 +79,5 @@ public class PagerAdapter extends FragmentPagerAdapter {
     public int getCount() {
         return mNumOfTabs;
     }
+
 }

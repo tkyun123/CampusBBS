@@ -24,10 +24,16 @@
                 android:id="@+id/user_info_nickName"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:text="欧米牛坦"
-                android:layout_weight="@dimen/user_info_nickName_weight"
+                android:text="@string/user_info_visitor"
                 android:textSize="@dimen/user_info_nickName_textSize"
+                android:layout_weight="@dimen/user_info_nickName_weight"
                 android:gravity="center_vertical"/>
+            <Button
+                android:id="@+id/user_info_login_button"
+                android:layout_width="@dimen/user_info_login_button_width"
+                android:layout_height="@dimen/user_info_login_button_height"
+                android:text="@string/user_info_login_text"
+                android:layout_gravity="center_vertical"/>
         </LinearLayout>
 
         <LinearLayout

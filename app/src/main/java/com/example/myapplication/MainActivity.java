@@ -8,6 +8,7 @@ import androidx.viewpager.widget.ViewPager;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.util.Log;
@@ -42,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
 
         navigator = findViewById(R.id.main_navigator);
         pager = findViewById(R.id.main_pager);
-        adapter = new PagerAdapter(getSupportFragmentManager(),navigator.getMaxItemCount());
+        adapter = new PagerAdapter(getSupportFragmentManager(),navigator.getMaxItemCount(), this);
         pager.setAdapter(adapter);
 
 
@@ -54,8 +55,14 @@ public class MainActivity extends AppCompatActivity {
         map.put(R.id.tab_personInfo,4);
 
         navigator.setOnItemSelectedListener(item -> {
-            pager.setCurrentItem(map.get(item.getItemId()));
-            return true;
+            if(item.getItemId() == R.id.tab_post && !SystemService.checkLogin(this)){
+                startActivity(new Intent(this, LoginActivity.class));
+                return false;
+            }
+            else{
+                pager.setCurrentItem(map.get(item.getItemId()));
+                return true;
+            }
         });
 
         BottomNavigationMenuView menu = (BottomNavigationMenuView)navigator.getChildAt(0);

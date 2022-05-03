@@ -127,6 +127,7 @@ public class SharePost extends Fragment {
         return view;
     }
 
+
     public void addMultimedia(int state) {
         multimedia_state = state;
         if (multimedia_state == 0) {

@@ -34,6 +34,8 @@
     <string name="user_info_following_text">关注</string>
     <string name="user_info_followed_text">粉丝</string>
     <string name="user_info_share_text">动态</string>
+    <string name="user_info_visitor">游客</string>
+    <string name="user_info_login_text">登录</string>
 
     <string name="comment_label">评论</string>
     <string name="floor_label">楼层</string>
@@ -52,4 +54,16 @@
     <string name="title_activity_comment_add">添加评论</string>
 
     <string name="message_clearAll_text">清空</string>
+
+    <string name="title_activity_login">登录</string>
+    <string name="login_to_register_text">注册用户</string>
+    <string name="confirm_text">确定</string>
+    <string name="login_user_hint">输入用户名</string>
+    <string name="login_password_hint">输入密码</string>
+    <string name="login_checkCode_hint">输入验证码</string>
+
+    <string name="title_activity_register">注册</string>
+    <string name="register_user_hint">输入用户名</string>
+    <string name="register_password_hint">输入密码</string>
+    <string name="register_email_hint">输入邮箱</string>
 </resources>

@@ -1,7 +1,9 @@
 package com.example.myapplication;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Criteria;
@@ -90,5 +92,14 @@ public class SystemService {
             Log.d("error:", String.valueOf(e));
             return default_location;
         }
+    }
+
+    public static boolean checkLogin(Activity activity){
+        SharedPreferences sharedPreferences = activity.getSharedPreferences(
+                "login", Context.MODE_PRIVATE);
+        if(sharedPreferences.getString("user", null) == null){
+            return false;
+        }
+        return true;
     }
 }

@@ -19,4 +19,6 @@
     <color name="fourth_dark_line_color">#f0e8e8</color>
 
     <color name="message_clearAll_textColor">#cf6363</color>
+
+    <color name="login_to_register_textColor">#699def</color>
 </resources>

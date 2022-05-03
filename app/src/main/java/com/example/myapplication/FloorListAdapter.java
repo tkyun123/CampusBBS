@@ -56,7 +56,12 @@ public class FloorListAdapter extends RecyclerView.Adapter<FloorListViewHolder> 
         });
 
         holder.add_comment_button.setOnClickListener(view -> {
-            my_activity.startActivity(new Intent(my_activity, CommentAddActivity.class));
+            if(!SystemService.checkLogin(my_activity)){
+                my_activity.startActivity(new Intent(my_activity, LoginActivity.class));
+            }
+            else{
+                my_activity.startActivity(new Intent(my_activity, CommentAddActivity.class));
+            }
         });
     }
 

@@ -76,6 +76,10 @@
     <dimen name="user_info_item_height">60dp</dimen>
     <dimen name="user_info_profile_photo_size">60dp</dimen>
     <dimen name="user_info_nickName_textSize">20sp</dimen>
+    <dimen name="user_info_nickName_width">250dp</dimen>
+    <dimen name="user_info_login_button_weight">2</dimen>
+    <dimen name="user_info_login_button_height">40dp</dimen>
+    <dimen name="user_info_login_button_width">60dp</dimen>
 
     <dimen name="comment_label_textSize">20sp</dimen>
     <dimen name="comment_span_state_iconSize">30dp</dimen>
@@ -128,4 +132,11 @@
     <dimen name="message_content_textSize">20sp</dimen>
     <dimen name="message_clearAll_marginEnd">20dp</dimen>
     <dimen name="message_clearAll_textSize">15sp</dimen>
+
+    <dimen name="login_icon_width">50dp</dimen>
+    <dimen name="login_input_width">200dp</dimen>
+    <dimen name="login_confirm_button_marginLeft">40dp</dimen>
+
+    <dimen name="register_icon_width">50dp</dimen>
+    <dimen name="register_input_width">200dp</dimen>
 </resources>
