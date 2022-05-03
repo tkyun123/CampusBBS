@@ -3,6 +3,7 @@ package com.example.myapplication;
 import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.DownloadManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -43,7 +44,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.VideoView;
 
+import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Timer;
@@ -65,6 +68,7 @@ public class SharePost extends Fragment {
 
     private int image_num = 0;
     private int video_num = 0;
+    private List<Uri> uri_list = new ArrayList<>();
 
     private String location = "";
 
@@ -147,6 +151,7 @@ public class SharePost extends Fragment {
             multimedia_layout.addView(new_add_view);
             ImageView new_add_imageView = new_add_view.findViewById(R.id.new_add_imageView);
             new_add_imageView.setImageURI(uri);
+
         } else {
             video_num++;
             new_add_view = LayoutInflater.from(this.getContext()).inflate(
@@ -158,10 +163,11 @@ public class SharePost extends Fragment {
             new_add_videoView.setVideoURI(uri);
 //            new_add_videoView.start();
         }
-
+        uri_list.add(uri);
         ImageView delete_icon = new_add_view.findViewById(R.id.image_delete_icon);
         delete_icon.setOnClickListener((view) -> {
             multimedia_layout.removeView(new_add_view);
+            uri_list.remove(uri_list.size()-1);
             if (multimedia_state == 0) {
                 image_num--;
             } else {

@@ -2,27 +2,32 @@ package com.example.myapplication;
 
 import android.Manifest;
 import android.app.Activity;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.location.Address;
 import android.location.Criteria;
 import android.location.Geocoder;
 import android.location.Location;
-import android.location.LocationListener;
 import android.location.LocationManager;
+import android.net.Uri;
+import android.util.Base64;
 import android.util.Log;
-import android.widget.ListAdapter;
-
-import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileDescriptor;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
+import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Locale;
-import java.util.concurrent.atomic.LongAccumulator;
-
-import javax.security.auth.callback.Callback;
 
 public class SystemService {
     private static final String default_location = "地球";
@@ -101,5 +106,35 @@ public class SystemService {
             return false;
         }
         return true;
+    }
+
+    public static String imageUriToBase64(Uri uri, ContentResolver cr) {
+        try {
+            Bitmap bitmap = BitmapFactory.decodeStream(cr.openInputStream(uri));
+            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
+            return Base64.encodeToString(byteArrayOutputStream.toByteArray(), Base64.DEFAULT);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "error";
+        }
+    }
+
+    public static String videoUriToBase64(Uri uri, ContentResolver cr){
+        try {
+            int byte_size = 1024;
+            InputStream inputStream = cr.openInputStream(uri);
+            byte[] bytes = new byte[byte_size];
+            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+            int len;
+            while((len=inputStream.read(bytes))!=-1){
+                byteArrayOutputStream.write(bytes,0 ,len);
+            }
+
+            return Base64.encodeToString(byteArrayOutputStream.toByteArray(), Base64.DEFAULT);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return "error";
+        }
     }
 }

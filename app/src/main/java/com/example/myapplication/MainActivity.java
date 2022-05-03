@@ -11,6 +11,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
+import android.util.JsonReader;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -23,6 +24,11 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 import com.google.android.material.tabs.TabLayout;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.StringReader;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -55,14 +61,16 @@ public class MainActivity extends AppCompatActivity {
         map.put(R.id.tab_personInfo,4);
 
         navigator.setOnItemSelectedListener(item -> {
-            if(item.getItemId() == R.id.tab_post && !SystemService.checkLogin(this)){
-                startActivity(new Intent(this, LoginActivity.class));
-                return false;
-            }
-            else{
-                pager.setCurrentItem(map.get(item.getItemId()));
-                return true;
-            }
+            pager.setCurrentItem(map.get(item.getItemId()));
+            return true;
+//            if(item.getItemId() == R.id.tab_post && !SystemService.checkLogin(this)){
+//                startActivity(new Intent(this, LoginActivity.class));
+//                return false;
+//            }
+//            else{
+//                pager.setCurrentItem(map.get(item.getItemId()));
+//                return true;
+//            }
         });
 
         BottomNavigationMenuView menu = (BottomNavigationMenuView)navigator.getChildAt(0);
@@ -70,6 +78,7 @@ public class MainActivity extends AppCompatActivity {
                 map.get(R.id.tab_post));
         Resources resources = getResources();
         item.setIconSize(resources.getDimensionPixelSize(R.dimen.share_post_icon_size));
+
     }
 
 //    @Override

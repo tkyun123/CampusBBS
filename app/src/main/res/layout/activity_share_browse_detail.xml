@@ -64,6 +64,12 @@
                     android:textSize="@dimen/share_detail_content_TextSize"/>
 
                 <LinearLayout
+                    android:id="@+id/share_detail_multimedia_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"/>
+
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
@@ -106,22 +112,6 @@
                         android:layout_height="@dimen/share_comment_iconSize"
                         android:layout_weight="@dimen/share_comment_weight"
                         android:src="@drawable/comment_icon"/>
-<!--                    <LinearLayout-->
-<!--                        android:layout_width="0dp"-->
-<!--                        android:layout_height="match_parent"-->
-<!--                        android:layout_weight="@dimen/share_comment_weight"-->
-<!--                        android:orientation="horizontal"-->
-<!--                        android:gravity="center">-->
-<!--                        <ImageView-->
-<!--                            android:layout_width="@dimen/share_comment_iconSize"-->
-<!--                            android:layout_height="@dimen/share_comment_iconSize"-->
-<!--                            android:src="@drawable/comment_icon"/>-->
-<!--                        <TextView-->
-<!--                            android:id="@+id/share_detail_comment_num"-->
-<!--                            android:layout_width="wrap_content"-->
-<!--                            android:layout_height="match_parent"-->
-<!--                            android:text="204"/>-->
-<!--                    </LinearLayout>-->
                 </LinearLayout>
             </LinearLayout>
 
