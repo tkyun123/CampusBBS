@@ -23,8 +23,11 @@
 
     <string name="follow_user_nickName_label">用户名:</string>
     <string name="follow_user_browse_share_text">查看动态</string>
-    <string name="follow">已关注</string>
-    <string name="unfollow">未关注</string>
+    <string name="check_user_info_text">个人主页</string>
+    <string name="follow">关注</string>
+    <string name="unfollow">取消关注</string>
+    <string name="block">屏蔽</string>
+    <string name="unblock">取消屏蔽</string>
 
     <string name="title_activity_user_share">动态</string>
 
@@ -34,7 +37,8 @@
     <string name="user_info_following_text">关注</string>
     <string name="user_info_followed_text">粉丝</string>
     <string name="user_info_share_text">动态</string>
-    <string name="user_info_visitor">游客</string>
+    <string name="user_info_nickName_default">游客</string>
+    <string name="user_info_introduction_default">这个人什么也没写</string>
     <string name="user_info_login_text">登录</string>
     <string name="user_info_draft">草稿箱</string>
 
@@ -60,6 +64,7 @@
     <string name="login_to_register_text">注册用户</string>
     <string name="confirm_text">确定</string>
     <string name="login_user_hint">输入用户名</string>
+    <string name="login_email_hint">输入邮箱</string>
     <string name="login_password_hint">输入密码</string>
     <string name="login_checkCode_hint">输入验证码</string>
 
@@ -67,4 +72,12 @@
     <string name="register_user_hint">输入用户名</string>
     <string name="register_password_hint">输入密码</string>
     <string name="register_email_hint">输入邮箱</string>
+
+    <string name="select_image_text">相册</string>
+    <string name="select_audio_text">音频</string>
+    <string name="select_video_text">视频</string>
+    <string name="add_image_text">拍照</string>
+    <string name="add_audio_text">录音</string>
+    <string name="add_video_text">录像</string>
+
 </resources>
