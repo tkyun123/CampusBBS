@@ -6,8 +6,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
-import android.graphics.PorterDuff;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -47,9 +45,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
-
+import java.util.Date;
 
 public class SharePost extends Fragment {
     private ScrollView scrollView;
@@ -79,7 +75,7 @@ public class SharePost extends Fragment {
 
     private int image_num = 0;
     private int video_num = 0;
-    private final List<Uri> uri_list = new ArrayList<>();
+
     private final JSONArray multimedia_list = new JSONArray();
     private String SAVE_PATH;
     private Uri save_uri; // 添加(而不是选择)多媒体时生成保存路径
@@ -188,8 +184,8 @@ public class SharePost extends Fragment {
         multimedia_button.setOnClickListener(view1 -> {
             initPopupWindow(view);
         });
-        SAVE_PATH = getContext().getExternalFilesDir("").getPath();
-        Log.d("", SAVE_PATH);
+
+        SAVE_PATH = getContext().getExternalFilesDir("").getPath()+"/multimedia";
         return view;
     }
 
@@ -244,20 +240,21 @@ public class SharePost extends Fragment {
     }
 
     private File getFile(String filetype){
-        int n = 0;
+        // 根据时间戳生成文件
+        long n = 0;
         String path;
         File file;
-        do {
-            path = String.format("%s/%s%s",SAVE_PATH, n, filetype);
-            file = new File(path);
-            n++;
-        }while (file.exists());
-        Log.d("", path);
+        path = String.format("%s/%s%s",SAVE_PATH, new Date().getTime(), filetype);
+        file = new File(path);
         return file;
     }
 
-    public void addMultimediaView(Uri uri) {
+    public void addMultimediaView(Uri uri)  {
         View new_add_view;
+
+        JSONObject object = new JSONObject();
+
+        String type;
         if (multimedia_state == MULTIMEDIA_IMAGE) {
             image_num++;
             new_add_view = LayoutInflater.from(this.getContext()).inflate(
@@ -266,7 +263,7 @@ public class SharePost extends Fragment {
             multimedia_layout.addView(new_add_view);
             ImageView new_add_imageView = new_add_view.findViewById(R.id.new_add_imageView);
             new_add_imageView.setImageURI(uri);
-
+            type = "jpg";
         } else { // 音视频使用同一个view
             video_num++;
             new_add_view = LayoutInflater.from(this.getContext()).inflate(
@@ -279,14 +276,24 @@ public class SharePost extends Fragment {
             if(multimedia_state == MULTIMEDIA_AUDIO){
                 new_add_videoView.setBackground(getResources().getDrawable(
                         R.drawable.audio_background));
+                type = "mp3";
+            }
+            else{
+                type = "mp4";
             }
 //            new_add_videoView.start();
         }
-        uri_list.add(uri);
+        try{
+            object.put("uri", uri);
+            object.put("type", type);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        multimedia_list.put(object);
         ImageView delete_icon = new_add_view.findViewById(R.id.image_delete_icon);
         delete_icon.setOnClickListener((view) -> {
             multimedia_layout.removeView(new_add_view);
-            uri_list.remove(uri_list.size()-1);
+            multimedia_list.remove(multimedia_list.length()-1);
             if (multimedia_state == 0) {
                 image_num--;
             } else {
@@ -370,8 +377,11 @@ public class SharePost extends Fragment {
     private void clearAll(){
         edit_share_title.setText("");
         edit_share_content.setText("");
-        uri_list.clear();
+        while(multimedia_list.length()>1){
+            multimedia_list.remove(0);
+        }
         multimedia_layout.removeAllViews();
+        SystemService.clearMultimediaDir(getContext());
     }
 
     private void initPopupWindow(View parent_view){
@@ -391,23 +401,11 @@ public class SharePost extends Fragment {
         LinearLayout audio_add = view.findViewById(R.id.audio_add);
         LinearLayout video_add = view.findViewById(R.id.video_add);
 
-        image_select.setOnClickListener(view1 -> {
-            selectMultimedia(MULTIMEDIA_IMAGE);
-        });
-        audio_select.setOnClickListener(view1 -> {
-            selectMultimedia(MULTIMEDIA_AUDIO);
-        });
-        video_select.setOnClickListener(view1 -> {
-            selectMultimedia(MULTIMEDIA_VIDEO);
-        });
-        image_add.setOnClickListener(view1 -> {
-            addMultimedia(MULTIMEDIA_IMAGE);
-        });
-        audio_add.setOnClickListener(view1 -> {
-            addMultimedia(MULTIMEDIA_AUDIO);
-        });
-        video_add.setOnClickListener(view1 -> {
-            addMultimedia(MULTIMEDIA_VIDEO);
-        });
+        image_select.setOnClickListener(view1 -> selectMultimedia(MULTIMEDIA_IMAGE));
+        audio_select.setOnClickListener(view1 -> selectMultimedia(MULTIMEDIA_AUDIO));
+        video_select.setOnClickListener(view1 -> selectMultimedia(MULTIMEDIA_VIDEO));
+        image_add.setOnClickListener(view1 -> addMultimedia(MULTIMEDIA_IMAGE));
+        audio_add.setOnClickListener(view1 -> addMultimedia(MULTIMEDIA_AUDIO));
+        video_add.setOnClickListener(view1 -> addMultimedia(MULTIMEDIA_VIDEO));
     }
 }

@@ -70,7 +70,7 @@ public class PagerAdapter extends FragmentPagerAdapter {
             case 3:
                 return new ShareSearch();
             case 4:
-                return new UserInfo(0);
+                return new UserInfo(0, 0);
             default: return null;
         }
     }

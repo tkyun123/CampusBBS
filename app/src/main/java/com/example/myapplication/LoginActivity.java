@@ -71,12 +71,6 @@ public class LoginActivity extends AppCompatActivity {
             public void handleMessage(@NonNull Message msg) {
                 super.handleMessage(msg);
                 if(msg.what != -1){
-                    SharedPreferences sharedPreferences = getSharedPreferences(
-                            "login", Context.MODE_PRIVATE);
-                    SharedPreferences.Editor editor = sharedPreferences.edit();
-                    editor.putString("token", msg.getData().getString("token"));
-                    editor.putInt("user_id", msg.getData().getInt("user_id"));
-                    editor.apply();
                     Intent data = new Intent();
                     data.putExtra("user_id", msg.getData().getInt("user_id"));
                     setResult(RESULT_OK, data);

@@ -6,24 +6,20 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.location.Address;
 import android.location.Criteria;
-import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Looper;
+
 import android.os.Message;
 import android.util.Base64;
 import android.util.Log;
+import android.view.animation.AnimationUtils;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
 import com.amap.api.services.core.AMapException;
@@ -32,21 +28,19 @@ import com.amap.api.services.core.ServiceSettings;
 import com.amap.api.services.geocoder.GeocodeSearch;
 import com.amap.api.services.geocoder.RegeocodeAddress;
 import com.amap.api.services.geocoder.RegeocodeQuery;
+import com.example.myapplication.datatype.UserInfoStorage;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileDescriptor;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.lang.reflect.Field;
 import java.util.List;
-import java.util.Locale;
-import java.util.logging.LogRecord;
 
 public class SystemService {
     public static final String DEFAULT_LOCATION = "地球";
+
+    // 高德地图Api key
+    private final static String LOCATION_API_KEY = "a87e48cae9a216077a37c492ed0c591e";
 
     public static void getLocation(Context context, Handler handler) {
         Thread thread = new Thread(){
@@ -78,7 +72,6 @@ public class SystemService {
                     return;
                 }
 
-                Log.d("", best_provider);
 
                 if (ActivityCompat.checkSelfPermission(context,
                         Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
@@ -111,7 +104,7 @@ public class SystemService {
 
     private static void getFromLocation(Context context, Location location, Message message){
         try {
-            ServiceSettings.getInstance().setApiKey("a87e48cae9a216077a37c492ed0c591e");
+            ServiceSettings.getInstance().setApiKey(LOCATION_API_KEY);
             ServiceSettings.updatePrivacyShow(context, true, true);
             ServiceSettings.updatePrivacyAgree(context, true);
 
@@ -141,6 +134,8 @@ public class SystemService {
         return true;
     }
 
+
+
     public static String imageUriToBase64(Uri uri, ContentResolver cr) {
         try {
             Bitmap bitmap = BitmapFactory.decodeStream(cr.openInputStream(uri));
@@ -168,6 +163,39 @@ public class SystemService {
         } catch (IOException e) {
             e.printStackTrace();
             return "error";
+        }
+    }
+
+    public static void createMultimediaDir(Context context){
+        File file = new File(context.getExternalFilesDir("").getPath()+"/multimedia");
+        if(file.exists()){
+            Log.d("", "文件夹已存在");
+        }
+        else{
+            if(file.mkdir()){
+                Log.d("", "创建文件夹成功");
+            }
+            else{
+                Log.d("", "创建文件夹失败");
+            }
+        }
+    }
+
+    public static void clearMultimediaDir(Context context){
+        File file = new File(context.getExternalFilesDir("").getPath()+"/multimedia");
+        if(file.exists()){
+            File[] files = file.listFiles();
+            for(int i=0;i<files.length;i++){
+                if(files[i].delete()){
+                    Log.d("", files[i].getPath()+"删除成功");
+                }
+                else{
+                    Log.d("", files[i].getPath()+"删除失败");
+                }
+            }
+        }
+        else{
+            Log.d("", "文件夹不存在");
         }
     }
 }

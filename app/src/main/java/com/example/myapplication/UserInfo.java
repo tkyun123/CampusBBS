@@ -17,10 +17,14 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.example.myapplication.datatype.UserInfoStorage;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -33,18 +37,25 @@ import org.json.JSONObject;
 public class UserInfo extends Fragment {
 
     private int my_flag = 0; // 0表示个人主页，1表示他人主页
-    private final static int FLAG_SELF = 0;
-    private final static int FLAG_OTHER = 1;
+    public final static int FLAG_SELF = 0;
+    public final static int FLAG_OTHER = 1;
 
     private ActivityResultLauncher login_launcher;
 
-    TextView nickName_textView;
-    TextView introduction_textView;
-    ImageView profile_photo_imageView;
+    private TextView nickName_textView;
+    private TextView introduction_textView;
+    private ImageView profile_photo_imageView;
+    private Button login_button;
 
-    public UserInfo(int flag) {
+    private ImageView loading_icon;
+    private Animation rotate;
+
+    private int user_id;
+
+    public UserInfo(int flag, int uid) {
         // Required empty public constructor
         my_flag = flag;
+        user_id = uid;
     }
 
     @Override
@@ -53,7 +64,10 @@ public class UserInfo extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_user_info, container, false);
 
-        Button login_button = view.findViewById(R.id.user_info_login_button);
+        login_button = view.findViewById(R.id.user_info_login_button);
+
+        loading_icon = view.findViewById(R.id.user_info_loading_icon);
+        rotate = AnimationUtils.loadAnimation(getContext(), R.anim.loading_anim);
 
         nickName_textView = view.findViewById(R.id.user_info_nickName);
         introduction_textView = view.findViewById(R.id.user_info_introduction);
@@ -64,7 +78,8 @@ public class UserInfo extends Fragment {
                         if(result.getResultCode() == Activity.RESULT_OK){
                             Intent intent = result.getData();
                             login_button.setVisibility(View.INVISIBLE);
-                            getUserInfo(intent.getIntExtra("user_id", 0));
+                            user_id = intent.getIntExtra("user_id", 0);
+                            getUserInfo();
                         }
                     });
             login_button.setOnClickListener((view1 -> {
@@ -73,12 +88,13 @@ public class UserInfo extends Fragment {
         }
         else{
             login_button.setVisibility(View.INVISIBLE);
+            getUserInfo();
         }
 
         return view;
     }
 
-    private void getUserInfo(int user_id){
+    private void getUserInfo(){
         Handler handler = new Handler(Looper.getMainLooper()){
             @Override
             public void handleMessage(@NonNull Message msg) {
@@ -88,12 +104,29 @@ public class UserInfo extends Fragment {
                             .show();
                 }
                 else{
-                    nickName_textView.setText(msg.getData().getString("nickname"));
                     String introduction = msg.getData().getString("introduction");
+                    if(my_flag == FLAG_SELF){
+                        UserInfoStorage userInfoStorage = new UserInfoStorage();
+                        userInfoStorage.nickName = msg.getData().getString("nickname");
+                        userInfoStorage.introduction = getActivity().getResources().getString(
+                                R.string.user_info_introduction_default);
+                        userInfoStorage.user_id = user_id;
+                        if(!introduction.equals("null")){
+                            userInfoStorage.introduction = introduction;
+                        }
+                        userInfoStorage.addInfo(getActivity());
+
+                        login_button.setText(R.string.modify_self_info);
+                        login_button.setOnClickListener(view -> {
+                            // TO DO 修改个人信息
+                        });
+                    }
+                    nickName_textView.setText(msg.getData().getString("nickname"));
                     if(!introduction.equals("null")){
                         introduction_textView.setText(introduction);
                     }
                 }
+                loading_icon.setAnimation(null);
             }
         };
 
@@ -125,5 +158,6 @@ public class UserInfo extends Fragment {
             }
         };
         thread.start();
+        loading_icon.setAnimation(rotate);
     }
 }

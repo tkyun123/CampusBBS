@@ -28,6 +28,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
+import java.io.IOException;
 import java.io.StringReader;
 import java.util.HashMap;
 import java.util.Map;
@@ -79,11 +81,6 @@ public class MainActivity extends AppCompatActivity {
         Resources resources = getResources();
         item.setIconSize(resources.getDimensionPixelSize(R.dimen.share_post_icon_size));
 
+        SystemService.createMultimediaDir(this);
     }
-
-//    @Override
-//    public void transData(String share_title, String share_content) {
-//
-//        PagerAdapter.transData(share_title, share_content);
-//    }
 }

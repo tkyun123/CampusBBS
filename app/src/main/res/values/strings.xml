@@ -40,7 +40,6 @@
     <string name="user_info_nickName_default">游客</string>
     <string name="user_info_introduction_default">这个人什么也没写</string>
     <string name="user_info_login_text">登录</string>
-    <string name="user_info_draft">草稿箱</string>
 
     <string name="comment_label">评论</string>
     <string name="floor_label">楼层</string>
@@ -79,5 +78,7 @@
     <string name="add_image_text">拍照</string>
     <string name="add_audio_text">录音</string>
     <string name="add_video_text">录像</string>
+
+    <string name="modify_self_info">修改个人信息</string>
 
 </resources>
