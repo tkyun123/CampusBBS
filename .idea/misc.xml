@@ -101,6 +101,7 @@
         <entry key="app/src/main/res/drawable/back_icon.xml" value="0.137" />
         <entry key="app/src/main/res/drawable/draft_icon.xml" value="0.137" />
         <entry key="app/src/main/res/drawable/email_icon.xml" value="0.137" />
+        <entry key="app/src/main/res/drawable/ic_right_arrow.xml" value="0.1715" />
         <entry key="app/src/main/res/drawable/service_icon.xml" value="0.137" />
         <entry key="app/src/main/res/drawable/star_icon.xml" value="0.137" />
         <entry key="app/src/main/res/layout/activity_comment.xml" value="0.18342391304347827" />
