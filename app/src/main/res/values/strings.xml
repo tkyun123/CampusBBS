@@ -36,6 +36,7 @@
     <string name="user_info_share_text">动态</string>
     <string name="user_info_visitor">游客</string>
     <string name="user_info_login_text">登录</string>
+    <string name="user_info_draft">草稿箱</string>
 
     <string name="comment_label">评论</string>
     <string name="floor_label">楼层</string>
