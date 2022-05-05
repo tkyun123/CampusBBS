@@ -113,6 +113,90 @@
             android:background="@color/fourth_dark_line_color"/>
     </LinearLayout>
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="45dp">
+        <ImageView
+            android:id="@+id/sub_menu_icon1"
+            android:layout_width="30dp"
+            android:layout_height="wrap_content"
+            android:padding="5dp"
+            android:layout_marginStart="5dp"
+            android:src="@drawable/star_icon" />
+
+        <TextView
+            android:id="@+id/sub_menu_text1"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:layout_toEndOf="@id/sub_menu_icon1"
+            android:layout_marginStart="5dp"
+            android:text="我的收藏" />
+
+        <ImageView
+            android:src="@drawable/ic_right_arrow"
+            android:layout_width="30dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:padding="10dp" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="45dp">
+        <ImageView
+            android:id="@+id/sub_menu_icon2"
+            android:layout_width="30dp"
+            android:layout_height="wrap_content"
+            android:padding="5dp"
+            android:layout_marginStart="5dp"
+            android:src="@drawable/draft_icon" />
+
+        <TextView
+            android:id="@+id/sub_menu_text2"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:layout_toEndOf="@id/sub_menu_icon2"
+            android:layout_marginStart="5dp"
+            android:text="草稿箱" />
+
+        <ImageView
+            android:src="@drawable/ic_right_arrow"
+            android:layout_width="30dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:padding="10dp" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="45dp">
+        <ImageView
+            android:id="@+id/sub_menu_icon3"
+            android:layout_width="30dp"
+            android:layout_height="wrap_content"
+            android:padding="5dp"
+            android:layout_marginStart="5dp"
+            android:src="@drawable/service_icon" />
+
+        <TextView
+            android:id="@+id/sub_menu_text3"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:layout_toEndOf="@id/sub_menu_icon3"
+            android:layout_marginStart="5dp"
+            android:text="服务中心" />
+
+        <ImageView
+            android:src="@drawable/ic_right_arrow"
+            android:layout_width="30dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:padding="10dp" />
+    </RelativeLayout>
+
     <ImageView
         android:id="@+id/user_info_loading_icon"
         android:layout_width="@dimen/loading_iconSize"
