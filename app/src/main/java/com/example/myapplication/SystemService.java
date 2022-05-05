@@ -14,9 +14,22 @@ import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationManager;
 import android.net.Uri;
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
 import android.util.Base64;
 import android.util.Log;
+
+import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
+
+import com.amap.api.services.core.AMapException;
+import com.amap.api.services.core.LatLonPoint;
+import com.amap.api.services.core.ServiceSettings;
+import com.amap.api.services.geocoder.GeocodeSearch;
+import com.amap.api.services.geocoder.RegeocodeAddress;
+import com.amap.api.services.geocoder.RegeocodeQuery;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -28,6 +41,7 @@ import java.io.InputStream;
 import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Locale;
+import java.util.logging.LogRecord;
 
 public class SystemService {
     private static final String default_location = "地球";
@@ -53,7 +67,7 @@ public class SystemService {
         }
         if (best_provider == null) {
             Log.d("", "未找到provider");
-            return return_loc[0];
+            return default_location;
         }
 
         Log.d("", best_provider);
@@ -63,46 +77,83 @@ public class SystemService {
                 && ActivityCompat.checkSelfPermission(context,
                 Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             Log.d("", "权限不支持");
-            return return_loc[0];
+            return default_location;
         }
         Location location = locationManager.getLastKnownLocation(best_provider);
         if(location == null){
             Log.d("", "未找到location");
-//            locationManager.requestLocationUpdates(best_provider, 3600 * 1000,
-//                    100, location1 -> {
-//                        if (location1 != null) {
-//                            return_loc[0] = getFromLocation(context, location1);
-//                        }
-//                    });
+            locationManager.requestLocationUpdates(best_provider, 3600 * 1000,
+                    100, location1 -> {
+                        if (location1 != null) {
+                            getFromLocation(return_loc, context, location1);
+                        }
+                    });
         }
         else{
             Log.d("location", String.valueOf(location));
-            return_loc[0] =getFromLocation(context, location);
+            getFromLocation(return_loc, context, location);
         }
+        Log.d("", return_loc[0]);
         return return_loc[0];
-
     }
 
-    private static String getFromLocation(Context context, Location location){
-        Geocoder geocoder = new Geocoder(context, Locale.CHINESE);
+    private static void getFromLocation(String[] return_loc, Context context, Location location){
+//        Geocoder geocoder = new Geocoder(context, Locale.CHINESE);
+        Handler handler = new Handler(Looper.getMainLooper()){
+            @Override
+            public void handleMessage(@NonNull Message msg) {
+                super.handleMessage(msg);
+                if(msg.what == -1){
+                    return_loc[0] = default_location;
+                }
+                else{
+                    return_loc[0] = msg.getData().getString("location");
+                }
+            }
+        };
 
-        try {
-            List<Address> addresses = geocoder.getFromLocation(
-                    location.getLatitude(), location.getLongitude(), 1
-            );
-            Address address = addresses.get(0);
-            Log.d("地址:", address.getAddressLine(1));
-            return address.getAddressLine(1);
-        }catch (IOException e){
-            Log.d("error:", String.valueOf(e));
-            return default_location;
-        }
+        Thread my_thread = new Thread(){
+            @Override
+            public void run() {
+                super.run();
+                try {
+                    ServiceSettings.getInstance().setApiKey("a87e48cae9a216077a37c492ed0c591e");
+                    ServiceSettings.updatePrivacyShow(context, true, true);
+                    ServiceSettings.updatePrivacyAgree(context, true);
+
+                    GeocodeSearch geocodeSearch = new GeocodeSearch(context);
+                    LatLonPoint latLonPoint = new LatLonPoint(
+                            39.92, 116.46);
+                    RegeocodeQuery regeocodeQuery = new RegeocodeQuery(
+                            latLonPoint, 25, GeocodeSearch.GPS);
+                    RegeocodeAddress address = geocodeSearch.getFromLocation(regeocodeQuery);
+                    Bundle bundle = new Bundle();
+                    bundle.putString("location", address.getProvince());
+                    Message message = new Message();
+                    message.what = 0;
+                    message.setData(bundle);
+                    handler.sendMessage(message);
+//            List<Address> addresses = geocoder.getFromLocation(
+//                    location.getLatitude(), location.getLongitude(), 1
+//            );
+//            Address address = addresses.get(0);
+//            Log.d("地址:", address.getAddressLine(1));
+//            return address.getAddressLine(1);
+                }catch (AMapException e){
+                    e.printStackTrace();
+                    Message message = new Message();
+                    message.what = -1;
+                    handler.sendMessage(message);
+                }
+            }
+        };
+        my_thread.start();
     }
 
     public static boolean checkLogin(Activity activity){
         SharedPreferences sharedPreferences = activity.getSharedPreferences(
                 "login", Context.MODE_PRIVATE);
-        if(sharedPreferences.getString("user", null) == null){
+        if(sharedPreferences.getString("nickName", null) == null){
             return false;
         }
         return true;

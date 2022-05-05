@@ -20,14 +20,26 @@
                 android:layout_height="@dimen/user_info_profile_photo_size"
                 android:layout_weight="@dimen/user_info_profile_photo_weight"
                 android:src="@drawable/test_profile_photo" />
-            <TextView
-                android:id="@+id/user_info_nickName"
+            <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:text="@string/user_info_visitor"
-                android:textSize="@dimen/user_info_nickName_textSize"
-                android:layout_weight="@dimen/user_info_nickName_weight"
-                android:gravity="center_vertical"/>
+                android:orientation="vertical"
+                android:layout_weight="@dimen/user_info_nickName_weight">
+                <TextView
+                    android:id="@+id/user_info_nickName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/user_info_nickName_default"
+                    android:textSize="@dimen/user_info_nickName_textSize"
+                    android:gravity="center_vertical"/>
+                <TextView
+                    android:id="@+id/user_info_introduction"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/user_info_introduction_default"
+                    android:textSize="@dimen/user_info_introduction_textSize"
+                    android:layout_gravity="center_vertical"/>
+            </LinearLayout>
             <Button
                 android:id="@+id/user_info_login_button"
                 android:layout_width="@dimen/user_info_login_button_width"
@@ -99,36 +111,6 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/line_width"
             android:background="@color/fourth_dark_line_color"/>
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="45dp">
-
-            <ImageView
-                android:id="@+id/sub_menu_icon1"
-                android:layout_width="30dp"
-                android:layout_height="wrap_content"
-                android:padding="5dp"
-                android:layout_marginStart="5dp"
-                android:src="@drawable/star_icon" />
-
-            <TextView
-                android:id="@+id/sub_menu_text1"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:gravity="center_vertical"
-                android:layout_toEndOf="@id/sub_menu_icon1"
-                android:layout_marginStart="5dp"
-                android:text="我的收藏" />
-
-            <ImageView
-                android:src="@drawable/ic_right_arrow"
-                android:layout_width="30dp"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:padding="10dp" />
-
-        </RelativeLayout>
     </LinearLayout>
 
 </FrameLayout>

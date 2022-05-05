@@ -39,6 +39,8 @@
     <dimen name="share_post_content_textSize">20sp</dimen>
 
     <dimen name="share_post_icon_size">40dp</dimen>
+    <dimen name="share_post_popup_marginTop">20dp</dimen>
+    <dimen name="share_post_popup_padding">20dp</dimen>
 
     <dimen name="share_location_weight">1</dimen>
     <dimen name="share_time_weight">1</dimen>
@@ -80,6 +82,7 @@
     <dimen name="user_info_login_button_weight">2</dimen>
     <dimen name="user_info_login_button_height">40dp</dimen>
     <dimen name="user_info_login_button_width">60dp</dimen>
+    <dimen name="user_info_introduction_textSize">15sp</dimen>
 
     <dimen name="comment_label_textSize">20sp</dimen>
     <dimen name="comment_span_state_iconSize">30dp</dimen>
