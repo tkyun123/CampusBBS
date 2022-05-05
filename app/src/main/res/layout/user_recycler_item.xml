@@ -4,6 +4,7 @@
     android:layout_height="wrap_content"
     android:orientation="horizontal"
     android:background="@drawable/item_background"
+    android:paddingHorizontal="@dimen/user_recycler_item_paddingHorizontal"
     android:layout_marginBottom="@dimen/user_browse_recycler_item_marginBottom">
 
     <ImageView
@@ -40,18 +41,20 @@
                 android:id="@+id/user_browse_share_button"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="@dimen/user_browse_share_weight"
-                android:text="@string/follow_user_browse_share_text"/>
+                android:layout_weight="1"
+                android:text="@string/check_user_info_text"/>
             <Button
                 android:id="@+id/user_follow_state_button"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="@dimen/user_follow_state_weight"
+                android:layout_weight="1"
                 android:text="@string/follow"/>
-            <LinearLayout
+            <Button
+                android:id="@+id/user_block_state_button"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="@dimen/user_placeTaken_weight"/>
+                android:layout_weight="1"
+                android:text="@string/block"/>
         </LinearLayout>
     </LinearLayout>
 

@@ -23,10 +23,12 @@
         <entry key="..\:/study/3.2/MobileAppDevelopment/term_project/app/src/main/res/drawable/share_browse_follow_icon.xml" value="0.1" />
         <entry key="..\:/study/3.2/MobileAppDevelopment/term_project/app/src/main/res/drawable/share_browse_icon.xml" value="0.1" />
         <entry key="..\:/study/3.2/MobileAppDevelopment/term_project/app/src/main/res/drawable/share_browse_item_background.xml" value="0.1" />
+        <entry key="..\:/study/3.2/MobileAppDevelopment/term_project/app/src/main/res/drawable/share_post.xml" value="0.1745" />
         <entry key="..\:/study/3.2/MobileAppDevelopment/term_project/app/src/main/res/drawable/share_search_icon.xml" value="0.1" />
         <entry key="..\:/study/3.2/MobileAppDevelopment/term_project/app/src/main/res/drawable/source_add_icon.xml" value="0.1" />
         <entry key="..\:/study/3.2/MobileAppDevelopment/term_project/app/src/main/res/drawable/span_icon.xml" value="0.1" />
         <entry key="..\:/study/3.2/MobileAppDevelopment/term_project/app/src/main/res/drawable/unlike_icon.xml" value="0.1" />
+        <entry key="..\:/study/3.2/MobileAppDevelopment/term_project/app/src/main/res/drawable/user_icon.xml" value="0.175" />
         <entry key="..\:/study/3.2/MobileAppDevelopment/term_project/app/src/main/res/drawable/video_add_icon.xml" value="0.1" />
         <entry key="..\:/study/3.2/MobileAppDevelopment/term_project/app/src/main/res/drawable/video_select_icon.xml" value="0.1" />
         <entry key="..\:/study/3.2/MobileAppDevelopment/term_project/app/src/main/res/layout/activity_comment.xml" value="0.1" />
@@ -48,7 +50,7 @@
         <entry key="..\:/study/3.2/MobileAppDevelopment/term_project/app/src/main/res/layout/fragment_share_browse_follow.xml" value="0.1" />
         <entry key="..\:/study/3.2/MobileAppDevelopment/term_project/app/src/main/res/layout/fragment_share_post.xml" value="0.1" />
         <entry key="..\:/study/3.2/MobileAppDevelopment/term_project/app/src/main/res/layout/fragment_share_search.xml" value="0.20471014492753623" />
-        <entry key="..\:/study/3.2/MobileAppDevelopment/term_project/app/src/main/res/layout/fragment_user_browse.xml" value="0.1" />
+        <entry key="..\:/study/3.2/MobileAppDevelopment/term_project/app/src/main/res/layout/fragment_user_browse.xml" value="0.2" />
         <entry key="..\:/study/3.2/MobileAppDevelopment/term_project/app/src/main/res/layout/fragment_user_info.xml" value="0.11651469098277609" />
         <entry key="..\:/study/3.2/MobileAppDevelopment/term_project/app/src/main/res/layout/layout.xml" value="0.20471014492753623" />
         <entry key="..\:/study/3.2/MobileAppDevelopment/term_project/app/src/main/res/layout/message_recycler_item.xml" value="0.20516304347826086" />
@@ -57,7 +59,7 @@
         <entry key="..\:/study/3.2/MobileAppDevelopment/term_project/app/src/main/res/layout/share_browse_recycler_item.xml" value="0.1" />
         <entry key="..\:/study/3.2/MobileAppDevelopment/term_project/app/src/main/res/layout/share_detail_floor_item.xml" value="0.20471014492753623" />
         <entry key="..\:/study/3.2/MobileAppDevelopment/term_project/app/src/main/res/layout/share_post_multimedia_popup.xml" value="0.2" />
-        <entry key="..\:/study/3.2/MobileAppDevelopment/term_project/app/src/main/res/layout/user_recycler_item.xml" value="0.1" />
+        <entry key="..\:/study/3.2/MobileAppDevelopment/term_project/app/src/main/res/layout/user_recycler_item.xml" value="0.2" />
         <entry key="..\:/study/3.2/MobileAppDevelopment/term_project/app/src/main/res/layout/video_add_item.xml" value="0.1" />
         <entry key="..\:/study/3.2/MobileAppDevelopment/term_project/app/src/main/res/menu/main_navigator_menu.xml" value="0.21666666666666667" />
         <entry key="..\:/study/3.2/MobileAppDevelopment/w5/app/src/main/res/layout/activity_main.xml" value="0.19791666666666666" />

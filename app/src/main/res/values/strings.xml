@@ -23,8 +23,11 @@
 
     <string name="follow_user_nickName_label">用户名:</string>
     <string name="follow_user_browse_share_text">查看动态</string>
-    <string name="follow">已关注</string>
-    <string name="unfollow">未关注</string>
+    <string name="check_user_info_text">个人主页</string>
+    <string name="follow">关注</string>
+    <string name="unfollow">取消关注</string>
+    <string name="block">屏蔽</string>
+    <string name="unblock">取消屏蔽</string>
 
     <string name="title_activity_user_share">动态</string>
 
@@ -75,4 +78,5 @@
     <string name="add_image_text">拍照</string>
     <string name="add_audio_text">录音</string>
     <string name="add_video_text">录像</string>
+
 </resources>

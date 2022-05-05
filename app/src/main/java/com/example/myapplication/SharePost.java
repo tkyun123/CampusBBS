@@ -1,8 +1,12 @@
 package com.example.myapplication;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
@@ -12,11 +16,13 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.SwitchCompat;
+import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -36,9 +42,11 @@ import android.widget.VideoView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -72,9 +80,12 @@ public class SharePost extends Fragment {
     private int image_num = 0;
     private int video_num = 0;
     private final List<Uri> uri_list = new ArrayList<>();
+    private final JSONArray multimedia_list = new JSONArray();
+    private String SAVE_PATH;
     private Uri save_uri; // 添加(而不是选择)多媒体时生成保存路径
 
-    private String location = "";
+    private String location = null;
+    public static Handler location_handler;
 
     public SharePost() {
         // Required empty public constructor
@@ -121,16 +132,29 @@ public class SharePost extends Fragment {
         image_add_launcher = registerForActivityResult(
                 new ActivityResultContracts.TakePicture(), (result)->{
                     if(result){
+
                         addMultimediaView(save_uri);
                     }
                 }
         );
-        video_add_launcher = registerForActivityResult(
-                new ActivityResultContracts.TakeVideo(), (result -> {
-                    if(result!=null){
-                        addMultimediaView(save_uri);
+        audio_add_launcher = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),(result -> {
+                    if(result.getResultCode() == Activity.RESULT_OK){
+                        Uri uri = result.getData().getData();
+
+                        addMultimediaView(uri);
                     }
                 })
+        );
+        video_add_launcher = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(), (result)-> {
+//                    if(result != null){
+//                        addMultimediaView(save_uri);
+//                    }
+                    if(result.getResultCode() == Activity.RESULT_OK){
+                        addMultimediaView(save_uri);
+                    }
+                }
         );
 
         location_switch = view.findViewById(R.id.show_location_switch);
@@ -138,18 +162,34 @@ public class SharePost extends Fragment {
         location_switch.setOnClickListener(view1 -> {
             if (location_switch.isChecked()) {
                 location_textView.setText(R.string.show_location_text);
-                if(location.equals("")){
-                    location = SystemService.getLocation(getActivity().getApplicationContext());
+                if(location == null){
+                    location = SystemService.DEFAULT_LOCATION;
+                    loading_icon.setAnimation(rotate);
+                    SystemService.getLocation(getContext(), location_handler);
                 }
             } else {
                 location_textView.setText(R.string.not_show_location_text);
             }
         });
 
+        location_handler = new Handler(Looper.getMainLooper()){
+            @Override
+            public void handleMessage(@NonNull Message msg) {
+                super.handleMessage(msg);
+                if(msg.what == 0){
+                    location = msg.getData().getString("location");
+                    Log.d("", location);
+                }
+                loading_icon.setAnimation(null);
+            }
+        };
+
         multimedia_button = view.findViewById(R.id.share_post_floating_button);
         multimedia_button.setOnClickListener(view1 -> {
             initPopupWindow(view);
         });
+        SAVE_PATH = getContext().getExternalFilesDir("").getPath();
+        Log.d("", SAVE_PATH);
         return view;
     }
 
@@ -172,14 +212,48 @@ public class SharePost extends Fragment {
         multimedia_popupWindow.dismiss();
         multimedia_state = state;
         if (multimedia_state == MULTIMEDIA_IMAGE) {
-            image_add_launcher.launch("image/*");
+            filepathToUri(".jpg");
+            image_add_launcher.launch(save_uri);
         }
         else if(multimedia_state == MULTIMEDIA_AUDIO){
-            audio_add_launcher.launch("video/*");
+            filepathToUri(".mp3");
+            Intent intent = new Intent(MediaStore.Audio.Media.RECORD_SOUND_ACTION);
+            if(getActivity().getPackageManager().queryIntentActivities(
+                    intent, PackageManager.MATCH_DEFAULT_ONLY).size()>0){
+                audio_add_launcher.launch(intent);
+            }
+            else{
+                Toast.makeText(getContext(), "无可用录音工具", Toast.LENGTH_SHORT)
+                        .show();
+            }
         }
         else{
-            video_add_launcher.launch("music/*");
+            filepathToUri(".mp4");
+            Intent intent = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
+            intent.putExtra(MediaStore.EXTRA_OUTPUT, save_uri);
+            video_add_launcher.launch(intent);
         }
+    }
+
+    private void filepathToUri(String filetype){
+        File file = getFile(filetype);
+        save_uri = FileProvider.getUriForFile(
+                getContext(),
+                getContext().getPackageName()+".fileProvider",
+                file);
+    }
+
+    private File getFile(String filetype){
+        int n = 0;
+        String path;
+        File file;
+        do {
+            path = String.format("%s/%s%s",SAVE_PATH, n, filetype);
+            file = new File(path);
+            n++;
+        }while (file.exists());
+        Log.d("", path);
+        return file;
     }
 
     public void addMultimediaView(Uri uri) {

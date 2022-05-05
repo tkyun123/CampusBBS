@@ -32,6 +32,7 @@
     <dimen name="user_browse_recycler_item_marginBottom">10dp</dimen>
     <dimen name="user_browse_recycler_marginLeftAndRight">0dp</dimen>
     <dimen name="user_browse_recycler_marginTop">10dp</dimen>
+    <dimen name="user_recycler_item_paddingHorizontal">10dp</dimen>
 
     <dimen name="share_post_textSize">20sp</dimen>
     <dimen name="share_post_marginRight">30dp</dimen>
