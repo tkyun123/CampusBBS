@@ -26,8 +26,16 @@ public class DraftRecyclerViewHolder extends RecyclerView.ViewHolder{
         itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                editDraft();
             }
         });
+    }
+
+    private void editDraft(){
+        Intent intent = new Intent(my_activity, DraftEditActivity.class);
+
+        intent.putExtra("draft_title", title_textView.getText().toString());
+        intent.putExtra("draft_content", content_textView.getText().toString());
+        my_activity.startActivity(intent);
     }
 }
