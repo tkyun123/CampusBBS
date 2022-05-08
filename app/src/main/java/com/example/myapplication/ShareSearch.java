@@ -16,10 +16,6 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import com.google.android.material.tabs.TabLayout;
-
-import org.w3c.dom.Text;
-
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link ShareSearch#} factory method to
@@ -75,10 +71,16 @@ public class ShareSearch extends Fragment {
                 if (actionId == EditorInfo.IME_ACTION_SEARCH) {
                     switch (search_type) {
                         case 0:
+                            getChildFragmentManager().beginTransaction().replace(
+                                    R.id.search_result, new SearchShareBrowse(0)).commit();
                             break;
                         case 1:
+                            getChildFragmentManager().beginTransaction().replace(
+                                    R.id.search_result, new SearchShareBrowse(1)).commit();
                             break;
                         case 2:
+                            getChildFragmentManager().beginTransaction().replace(
+                                    R.id.search_result, new SearchShareBrowse(2)).commit();
                             break;
                         default:
                             break;
@@ -89,27 +91,10 @@ public class ShareSearch extends Fragment {
             }
         });
 
-        TabLayout tab_layout = view.findViewById(R.id.search_select_tab);
-        tab_layout.addTab(tab_layout.newTab().setText("文字"));
-        tab_layout.addTab(tab_layout.newTab().setText("视频"));
-        tab_layout.addTab(tab_layout.newTab().setText("音频"));
-
-//        search_result_fragment = new ShareBrowseFollow();
-//        getChildFragmentManager().beginTransaction().replace(
-//                R.id.search_result, search_result_fragment).commit();
-
         getChildFragmentManager().beginTransaction().replace(
                 R.id.search_result, new EmptySearch()).commit();
 
         return view;
     }
-
-//    @Override
-//    public void onPause() {
-//        super.onPause();
-//        Log.d("log", "onPause: ");
-//        getChildFragmentManager().beginTransaction().remove(
-//                search_result_fragment).commit();
-//    }
 
 }
