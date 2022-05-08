@@ -56,9 +56,9 @@
     <dimen name="share_search_input_height">40dp</dimen>
     <dimen name="share_search_input_paddingLeft">10dp</dimen>
     <dimen name="share_search_input_paddingTopAndBottom">5dp</dimen>
-    <dimen name="share_search_input_marginTop">20dp</dimen>
+    <dimen name="share_search_input_marginTop">10dp</dimen>
     <dimen name="share_search_input_marginLeftAndRight">30dp</dimen>
-    <dimen name="search_line_marginTop">20dp</dimen>
+    <dimen name="search_line_marginTop">10dp</dimen>
     <dimen name="search_text_marginLeft">10dp</dimen>
     <dimen name="search_empty_textSize">30sp</dimen>
 

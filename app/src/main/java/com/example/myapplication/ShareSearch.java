@@ -6,11 +6,19 @@ import android.os.Bundle;
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
+import android.widget.AdapterView;
+import android.widget.EditText;
+import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.google.android.material.tabs.TabLayout;
+
+import org.w3c.dom.Text;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -18,6 +26,11 @@ import com.google.android.material.tabs.TabLayout;
  * create an instance of this fragment.
  */
 public class ShareSearch extends Fragment {
+
+    public Spinner search_spinner;
+    private int search_type = 0;
+
+    public EditText search_edit_text;
 
     public Fragment search_result_fragment;
     Fragment empty_fragment = new Fragment();
@@ -33,9 +46,53 @@ public class ShareSearch extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_share_search, container, false);
 
+        search_spinner = view.findViewById(R.id.search_spinner);
+        search_spinner.setSelection(0);
+        search_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                if(i == 1) {
+                    search_type = 1;
+                }
+                else if(i == 2) {
+                    search_type = 2;
+                }
+                else {
+                    search_type = 0;
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
+        search_edit_text = view.findViewById(R.id.search_edit_text);
+        search_edit_text.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                    switch (search_type) {
+                        case 0:
+                            break;
+                        case 1:
+                            break;
+                        case 2:
+                            break;
+                        default:
+                            break;
+                    }
+                    return false;
+                }
+                return false;
+            }
+        });
+
         TabLayout tab_layout = view.findViewById(R.id.search_select_tab);
-        tab_layout.addTab(tab_layout.newTab().setText(R.string.search_select_type1));
-        tab_layout.addTab(tab_layout.newTab().setText(R.string.search_select_type2));
+        tab_layout.addTab(tab_layout.newTab().setText("文字"));
+        tab_layout.addTab(tab_layout.newTab().setText("视频"));
+        tab_layout.addTab(tab_layout.newTab().setText("音频"));
 
 //        search_result_fragment = new ShareBrowseFollow();
 //        getChildFragmentManager().beginTransaction().replace(
