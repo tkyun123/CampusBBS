@@ -42,49 +42,51 @@ public class ShareSearch extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_share_search, container, false);
 
-        search_spinner = view.findViewById(R.id.search_spinner);
-        search_spinner.setSelection(0);
-        search_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                if(i == 1) {
-                    search_type = 1;
-                }
-                else if(i == 2) {
-                    search_type = 2;
-                }
-                else {
-                    search_type = 0;
-                }
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-
-            }
-        });
+//        search_spinner = view.findViewById(R.id.search_spinner);
+//        search_spinner.setSelection(0);
+//        search_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+//            @Override
+//            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+//                if(i == 1) {
+//                    search_type = 1;
+//                }
+//                else if(i == 2) {
+//                    search_type = 2;
+//                }
+//                else {
+//                    search_type = 0;
+//                }
+//            }
+//
+//            @Override
+//            public void onNothingSelected(AdapterView<?> adapterView) {
+//
+//            }
+//        });
 
         search_edit_text = view.findViewById(R.id.search_edit_text);
         search_edit_text.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                    switch (search_type) {
-                        case 0:
-                            getChildFragmentManager().beginTransaction().replace(
-                                    R.id.search_result, new SearchShareBrowse(0)).commit();
-                            break;
-                        case 1:
-                            getChildFragmentManager().beginTransaction().replace(
-                                    R.id.search_result, new SearchShareBrowse(1)).commit();
-                            break;
-                        case 2:
-                            getChildFragmentManager().beginTransaction().replace(
-                                    R.id.search_result, new SearchShareBrowse(2)).commit();
-                            break;
-                        default:
-                            break;
-                    }
+                    getChildFragmentManager().beginTransaction().replace(
+                            R.id.search_result, new SearchShareBrowse()).commit();
+//                    switch (search_type) {
+//                        case 0:
+//                            getChildFragmentManager().beginTransaction().replace(
+//                                    R.id.search_result, new SearchShareBrowse(0)).commit();
+//                            break;
+//                        case 1:
+//                            getChildFragmentManager().beginTransaction().replace(
+//                                    R.id.search_result, new SearchShareBrowse(1)).commit();
+//                            break;
+//                        case 2:
+//                            getChildFragmentManager().beginTransaction().replace(
+//                                    R.id.search_result, new SearchShareBrowse(2)).commit();
+//                            break;
+//                        default:
+//                            break;
+//                    }
                     return false;
                 }
                 return false;
