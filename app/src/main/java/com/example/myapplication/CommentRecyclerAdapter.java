@@ -2,9 +2,12 @@ package com.example.myapplication;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Point;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentActivity;
@@ -28,6 +31,14 @@ public class CommentRecyclerAdapter extends RecyclerView.Adapter<CommentRecycler
     @Override
     public CommentRecyclerViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View item_view = my_inflater.inflate(R.layout.comment_recycler_item, parent, false);
+
+        LinearLayout comment_layout = item_view.findViewById(R.id.message_layout);
+        LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams)comment_layout.getLayoutParams();
+        WindowManager window_mg = (WindowManager)my_activity.getSystemService(Context.WINDOW_SERVICE);
+        Point size = new Point();
+        window_mg.getDefaultDisplay().getSize(size);
+        layoutParams.width = size.x;
+        comment_layout.setLayoutParams(layoutParams);
         return new CommentRecyclerViewHolder(item_view,this);
     }
 

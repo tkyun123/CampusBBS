@@ -48,6 +48,9 @@
             android:name=".RegisterActivity"
             android:exported="false" />
         <activity
+            android:name=".InfoModifyActivity"
+            android:exported="false" />
+        <activity
             android:name=".CommentAddActivity"
             android:exported="false" />
         <activity

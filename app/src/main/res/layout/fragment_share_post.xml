@@ -7,6 +7,7 @@
     tools:context=".SharePost">
 
     <!-- TODO: Update blank fragment layout -->
+
     <ScrollView
         android:id="@+id/share_detail_scrollView"
         android:layout_width="match_parent"
@@ -16,32 +17,53 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical"
             android:focusable="true"
-            android:focusableInTouchMode="true">
+            android:focusableInTouchMode="true"
+            android:orientation="vertical">
+
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
+
                 <androidx.appcompat.widget.SwitchCompat
                     android:id="@+id/show_location_switch"
                     android:layout_width="wrap_content"
-                    android:layout_height="match_parent"/>
+                    android:layout_height="match_parent" />
+
                 <TextView
                     android:id="@+id/show_location_textView"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:text="@string/not_show_location_text"
-                    android:layout_toRightOf="@id/show_location_switch"
-                    android:layout_centerInParent="true"/>
+                    android:layout_centerInParent="true"
+                    android:layout_toEndOf="@id/show_location_switch"
+                    android:text="@string/not_show_location_text" />
+
+                <Spinner
+                    android:id="@+id/select_share_type_spinner"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_centerInParent="true"
+                    android:layout_marginEnd="@dimen/select_share_type_spinner_marginEnd"
+                    android:layout_toStartOf="@id/share_detail_postButton"
+                    android:entries="@array/share_type_array"/>
+
+<!--                <TextView-->
+<!--                    android:id="@+id/select_share_type_textView"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="match_parent"-->
+<!--                    android:layout_centerInParent="true"-->
+<!--                    android:layout_toRightOf="@id/select_share_type_button"-->
+<!--                    android:text="@string/share_type_Text" />-->
+
                 <TextView
                     android:id="@+id/share_detail_postButton"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginEnd="@dimen/share_post_marginRight"
                     android:text="@string/shareButton_text"
                     android:textColor="@color/share_post_textColor"
-                    android:textSize="@dimen/share_post_textSize"
-                    android:layout_alignParentEnd="true"
-                    android:layout_marginEnd="@dimen/share_post_marginRight" />
+                    android:textSize="@dimen/share_post_textSize" />
             </RelativeLayout>
 
             <EditText
@@ -49,11 +71,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/share_post_title_defaultText"
-                android:textSize="@dimen/share_detail_title_TextSize"
-                android:theme="@style/share_post_input"
                 android:imeOptions="actionDone"
+                android:inputType="text"
                 android:maxLines="1"
-                android:inputType="text" />
+                android:textSize="@dimen/share_detail_title_TextSize"
+                android:theme="@style/share_post_input" />
+
             <EditText
                 android:id="@+id/share_edit_content"
                 android:layout_width="match_parent"
@@ -63,29 +86,28 @@
                 android:theme="@style/share_post_input" />
 
             <LinearLayout
+                android:id="@+id/share_post_new_add_multimedia_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/share_post_new_add_multimedia_layout"
-                android:orientation="vertical">
-            </LinearLayout>
+                android:orientation="vertical"></LinearLayout>
 
-<!--            <LinearLayout-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:orientation="horizontal">-->
-<!--                <ImageView-->
-<!--                    android:id="@+id/share_post_image_add_icon"-->
-<!--                    android:layout_width="0dp"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:layout_weight="1"-->
-<!--                    android:src="@drawable/image_select_icon"/>-->
-<!--                <ImageView-->
-<!--                    android:id="@+id/share_post_video_add_icon"-->
-<!--                    android:layout_width="0dp"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:layout_weight="1"-->
-<!--                    android:src="@drawable/video_add_icon"/>-->
-<!--            </LinearLayout>-->
+            <!--            <LinearLayout-->
+            <!--                android:layout_width="match_parent"-->
+            <!--                android:layout_height="wrap_content"-->
+            <!--                android:orientation="horizontal">-->
+            <!--                <ImageView-->
+            <!--                    android:id="@+id/share_post_image_add_icon"-->
+            <!--                    android:layout_width="0dp"-->
+            <!--                    android:layout_height="wrap_content"-->
+            <!--                    android:layout_weight="1"-->
+            <!--                    android:src="@drawable/image_select_icon"/>-->
+            <!--                <ImageView-->
+            <!--                    android:id="@+id/share_post_video_add_icon"-->
+            <!--                    android:layout_width="0dp"-->
+            <!--                    android:layout_height="wrap_content"-->
+            <!--                    android:layout_weight="1"-->
+            <!--                    android:src="@drawable/video_add_icon"/>-->
+            <!--            </LinearLayout>-->
 
         </LinearLayout>
     </ScrollView>

@@ -9,6 +9,7 @@ import androidx.viewpager.widget.ViewPager;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.util.JsonReader;
@@ -62,17 +63,23 @@ public class MainActivity extends AppCompatActivity {
         map.put(R.id.tab_search,3);
         map.put(R.id.tab_personInfo,4);
 
+//        SharedPreferences sharedPreferences = getSharedPreferences(
+//                "login", Context.MODE_PRIVATE);
+//        SharedPreferences.Editor editor = sharedPreferences.edit();
+//        editor.clear();
+//        editor.commit();
+
         navigator.setOnItemSelectedListener(item -> {
-            pager.setCurrentItem(map.get(item.getItemId()));
-            return true;
-//            if(item.getItemId() == R.id.tab_post && !SystemService.checkLogin(this)){
-//                startActivity(new Intent(this, LoginActivity.class));
-//                return false;
-//            }
-//            else{
-//                pager.setCurrentItem(map.get(item.getItemId()));
-//                return true;
-//            }
+//            pager.setCurrentItem(map.get(item.getItemId()));
+//            return true;
+            if(item.getItemId() != R.id.tab_personInfo && !SystemService.checkLogin(this)){
+                startActivity(new Intent(this, LoginActivity.class));
+                return false;
+            }
+            else{
+                pager.setCurrentItem(map.get(item.getItemId()));
+                return true;
+            }
         });
 
         BottomNavigationMenuView menu = (BottomNavigationMenuView)navigator.getChildAt(0);
@@ -81,6 +88,12 @@ public class MainActivity extends AppCompatActivity {
         Resources resources = getResources();
         item.setIconSize(resources.getDimensionPixelSize(R.dimen.share_post_icon_size));
 
-        SystemService.createMultimediaDir(this);
+        // 发布时多媒体资源的缓存目录，发布后立即清空
+        FileOperation.createDir(this, "/multimedia");
+
+        // 草稿箱多媒体资源的根目录；每创建一个草稿，这个目录下创建一个子目录(可以通过时间戳来分别)用来存储多媒体资源的缓存
+        // 子目录直到草稿删除再删除
+        FileOperation.createDir(this, "/drafts");
+        FileOperation.clearDir(this, "/multimedia");
     }
 }

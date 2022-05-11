@@ -33,8 +33,10 @@
         <entry key="..\:/study/3.2/MobileAppDevelopment/term_project/app/src/main/res/drawable/video_select_icon.xml" value="0.1" />
         <entry key="..\:/study/3.2/MobileAppDevelopment/term_project/app/src/main/res/layout/activity_comment.xml" value="0.1" />
         <entry key="..\:/study/3.2/MobileAppDevelopment/term_project/app/src/main/res/layout/activity_comment_add.xml" value="0.20471014492753623" />
+        <entry key="..\:/study/3.2/MobileAppDevelopment/term_project/app/src/main/res/layout/activity_info_modify.xml" value="0.20471014492753623" />
         <entry key="..\:/study/3.2/MobileAppDevelopment/term_project/app/src/main/res/layout/activity_login.xml" value="0.20516304347826086" />
         <entry key="..\:/study/3.2/MobileAppDevelopment/term_project/app/src/main/res/layout/activity_main.xml" value="0.1" />
+        <entry key="..\:/study/3.2/MobileAppDevelopment/term_project/app/src/main/res/layout/activity_register.xml" value="0.20471014492753623" />
         <entry key="..\:/study/3.2/MobileAppDevelopment/term_project/app/src/main/res/layout/activity_share_browse_detail.xml" value="0.1" />
         <entry key="..\:/study/3.2/MobileAppDevelopment/term_project/app/src/main/res/layout/activity_user_share.xml" value="0.11474164133738601" />
         <entry key="..\:/study/3.2/MobileAppDevelopment/term_project/app/src/main/res/layout/audio_add_item.xml" value="0.12588652482269502" />
@@ -42,16 +44,18 @@
         <entry key="..\:/study/3.2/MobileAppDevelopment/term_project/app/src/main/res/layout/content_login.xml" value="0.20516304347826086" />
         <entry key="..\:/study/3.2/MobileAppDevelopment/term_project/app/src/main/res/layout/content_user_share.xml" value="0.1" />
         <entry key="..\:/study/3.2/MobileAppDevelopment/term_project/app/src/main/res/layout/follow_user_recycler_item.xml" value="0.12588652482269502" />
+        <entry key="..\:/study/3.2/MobileAppDevelopment/term_project/app/src/main/res/layout/fragment_basic_info_modify.xml" value="0.264" />
         <entry key="..\:/study/3.2/MobileAppDevelopment/term_project/app/src/main/res/layout/fragment_comment_browse.xml" value="0.20471014492753623" />
         <entry key="..\:/study/3.2/MobileAppDevelopment/term_project/app/src/main/res/layout/fragment_empty_search.xml" value="0.1" />
         <entry key="..\:/study/3.2/MobileAppDevelopment/term_project/app/src/main/res/layout/fragment_message_browse.xml" value="0.1" />
+        <entry key="..\:/study/3.2/MobileAppDevelopment/term_project/app/src/main/res/layout/fragment_password_modify.xml" value="0.2" />
         <entry key="..\:/study/3.2/MobileAppDevelopment/term_project/app/src/main/res/layout/fragment_person_info.xml" value="0.1" />
         <entry key="..\:/study/3.2/MobileAppDevelopment/term_project/app/src/main/res/layout/fragment_share_browse.xml" value="0.20471014492753623" />
         <entry key="..\:/study/3.2/MobileAppDevelopment/term_project/app/src/main/res/layout/fragment_share_browse_follow.xml" value="0.1" />
-        <entry key="..\:/study/3.2/MobileAppDevelopment/term_project/app/src/main/res/layout/fragment_share_post.xml" value="0.1" />
+        <entry key="..\:/study/3.2/MobileAppDevelopment/term_project/app/src/main/res/layout/fragment_share_post.xml" value="0.264" />
         <entry key="..\:/study/3.2/MobileAppDevelopment/term_project/app/src/main/res/layout/fragment_share_search.xml" value="0.20471014492753623" />
         <entry key="..\:/study/3.2/MobileAppDevelopment/term_project/app/src/main/res/layout/fragment_user_browse.xml" value="0.2" />
-        <entry key="..\:/study/3.2/MobileAppDevelopment/term_project/app/src/main/res/layout/fragment_user_info.xml" value="0.11651469098277609" />
+        <entry key="..\:/study/3.2/MobileAppDevelopment/term_project/app/src/main/res/layout/fragment_user_info.xml" value="0.2" />
         <entry key="..\:/study/3.2/MobileAppDevelopment/term_project/app/src/main/res/layout/layout.xml" value="0.20471014492753623" />
         <entry key="..\:/study/3.2/MobileAppDevelopment/term_project/app/src/main/res/layout/message_recycler_item.xml" value="0.20516304347826086" />
         <entry key="..\:/study/3.2/MobileAppDevelopment/term_project/app/src/main/res/layout/message_recycler_item2.xml" value="0.20516304347826086" />
