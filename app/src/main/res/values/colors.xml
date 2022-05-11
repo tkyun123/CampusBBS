@@ -21,4 +21,5 @@
     <color name="message_clearAll_textColor">#cf6363</color>
 
     <color name="login_to_register_textColor">#699def</color>
+    <color name="state_followed_color">#1de9d3</color>
 </resources>

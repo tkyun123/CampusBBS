@@ -1,5 +1,6 @@
 package com.example.myapplication;
 
+import android.app.AlertDialog;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -39,8 +40,20 @@ public class RegisterActivity extends AppCompatActivity {
             String user = user_input.getText().toString();
             String password = password_input.getText().toString();
             String email = email_input.getText().toString();
-            register(user, password, email);
+            if(checkValid(user, password, email)){
+                register(user, password, email);
+            }
         });
+    }
+
+    private boolean checkValid(String nickName, String password, String email){
+        if(nickName.equals("") || password.equals("") || email.equals("")){
+            AlertDialog message = new AlertDialog.Builder(this)
+                    .setMessage("输入不能为空").create();
+            message.show();
+            return false;
+        }
+        return true;
     }
 
     private void register(String nickName, String password, String email){

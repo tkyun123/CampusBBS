@@ -14,7 +14,6 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.SwitchCompat;
-import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 
 import android.os.Handler;
@@ -28,12 +27,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.MediaController;
 import android.widget.PopupWindow;
 import android.widget.ScrollView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.VideoView;
@@ -44,7 +45,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.File;
 import java.util.Date;
 
 public class SharePost extends Fragment {
@@ -62,19 +62,28 @@ public class SharePost extends Fragment {
     private Animation rotate;
     View my_view;
 
+    private Spinner share_type_select_spinner;
+    private final static int TEXT = 0;
+    private final static int IMAGE = 1;
+    private final static int AUDIO = 2;
+    private final static int VIDEO = 3;
+    private int share_type = TEXT;
+
     private final int IMAGE_PICK = 1;
     private ActivityResultLauncher select_launcher;
     private ActivityResultLauncher image_add_launcher;
     private ActivityResultLauncher audio_add_launcher;
     private ActivityResultLauncher video_add_launcher;
 
-    private final static int MULTIMEDIA_IMAGE = 0;
-    private final static int MULTIMEDIA_AUDIO= 1;
-    private final static int MULTIMEDIA_VIDEO= 2;
+    private final static int MULTIMEDIA_IMAGE = 1;
+    private final static int MULTIMEDIA_AUDIO= 2;
+    private final static int MULTIMEDIA_VIDEO= 3;
     private int multimedia_state = MULTIMEDIA_IMAGE;// 0表示选择图片，1表示选择音乐, 2表示视频
 
-    private int image_num = 0;
-    private int video_num = 0;
+//    private int image_num = 0;
+//    private int audio_num = 0;
+//    private int video_num = 0;
+    private int multimedia_num = 0;
 
     private final JSONArray multimedia_list = new JSONArray();
     private String SAVE_PATH;
@@ -113,7 +122,7 @@ public class SharePost extends Fragment {
             }
             else{
                 loading_icon.setAnimation(rotate);
-                sharePost(share_title, share_content);
+                postShare(share_title, share_content);
             }
         });
 
@@ -181,11 +190,26 @@ public class SharePost extends Fragment {
         };
 
         multimedia_button = view.findViewById(R.id.share_post_floating_button);
-        multimedia_button.setOnClickListener(view1 -> {
-            initPopupWindow(view);
-        });
+        multimedia_button.setOnClickListener(view1 -> initPopupWindow(view));
 
         SAVE_PATH = getContext().getExternalFilesDir("").getPath()+"/multimedia";
+
+        share_type_select_spinner = view.findViewById(R.id.select_share_type_spinner);
+        share_type_select_spinner.setSelection(TEXT);
+        share_type_select_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                share_type = i;
+                multimedia_layout.removeAllViews();
+                SystemService.clearJsonArray(multimedia_list);
+                multimedia_num = 0;
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+            }
+        });
+
         return view;
     }
 
@@ -207,12 +231,14 @@ public class SharePost extends Fragment {
     public void addMultimedia(int state){
         multimedia_popupWindow.dismiss();
         multimedia_state = state;
+        String path;
         if (multimedia_state == MULTIMEDIA_IMAGE) {
-            filepathToUri(".jpg");
+            path = generatePath(".jpg");
+            save_uri = FileOperation.getUriFromFilepath(getContext(), path);
             image_add_launcher.launch(save_uri);
         }
         else if(multimedia_state == MULTIMEDIA_AUDIO){
-            filepathToUri(".mp3");
+            path = generatePath(".mp3");
             Intent intent = new Intent(MediaStore.Audio.Media.RECORD_SOUND_ACTION);
             if(getActivity().getPackageManager().queryIntentActivities(
                     intent, PackageManager.MATCH_DEFAULT_ONLY).size()>0){
@@ -224,29 +250,39 @@ public class SharePost extends Fragment {
             }
         }
         else{
-            filepathToUri(".mp4");
+            path = generatePath(".mp4");
+            save_uri = FileOperation.getUriFromFilepath(getContext(), path);
             Intent intent = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
             intent.putExtra(MediaStore.EXTRA_OUTPUT, save_uri);
             video_add_launcher.launch(intent);
         }
+        Log.d("path:", path);
     }
 
-    private void filepathToUri(String filetype){
-        File file = getFile(filetype);
-        save_uri = FileProvider.getUriForFile(
-                getContext(),
-                getContext().getPackageName()+".fileProvider",
-                file);
-    }
+//    private void filepathToUri(String filetype){
+//        File file = getFile(filetype);
+//        save_uri = FileProvider.getUriForFile(
+//                getContext(),
+//                getContext().getPackageName()+".fileProvider",
+//                file);
+//    }
+//
+//    private File getFile(String filetype){
+//        // 根据时间戳生成文件
+//        long n = 0;
+//        String path;
+//        File file;
+//        path = String.format("%s/%s%s",SAVE_PATH, new Date().getTime(), filetype);
+//        file = new File(path);
+//        return file;
+//    }
 
-    private File getFile(String filetype){
-        // 根据时间戳生成文件
+    private String generatePath(String filetype){
+        // 根据时间戳生成文件路径
         long n = 0;
         String path;
-        File file;
         path = String.format("%s/%s%s",SAVE_PATH, new Date().getTime(), filetype);
-        file = new File(path);
-        return file;
+        return path;
     }
 
     public void addMultimediaView(Uri uri)  {
@@ -256,7 +292,7 @@ public class SharePost extends Fragment {
 
         String type;
         if (multimedia_state == MULTIMEDIA_IMAGE) {
-            image_num++;
+            multimedia_num++;
             new_add_view = LayoutInflater.from(this.getContext()).inflate(
                     R.layout.image_add_item, null
             );
@@ -265,7 +301,6 @@ public class SharePost extends Fragment {
             new_add_imageView.setImageURI(uri);
             type = "jpg";
         } else { // 音视频使用同一个view
-            video_num++;
             new_add_view = LayoutInflater.from(this.getContext()).inflate(
                     R.layout.video_add_item, null
             );
@@ -276,9 +311,11 @@ public class SharePost extends Fragment {
             if(multimedia_state == MULTIMEDIA_AUDIO){
                 new_add_videoView.setBackground(getResources().getDrawable(
                         R.drawable.audio_background));
+                multimedia_num++;
                 type = "mp3";
             }
             else{
+                multimedia_num++;
                 type = "mp4";
             }
 //            new_add_videoView.start();
@@ -294,11 +331,7 @@ public class SharePost extends Fragment {
         delete_icon.setOnClickListener((view) -> {
             multimedia_layout.removeView(new_add_view);
             multimedia_list.remove(multimedia_list.length()-1);
-            if (multimedia_state == 0) {
-                image_num--;
-            } else {
-                video_num--;
-            }
+            multimedia_num--;
         });
         scrollToBottom();
     }
@@ -312,7 +345,7 @@ public class SharePost extends Fragment {
         });
     }
 
-    private void sharePost(String title, String content){
+    private void postShare(String title, String content){
         Handler handler = new Handler(Looper.getMainLooper()){
             @Override
             public void handleMessage(@NonNull Message msg) {
@@ -377,11 +410,10 @@ public class SharePost extends Fragment {
     private void clearAll(){
         edit_share_title.setText("");
         edit_share_content.setText("");
-        while(multimedia_list.length()>1){
-            multimedia_list.remove(0);
-        }
+        SystemService.clearJsonArray(multimedia_list);
         multimedia_layout.removeAllViews();
-        SystemService.clearMultimediaDir(getContext());
+        multimedia_num = 0;
+        FileOperation.clearDir(getContext(), "/multimedia");
     }
 
     private void initPopupWindow(View parent_view){
@@ -401,11 +433,51 @@ public class SharePost extends Fragment {
         LinearLayout audio_add = view.findViewById(R.id.audio_add);
         LinearLayout video_add = view.findViewById(R.id.video_add);
 
-        image_select.setOnClickListener(view1 -> selectMultimedia(MULTIMEDIA_IMAGE));
-        audio_select.setOnClickListener(view1 -> selectMultimedia(MULTIMEDIA_AUDIO));
-        video_select.setOnClickListener(view1 -> selectMultimedia(MULTIMEDIA_VIDEO));
-        image_add.setOnClickListener(view1 -> addMultimedia(MULTIMEDIA_IMAGE));
-        audio_add.setOnClickListener(view1 -> addMultimedia(MULTIMEDIA_AUDIO));
-        video_add.setOnClickListener(view1 -> addMultimedia(MULTIMEDIA_VIDEO));
+        image_select.setOnClickListener(view1 -> {
+            if(checkValid(IMAGE)){
+                selectMultimedia(MULTIMEDIA_IMAGE);
+            }
+        });
+        audio_select.setOnClickListener(view1 ->{
+            if(checkValid(AUDIO)){
+                selectMultimedia(MULTIMEDIA_AUDIO);
+            }
+        });
+        video_select.setOnClickListener(view1 -> {
+            if(checkValid(VIDEO)){
+                selectMultimedia(MULTIMEDIA_VIDEO);
+            }
+        });
+        image_add.setOnClickListener(view1 -> {
+            if(checkValid(IMAGE)){
+                addMultimedia(MULTIMEDIA_IMAGE);
+            }
+        });
+        audio_add.setOnClickListener(view1 -> {
+            if(checkValid(AUDIO)){
+                addMultimedia(MULTIMEDIA_AUDIO);
+            }
+        });
+        video_add.setOnClickListener(view1 -> {
+            if(checkValid(AUDIO)){
+                addMultimedia(MULTIMEDIA_VIDEO);
+            }
+        });
+    }
+
+    private boolean checkValid(int type){
+        if(type != share_type){
+            multimedia_popupWindow.dismiss();
+            Toast.makeText(getContext(), "请选择正确的动态类型", Toast.LENGTH_SHORT)
+                    .show();
+            return false;
+        }
+        if((type == AUDIO || type == VIDEO) && multimedia_num >= 1){
+            multimedia_popupWindow.dismiss();
+            Toast.makeText(getContext(), "最多添加一个音视频资源", Toast.LENGTH_SHORT)
+                    .show();
+            return false;
+        }
+        return true;
     }
 }

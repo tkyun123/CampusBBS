@@ -15,6 +15,7 @@ import androidx.core.widget.NestedScrollView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,6 +29,9 @@ import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -39,9 +43,13 @@ import java.util.TimerTask;
 public class ShareBrowseDetailActivity extends AppCompatActivity {
     private int comment_span_state = 0;  // 0:unspanned, 1:spanned
 
+    private JSONObject main_floor_object = new JSONObject();
+    private JSONArray jsonArray = new JSONArray();
     private List<Map<String, String>> list_data = new ArrayList<>();
+
     private final int load_num = 10;
     private int sort_type = 0;
+    private int pid;
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
@@ -59,11 +67,9 @@ public class ShareBrowseDetailActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
 
+        pid = intent.getIntExtra("pid", -1);
         TextView sharedPost_title = findViewById(R.id.sharedPost_title);
-        sharedPost_title.setText(intent.getStringExtra("share_title"));
-
         TextView sharedPost_content = findViewById(R.id.sharedPost_content);
-        sharedPost_content.setText(intent.getStringExtra("share_content"));
 
         RecyclerView floor_list = findViewById(R.id.share_detail_floor_list);
 
@@ -149,5 +155,10 @@ public class ShareBrowseDetailActivity extends AppCompatActivity {
             data_list.add(data);
             load_num--;
         }
+    }
+
+    public void ShareBrowseDetailLoadData(JSONArray data_list,
+                                          int load_num, Handler handler, int type){
+        return;
     }
 }

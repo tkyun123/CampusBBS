@@ -11,22 +11,44 @@
         android:orientation="vertical">
 
         <RelativeLayout
-            android:id="@+id/share_sort_layout"
             android:layout_width="match_parent"
             android:layout_height="@dimen/share_sort_height"
-            android:layout_marginRight="@dimen/share_sort_marginRight">
-            <ImageView
+            android:layout_marginHorizontal="@dimen/share_sort_marginRight">
+            <LinearLayout
+                android:id="@+id/share_sort_all_layout"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:src="@drawable/sort_icon"
-                android:layout_toLeftOf="@id/share_sort_text"/>
-            <TextView
-                android:id="@+id/share_sort_text"
+                android:layout_alignParentStart="true"
+                android:visibility="invisible">
+                <ImageView
+                    android:id="@+id/share_sort_all_icon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/sort_icon"/>
+                <TextView
+                    android:id="@+id/share_sort_all_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:text="@string/sort_all_text"
+                    android:gravity="center" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/share_sort_layout"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:text="@string/sort_by_time_text"
-                android:layout_alignParentRight="true"
-                android:gravity="center"/>
+                android:layout_alignParentEnd="true">
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/sort_icon"/>
+                <TextView
+                    android:id="@+id/share_sort_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:text="@string/sort_by_time_text"
+                    android:gravity="center"/>
+            </LinearLayout>
         </RelativeLayout>
 
         <androidx.recyclerview.widget.RecyclerView

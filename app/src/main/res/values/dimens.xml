@@ -18,6 +18,8 @@
     <dimen name="share_browse_recycler_item_photo_size">40dp</dimen>
     <dimen name="share_browse_recycler_item_photo_marginTop">10dp</dimen>
     <dimen name="share_browse_recycler_item_nickName_textSize">15sp</dimen>
+    <dimen name="share_browse_recycler_item_follow_textSize">15sp</dimen>
+    <dimen name="share_browse_recycler_item_follow_marginLeft">10dp</dimen>
 
     <dimen name="share_detail_height">300dp</dimen>
     <dimen name="share_detail_marginTop">20dp</dimen>
@@ -143,4 +145,12 @@
 
     <dimen name="register_icon_width">50dp</dimen>
     <dimen name="register_input_width">200dp</dimen>
+
+    <dimen name="select_share_type_spinner_marginEnd">20dp</dimen>
+
+    <dimen name="basic_info_modify_profile_photo_size">80dp</dimen>
+    <dimen name="info_modify_input_width">200dp</dimen>
+    <dimen name="basic_info_modify_input_marginStart">20dp</dimen>
+    <dimen name="info_modify_confirm_button_marginTop">20dp</dimen>
+    <dimen name="info_modify_confirm_button_width">50dp</dimen>
 </resources>

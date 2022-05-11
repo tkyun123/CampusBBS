@@ -18,7 +18,7 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 
 public class HttpRequest {
-    private final static String BASE_URL = "http://183.172.245.34:5000";
+    private final static String BASE_URL = "http://183.172.242.183:5000";
 
     public static String post(String url0, String data, String content_type){
         try{

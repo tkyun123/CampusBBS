@@ -3,6 +3,7 @@ package com.example.myapplication;
 import android.app.Activity;
 import android.content.Intent;
 import android.media.Image;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.activity.result.ActivityResultLauncher;
@@ -29,6 +30,8 @@ import com.example.myapplication.datatype.UserInfoStorage;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
+
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link UserInfo#} factory method to
@@ -52,6 +55,8 @@ public class UserInfo extends Fragment {
 
     private int user_id;
 
+    private ActivityResultLauncher info_modify_launcher;
+
     public UserInfo(int flag, int uid) {
         // Required empty public constructor
         my_flag = flag;
@@ -73,18 +78,29 @@ public class UserInfo extends Fragment {
         introduction_textView = view.findViewById(R.id.user_info_introduction);
         profile_photo_imageView = view.findViewById(R.id.user_info_profile_photo);
         if(my_flag == FLAG_SELF){
-            login_launcher = registerForActivityResult(
-                    new ActivityResultContracts.StartActivityForResult(), result -> {
-                        if(result.getResultCode() == Activity.RESULT_OK){
-                            Intent intent = result.getData();
-                            login_button.setVisibility(View.INVISIBLE);
-                            user_id = intent.getIntExtra("user_id", 0);
-                            getUserInfo();
-                        }
-                    });
-            login_button.setOnClickListener((view1 -> {
-                login_launcher.launch(new Intent(getActivity(), LoginActivity.class));
-            }));
+            if(!SystemService.checkLogin(getActivity())){
+                login_launcher = registerForActivityResult(
+                        new ActivityResultContracts.StartActivityForResult(), result -> {
+                            if(result.getResultCode() == Activity.RESULT_OK){
+                                Intent intent = result.getData();
+                                login_button.setVisibility(View.INVISIBLE);
+                                user_id = intent.getIntExtra("user_id", 0);
+                                getUserInfo();
+                            }
+                        });
+                login_button.setOnClickListener((view1 -> {
+                    login_launcher.launch(new Intent(getActivity(), LoginActivity.class));
+                }));
+            }
+            else{
+                UserInfoStorage stored_user = new UserInfoStorage();
+                SystemService.getInfo(getActivity(), stored_user);
+                nickName_textView.setText(stored_user.nickName);
+                introduction_textView.setText(stored_user.introduction);
+                user_id = stored_user.user_id;
+                changeLoginToModify();
+            }
+            init_info_modify_launcher();
         }
         else{
             login_button.setVisibility(View.INVISIBLE);
@@ -92,6 +108,15 @@ public class UserInfo extends Fragment {
         }
 
         return view;
+    }
+
+    private void changeLoginToModify(){
+        login_button.setText(R.string.modify_self_info);
+        login_button.setOnClickListener(view -> {
+            // TO DO 修改个人信息
+            info_modify_launcher.launch(new Intent(getActivity(),
+                    InfoModifyActivity.class));
+        });
     }
 
     private void getUserInfo(){
@@ -114,12 +139,9 @@ public class UserInfo extends Fragment {
                         if(!introduction.equals("null")){
                             userInfoStorage.introduction = introduction;
                         }
-                        userInfoStorage.addInfo(getActivity());
+                        SystemService.addInfo(getActivity(), userInfoStorage);
 
-                        login_button.setText(R.string.modify_self_info);
-                        login_button.setOnClickListener(view -> {
-                            // TO DO 修改个人信息
-                        });
+                        changeLoginToModify();
                     }
                     nickName_textView.setText(msg.getData().getString("nickname"));
                     if(!introduction.equals("null")){
@@ -148,6 +170,7 @@ public class UserInfo extends Fragment {
                         bundle.putString("nickname", jsonObject.getString("nickname"));
                         bundle.putString("introduction", jsonObject.getString(
                                     "intro"));
+                        bundle.putInt("user_id", 0);
                         message.setData(bundle);
                         handler.sendMessage(message);
                     } catch (JSONException e) {
@@ -159,5 +182,18 @@ public class UserInfo extends Fragment {
         };
         thread.start();
         loading_icon.setAnimation(rotate);
+    }
+
+    private void init_info_modify_launcher(){
+        info_modify_launcher = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),(result -> {
+                    if(result.getResultCode() == Activity.RESULT_OK){
+                        Intent data = result.getData();
+                        Uri uri = Uri.fromFile(new File(data.getStringExtra("path")));
+                        profile_photo_imageView.setImageURI(uri);
+                        nickName_textView.setText(data.getStringExtra("nickName"));
+                        introduction_textView.setText(data.getStringExtra("introduction"));
+                    }
+                }));
     }
 }

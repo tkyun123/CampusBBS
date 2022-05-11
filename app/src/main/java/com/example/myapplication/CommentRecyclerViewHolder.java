@@ -12,11 +12,15 @@ public class CommentRecyclerViewHolder extends RecyclerView.ViewHolder{
 
     public TextView nickName_textView;
     public TextView content_textView;
+    public TextView location_textView;
+    public TextView time_textView;
 
     public CommentRecyclerViewHolder(View itemView, RecyclerView.Adapter adapter) {
         super(itemView);
         my_adapter = adapter;
         content_textView = itemView.findViewById(R.id.comment_recycler_item_content);
         nickName_textView = itemView.findViewById(R.id.comment_recycler_item_nickName);
+        location_textView = itemView.findViewById(R.id.comment_location);
+        time_textView = itemView.findViewById(R.id.comment_time);
     }
 }

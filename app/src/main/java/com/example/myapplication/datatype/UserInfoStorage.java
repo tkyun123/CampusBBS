@@ -11,15 +11,4 @@ public class UserInfoStorage {
     public String profile_photo_url;
     public String token;
 
-    public void addInfo(Activity activity){
-        SharedPreferences sharedPreferences = activity.getSharedPreferences(
-                "login", Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString("token", token);
-        editor.putInt("user_id", user_id);
-        editor.putString("nickName", nickName);
-        editor.putString("introduction", introduction);
-        editor.putString("profile_photo_url", profile_photo_url);
-        editor.apply();
-    }
 }

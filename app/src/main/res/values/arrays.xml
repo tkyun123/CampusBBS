@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="share_type_array">
+        <item>纯文字</item>
+        <item>图文混合</item>
+        <item>音频动态</item>
+        <item>视频动态</item>
+    </string-array>
+</resources>
