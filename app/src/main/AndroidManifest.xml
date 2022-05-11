@@ -57,6 +57,12 @@
             android:name=".CommentActivity"
             android:exported="false" />
         <activity
+            android:name=".DraftActivity"
+            android:exported="false" />
+        <activity
+            android:name=".DraftEditActivity"
+            android:exported="false" />
+        <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>

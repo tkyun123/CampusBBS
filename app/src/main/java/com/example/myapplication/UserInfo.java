@@ -22,6 +22,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -49,6 +50,7 @@ public class UserInfo extends Fragment {
     private TextView introduction_textView;
     private ImageView profile_photo_imageView;
     private Button login_button;
+    private RelativeLayout draft_layout;
 
     private ImageView loading_icon;
     private Animation rotate;
@@ -70,6 +72,8 @@ public class UserInfo extends Fragment {
         View view = inflater.inflate(R.layout.fragment_user_info, container, false);
 
         login_button = view.findViewById(R.id.user_info_login_button);
+
+        draft_layout = view.findViewById(R.id.user_info_draft);
 
         loading_icon = view.findViewById(R.id.user_info_loading_icon);
         rotate = AnimationUtils.loadAnimation(getContext(), R.anim.loading_anim);
@@ -101,6 +105,14 @@ public class UserInfo extends Fragment {
                 changeLoginToModify();
             }
             init_info_modify_launcher();
+            draft_layout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(getActivity(), DraftActivity.class);
+
+                    startActivity(intent);
+                }
+            });
         }
         else{
             login_button.setVisibility(View.INVISIBLE);
