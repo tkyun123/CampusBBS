@@ -70,16 +70,16 @@ public class MainActivity extends AppCompatActivity {
 //        editor.commit();
 
         navigator.setOnItemSelectedListener(item -> {
-//            pager.setCurrentItem(map.get(item.getItemId()));
-//            return true;
-            if(item.getItemId() != R.id.tab_personInfo && !SystemService.checkLogin(this)){
-                startActivity(new Intent(this, LoginActivity.class));
-                return false;
-            }
-            else{
-                pager.setCurrentItem(map.get(item.getItemId()));
-                return true;
-            }
+            pager.setCurrentItem(map.get(item.getItemId()));
+            return true;
+//            if(item.getItemId() != R.id.tab_personInfo && !SystemService.checkLogin(this)){
+//                startActivity(new Intent(this, LoginActivity.class));
+//                return false;
+//            }
+//            else{
+//                pager.setCurrentItem(map.get(item.getItemId()));
+//                return true;
+//            }
         });
 
         BottomNavigationMenuView menu = (BottomNavigationMenuView)navigator.getChildAt(0);

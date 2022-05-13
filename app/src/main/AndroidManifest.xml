@@ -57,6 +57,9 @@
             android:name=".CommentActivity"
             android:exported="false" />
         <activity
+            android:name=".myStarActivity"
+            android:exported="false" />
+        <activity
             android:name=".DraftActivity"
             android:exported="false" />
         <activity

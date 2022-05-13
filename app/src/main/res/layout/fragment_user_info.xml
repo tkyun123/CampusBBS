@@ -113,6 +113,7 @@
             android:background="@color/fourth_dark_line_color"/>
 
         <RelativeLayout
+            android:id="@+id/user_info_myStar"
             android:layout_width="match_parent"
             android:layout_height="45dp">
             <ImageView
@@ -170,6 +171,7 @@
         </RelativeLayout>
 
         <RelativeLayout
+            android:id="@+id/user_info_service"
             android:layout_width="match_parent"
             android:layout_height="45dp">
             <ImageView

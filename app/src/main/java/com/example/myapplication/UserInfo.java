@@ -1,6 +1,7 @@
 package com.example.myapplication;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.media.Image;
 import android.net.Uri;
@@ -50,7 +51,9 @@ public class UserInfo extends Fragment {
     private TextView introduction_textView;
     private ImageView profile_photo_imageView;
     private Button login_button;
+    private RelativeLayout myStar_layout;
     private RelativeLayout draft_layout;
+    private RelativeLayout service_layout;
 
     private ImageView loading_icon;
     private Animation rotate;
@@ -73,7 +76,9 @@ public class UserInfo extends Fragment {
 
         login_button = view.findViewById(R.id.user_info_login_button);
 
+        myStar_layout = view.findViewById(R.id.user_info_myStar);
         draft_layout = view.findViewById(R.id.user_info_draft);
+        service_layout = view.findViewById(R.id.user_info_service);
 
         loading_icon = view.findViewById(R.id.user_info_loading_icon);
         rotate = AnimationUtils.loadAnimation(getContext(), R.anim.loading_anim);
@@ -111,6 +116,26 @@ public class UserInfo extends Fragment {
                     Intent intent = new Intent(getActivity(), DraftActivity.class);
 
                     startActivity(intent);
+                }
+            });
+
+            myStar_layout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(getActivity(), myStarActivity.class);
+
+                    startActivity(intent);
+                }
+            });
+
+            service_layout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    AlertDialog textTips = new AlertDialog.Builder(getActivity())
+                            .setTitle("服务:")
+                            .setMessage("遇到问题请添加微信zhaihaoqing007")
+                            .create();
+                    textTips.show();
                 }
             });
         }
