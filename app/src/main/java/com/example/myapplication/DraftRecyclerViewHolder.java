@@ -13,6 +13,7 @@ public class DraftRecyclerViewHolder extends RecyclerView.ViewHolder{
 
     public TextView title_textView;
     public TextView content_textView;
+    public String draft_id;
 
     private FragmentActivity my_activity;
 
@@ -36,6 +37,7 @@ public class DraftRecyclerViewHolder extends RecyclerView.ViewHolder{
 
         intent.putExtra("draft_title", title_textView.getText().toString());
         intent.putExtra("draft_content", content_textView.getText().toString());
+        intent.putExtra("draft_id", draft_id);
         my_activity.startActivity(intent);
     }
 }

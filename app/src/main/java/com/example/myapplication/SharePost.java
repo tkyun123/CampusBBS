@@ -20,6 +20,8 @@ import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 import android.provider.MediaStore;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -106,6 +108,23 @@ public class SharePost extends Fragment {
 
         edit_share_title = view.findViewById(R.id.share_edit_title);
         edit_share_content = view.findViewById(R.id.share_edit_content);
+
+        edit_share_title.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
 
         loading_icon = view.findViewById(R.id.sharePost_loading_icon);
         rotate = AnimationUtils.loadAnimation(getContext(), R.anim.loading_anim);
