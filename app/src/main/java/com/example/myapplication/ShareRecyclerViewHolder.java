@@ -17,6 +17,7 @@ public class ShareRecyclerViewHolder extends RecyclerView.ViewHolder {
 // 不展示内容    public TextView content_textView;
     public ImageView profile_photo_imageView;
     public TextView nickName_textView;
+    public TextView follow_textView;
     public TextView location_textView;
     public TextView time_textView;
     public TextView like_num_textView;
@@ -35,7 +36,7 @@ public class ShareRecyclerViewHolder extends RecyclerView.ViewHolder {
         my_adapter = adapter;
         my_activity = activity;
         title_textView = itemView.findViewById(R.id.share_browse_recycler_item_title);
-//        content_textView = itemView.findViewById(R.id.share_browse_recycler_item_content);
+        follow_textView = itemView.findViewById(R.id.share_browse_recycler_item_follow);
         profile_photo_imageView = itemView.findViewById(
                 R.id.share_browse_recycler_item_profile_photo);
         nickName_textView = itemView.findViewById(R.id.share_browse_recycler_item_nickName);
@@ -54,6 +55,7 @@ public class ShareRecyclerViewHolder extends RecyclerView.ViewHolder {
         Intent intent = new Intent(my_activity, ShareBrowseDetailActivity.class);
 
         intent.putExtra("pid", pid);
+        intent.putExtra("title", title_textView.getText());
 //        intent.putExtra("share_content", content_textView.getText().toString());
         my_activity.startActivity(intent);
     }

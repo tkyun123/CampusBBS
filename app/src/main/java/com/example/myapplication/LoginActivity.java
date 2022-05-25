@@ -93,7 +93,7 @@ public class LoginActivity extends AppCompatActivity {
                 super.run();
                 String result = HttpRequest.post("/API/login",
                         String.format("password=%s&email=%s",password, email),
-                        null);
+                        "form");
                 Message message = new Message();
                 if(result.equals("error")){
                     message.what = -1;

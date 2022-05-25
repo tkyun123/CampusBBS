@@ -1,5 +1,6 @@
 package com.example.myapplication;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.drawable.Icon;
@@ -11,12 +12,16 @@ import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.ShareCompat;
 import androidx.core.widget.NestedScrollView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
@@ -30,27 +35,38 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 
 
 public class ShareBrowseDetailActivity extends AppCompatActivity {
-    private int comment_span_state = 0;  // 0:unspanned, 1:spanned
 
-    private JSONObject main_floor_object = new JSONObject();
-    private JSONArray jsonArray = new JSONArray();
-    private List<Map<String, String>> list_data = new ArrayList<>();
+    private JSONObject main_floor_object;
+    private JSONArray list_data = new JSONArray();
 
     private final int load_num = 10;
-    private int sort_type = 0;
+    private int sort_type = 0; // 0：最早；1：最近
     private int pid;
+    private int like_state;
+    private String title;
+    private boolean main_floor_init_flag; // 标记第0层数据是否已加载
 
+    private Handler data_handler;
+
+    int sy;
+
+    @SuppressLint("ClickableViewAccessibility")
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,99 +82,250 @@ public class ShareBrowseDetailActivity extends AppCompatActivity {
         });
 
         Intent intent = getIntent();
-
         pid = intent.getIntExtra("pid", -1);
-        TextView sharedPost_title = findViewById(R.id.sharedPost_title);
-        TextView sharedPost_content = findViewById(R.id.sharedPost_content);
-
-        RecyclerView floor_list = findViewById(R.id.share_detail_floor_list);
-
-        loadDataSortByTime(list_data, load_num);
-        FloorListAdapter adapter = new FloorListAdapter(ShareBrowseDetailActivity.this,
-                list_data, this);
-        floor_list.setAdapter(adapter);
-        floor_list.setLayoutManager(new LinearLayoutManager(ShareBrowseDetailActivity.this));
-
-        RelativeLayout floor_sort_layout = findViewById(R.id.floor_sort_layout);
-        TextView sort_text = findViewById(R.id.floor_sort_text);
-        floor_sort_layout.setOnClickListener(view -> {
-            sort_type = 1-sort_type;
-            list_data.clear();
-            loadData();
-            sort_text.setText(sort_type == 0?R.string.sort_by_time_text:
-                        R.string.sort_by_wave_text);
-            adapter.notifyDataSetChanged();
-            floor_list.scrollToPosition(0);
-        });
+        title = intent.getStringExtra("title");
 
         ImageView loading_icon = findViewById(R.id.share_detail_loading_icon);
         Animation rotate = AnimationUtils.loadAnimation(this, R.anim.loading_anim);
 
+        RecyclerView floor_list = findViewById(R.id.share_detail_floor_list);
+
+        FloorListAdapter adapter = new FloorListAdapter(ShareBrowseDetailActivity.this,
+                list_data, this);
+        adapter.setPid(pid);
+        floor_list.setAdapter(adapter);
+        floor_list.setLayoutManager(new LinearLayoutManager(ShareBrowseDetailActivity.this));
+
+        LinearLayout floor_sort_layout = findViewById(R.id.floor_sort_layout);
+        TextView sort_text = findViewById(R.id.floor_sort_text);
+        floor_sort_layout.setOnClickListener(view -> {
+            sort_type = 1-sort_type;
+            SystemService.clearJsonArray(list_data);
+            loading_icon.setAnimation(rotate);
+            loadData();
+            sort_text.setText(sort_type == 0?R.string.sort_earliest:
+                        R.string.sort_latest);
+            floor_list.scrollToPosition(0);
+        });
+
+
         NestedScrollView scrollView = findViewById(R.id.detail_layout);
-        scrollView.setOnScrollChangeListener((View.OnScrollChangeListener)
-                (view, x, y, ox, oy) -> {
-            // 下拉加载
-            if(!scrollView.canScrollVertically(1)){
-                loadData();
-                adapter.notifyDataSetChanged();
+
+        data_handler = new Handler(Looper.getMainLooper()){
+            @Override
+            public void handleMessage(@NonNull Message msg) {
+                super.handleMessage(msg);
+                if(msg.what == 0){
+                    if(!main_floor_init_flag){
+                        init_main_floor();
+                        main_floor_init_flag = true;
+                    }
+                    adapter.notifyDataSetChanged();
+                }
+                loading_icon.setAnimation(null);
+            }
+        };
+
+        floor_list.setOnTouchListener(new View.OnTouchListener() {
+            @SuppressLint("ClickableViewAccessibility")
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                if(!floor_list.canScrollVertically(-1) ||
+                        !floor_list.canScrollVertically(1)){
+                    int y = (int)motionEvent.getY();
+                    switch (motionEvent.getAction()){
+                        case MotionEvent.ACTION_DOWN:
+                            sy = y;
+                            break;
+                        case MotionEvent.ACTION_UP:
+                            int offset_y = y - sy;
+                            // 顶部刷新
+                            if(!floor_list.canScrollVertically(-1)
+                                    &&offset_y>30){
+                                loading_icon.setAnimation(rotate);
+                                SystemService.clearJsonArray(list_data);
+                                loadData();
+                                Log.d("", "onScrollStateChanged: 1");
+                            }
+
+                            // 底部加载
+                            if(!floor_list.canScrollVertically(1)
+                                    &&offset_y<-30){
+                                loading_icon.setAnimation(rotate);
+                                loadData();
+                                Log.d("", "onScrollStateChanged: 2");
+                            }
+                            break;
+                        default:
+                            break;
+                    }
+                }
+                return false;
             }
         });
 
-        floor_list.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
-                super.onScrollStateChanged(recyclerView, newState);
-                if(!scrollView.canScrollVertically(-1)   // 上拉刷新
-                        && newState == RecyclerView.SCROLL_STATE_SETTLING){
-                    loading_icon.setAnimation(rotate);
-                    list_data.clear();
-                    loadData();
-                    TimerTask task = new TimerTask() {
-                        @Override
-                        public void run() {
-                            loading_icon.setAnimation(null);
-                        }
-                    };
-                    Timer timer = new Timer();
-                    timer.schedule(task, 500);
-//                    loading_icon.setAnimation(null);
-                    adapter.notifyDataSetChanged();
-                }
-            }
-        });
+        loadData();
     }
 
     public void loadData(){
-        if(sort_type == 0){
-            loadDataSortByTime(list_data, load_num);
-        }
-        else{
-            loadDataSortByWave(list_data, load_num);
-        }
+        Thread thread = new Thread(){
+            @Override
+            public void run() {
+                super.run();
+                Message message = new Message();
+                try {
+                    int page_index = (list_data.length()+load_num-1)/load_num;
+                    int user_id = SystemService.getUserId(ShareBrowseDetailActivity.this);
+
+                    String result = HttpRequest.post("/API/get_page_floors",
+                            String.format("page_size=%s&page_index=%s&order_type=%s&uid=%s&pid=%s",
+                                    load_num, page_index, sort_type, user_id, pid),
+                            "form");
+                    JSONObject jsonObject = new JSONObject(result);
+//                    Log.d("", result);
+                    JSONArray array = jsonObject.getJSONArray("data");
+
+                    if(!main_floor_init_flag){
+                        main_floor_object = array.getJSONObject(0);
+                        for(int i=1;i<array.length();i++){
+                            list_data.put(array.getJSONObject(i));
+                        }
+                    }
+                    else{
+                        for(int i=0;i<array.length();i++){
+                            list_data.put(array.getJSONObject(i));
+                        }
+                    }
+                    message.what = 0;
+                }catch (JSONException e) {
+                    e.printStackTrace();
+                    message.what = -1;
+                }
+                data_handler.sendMessage(message);
+            }
+        };
+        thread.start();
     }
 
-    public void loadDataSortByTime(List<Map<String, String>> data_list, int load_num){
-        while(load_num>0){
-            Map<String, String> data = new HashMap<>();
-            data.put("nickName","欧米牛坦");
-            data.put("content","内容(按时间)");
-            data_list.add(data);
-            load_num--;
-        }
-    }
+    private void init_main_floor(){
+        ImageView profile_photo = findViewById(R.id.share_detail_photo);
+        TextView nickName_textView = findViewById(R.id.share_detail_nickName);
+        TextView title_textView = findViewById(R.id.share_detail_title);
+        TextView content_textView = findViewById(R.id.shared_detail_content);
 
-    public void loadDataSortByWave(List<Map<String, String>> data_list, int load_num){
-        while(load_num>0){
-            Map<String, String> data = new HashMap<>();
-            data.put("nickName","欧米牛坦");
-            data.put("content","内容(按热度)");
-            data_list.add(data);
-            load_num--;
-        }
-    }
+        TextView location_textView = findViewById(R.id.share_detail_location);
+        TextView time_textView = findViewById(R.id.share_detail_time);
+        TextView like_num_textView = findViewById(R.id.share_detail_like_num);
+        ImageView like_icon = findViewById(R.id.share_detail_like_icon);
+        LinearLayout like_layout = findViewById(R.id.share_detail_like_layout);
+        ImageView comment_add_textView = findViewById(R.id.share_detail_comment_add_button);
+        ImageView share_icon = findViewById(R.id.share_detail_share_icon);
 
-    public void ShareBrowseDetailLoadData(JSONArray data_list,
-                                          int load_num, Handler handler, int type){
-        return;
+        int uid = SystemService.getUserId(this);
+
+        Handler give_like_handle = new Handler(Looper.getMainLooper()){
+            @Override
+            public void handleMessage(@NonNull Message msg) {
+                super.handleMessage(msg);
+                if(msg.what == 0){
+                    like_state = 1;
+                    like_icon.setImageResource(R.drawable.like_icon);
+                    int like_num = Integer.valueOf(
+                            like_num_textView.getText().toString())+1;
+                    like_num_textView.setText(String.valueOf(like_num));
+                }
+            }
+        };
+
+        Handler cancel_like_handler = new Handler(Looper.getMainLooper()){
+            @Override
+            public void handleMessage(@NonNull Message msg) {
+                super.handleMessage(msg);
+                if(msg.what == 0){
+                    like_state = 0;
+                    like_icon.setImageResource(R.drawable.unlike_icon);
+                    int like_num = Integer.valueOf(
+                            like_num_textView.getText().toString())-1;
+                    like_num_textView.setText(String.valueOf(like_num));
+                }
+            }
+        };
+
+        try{
+            nickName_textView.setText(main_floor_object.getString("nickname"));
+            title_textView.setText(title);
+            String text = main_floor_object.getString("text");
+            content_textView.setText(text);
+
+            location_textView.setText(main_floor_object.getString("position"));
+            Date date = new Date(main_floor_object.getLong("time")*1000);
+            time_textView.setText(Consts.date_format.format(date));
+            like_num_textView.setText(String.valueOf(main_floor_object
+                    .getInt("agree_count")));
+            like_state = main_floor_object.getInt("agree_state");
+
+            String url = main_floor_object.getString("pic_url");
+            if(!url.equals("null")){
+                url = SystemService.getBaseUrl()+url;
+                Handler img_handler = new Handler(Looper.getMainLooper()){
+                    @Override
+                    public void handleMessage(@NonNull Message msg) {
+                        super.handleMessage(msg);
+                        Bundle bundle = msg.getData();
+                        profile_photo.setImageBitmap(bundle.getParcelable("image"));
+                    }
+                };
+                SystemService.getImage(url, img_handler);
+            }
+            int user_id = main_floor_object.getInt("uid");
+            // 不能通过点击头像进入自己的主页
+            if(user_id != uid){
+                profile_photo.setOnClickListener(view -> {
+                    Intent intent = new Intent(this, UserInfoActivity.class);
+                    intent.putExtra("user_id", user_id);
+                    startActivity(intent);
+                });
+            }
+
+            // 分享
+            share_icon.setOnClickListener(view -> {
+                Intent intent = new Intent();
+                intent.setAction(Intent.ACTION_SEND);
+                intent.putExtra(Intent.EXTRA_TITLE, title);
+                intent.putExtra(Intent.EXTRA_TEXT, text);
+                intent.setType("text/plain");
+                startActivity(intent);
+//                ShareCompat.IntentBuilder
+//                        .from(this)
+//                        .setType("text/plain")
+//                        .setChooserTitle("分享")
+//                        .setText(detail)
+//                        .startChooser();
+            });
+            if(like_state == 1){
+                like_icon.setImageResource(R.drawable.like_icon);
+            }
+        }catch (JSONException e){
+            e.printStackTrace();
+        }
+
+        like_layout.setOnClickListener(view -> {
+            Handler handler;
+            if(like_state == 0){
+                handler = give_like_handle;
+            }
+            else{
+                handler = cancel_like_handler;
+            }
+            ShareOperation.change_like_state(uid,
+                    pid, 0, handler, like_state);
+        });
+
+        comment_add_textView.setOnClickListener(view -> {
+            Intent intent = new Intent(this, CommentAddActivity.class);
+            intent.putExtra("pid", pid);
+            intent.putExtra("fid",0);
+            startActivity(intent);
+        });
     }
 }

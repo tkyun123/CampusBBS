@@ -1,16 +1,19 @@
 package com.example.myapplication;
 
-import android.os.Build;
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
@@ -19,12 +22,10 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import java.util.ArrayList;
+import org.json.JSONArray;
+
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.Timer;
-import java.util.TimerTask;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -33,34 +34,39 @@ import java.util.TimerTask;
  */
 public class CommentBrowse extends Fragment {
 
-    private List<Map<String, String>> list_data = new ArrayList<>();
+    private JSONArray list_data = new JSONArray();
     private final int load_num = 10;
-
 
     public CommentRecyclerAdapter recycler_adapter;
     public RecyclerView recycler;
 
     private final Map<Integer, Integer> sort_map = new HashMap<>();
-    private int sort_type = 0; //默认按时间排序
+    private int sort_type = 0; //最早 or 最近
+    private Handler data_handler;
 
     private CommentBrowse.loadData interface_data_load;
+    private int comment_type;
 
-    public CommentBrowse(CommentBrowse.loadData data_load) {
+    int sy;
+    public CommentBrowse(CommentBrowse.loadData data_load, int type) {
         // Required empty public constructor
-        sort_map.put(0, R.string.sort_by_time_text);
-        sort_map.put(1, R.string.sort_by_wave_text);
+        sort_map.put(0, R.string.sort_earliest);
+        sort_map.put(1, R.string.sort_latest);
 
         interface_data_load = data_load;
-        interface_data_load.loadDataSortByTime(list_data, load_num);
+        comment_type = type;
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_comment_browse, container, false);
 
-        recycler_adapter = new CommentRecyclerAdapter(getContext(), list_data, getActivity());
+        recycler_adapter = new CommentRecyclerAdapter(getContext(), list_data, getActivity(),
+                                                      comment_type);
+
         recycler = view.findViewById(R.id.comment_browse_recyclerView);
         recycler.setAdapter(recycler_adapter);
         recycler.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -68,31 +74,41 @@ public class CommentBrowse extends Fragment {
         ImageView loading_icon = view.findViewById(R.id.comment_loading_icon);
         Animation rotate = AnimationUtils.loadAnimation(getContext(), R.anim.loading_anim);
 
-        recycler.addOnScrollListener(new RecyclerView.OnScrollListener() {
+        recycler.setOnTouchListener(new View.OnTouchListener() {
+            @SuppressLint("ClickableViewAccessibility")
             @Override
-            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
-                super.onScrollStateChanged(recyclerView, newState);
-                // 下拉加载
-                if(!recyclerView.canScrollVertically(1)){
-                    loadData();
-                    recycler_adapter.notifyDataSetChanged();
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                if(!recycler.canScrollVertically(-1) ||
+                        !recycler.canScrollVertically(1)){
+                    int y = (int)motionEvent.getY();
+                    switch (motionEvent.getAction()){
+                        case MotionEvent.ACTION_DOWN:
+                            sy = y;
+                            break;
+                        case MotionEvent.ACTION_UP:
+                            int offset_y = y - sy;
+                            // 顶部刷新
+                            if(!recycler.canScrollVertically(-1)
+                                    &&offset_y>30){
+                                loading_icon.setAnimation(rotate);
+                                SystemService.clearJsonArray(list_data);
+                                loadData();
+                                Log.d("", "onScrollStateChanged: 1");
+                            }
+
+                            // 底部加载
+                            if(!recycler.canScrollVertically(1)
+                                    &&offset_y<-30){
+                                loading_icon.setAnimation(rotate);
+                                loadData();
+                                Log.d("", "onScrollStateChanged: 2");
+                            }
+                            break;
+                        default:
+                            break;
+                    }
                 }
-                // 上拉刷新
-                if(!recyclerView.canScrollVertically(-1)
-                        && newState == RecyclerView.SCROLL_STATE_SETTLING){
-                    loading_icon.setAnimation(rotate);
-                    list_data.clear();
-                    loadData();
-                    TimerTask task = new TimerTask() {
-                        @Override
-                        public void run() {
-                            loading_icon.setAnimation(null);
-                        }
-                    };
-                    Timer timer = new Timer();
-                    timer.schedule(task, 500);
-                    recycler_adapter.notifyDataSetChanged();
-                }
+                return false;
             }
         });
 
@@ -101,27 +117,33 @@ public class CommentBrowse extends Fragment {
         comment_sort_layout.setOnClickListener(view1 -> {
             sort_type = 1-sort_type;
             sort_text.setText(sort_map.get(sort_type));
-            list_data.clear();
+            SystemService.clearJsonArray(list_data);
             loadData();
-            recycler_adapter.notifyDataSetChanged();
             recycler.scrollToPosition(0);
         });
 
+        data_handler = new Handler(Looper.getMainLooper()){
+            @Override
+            public void handleMessage(@NonNull Message msg) {
+                super.handleMessage(msg);
+                if(msg.what == 0){
+                    recycler_adapter.notifyDataSetChanged();
+                }
+                loading_icon.setAnimation(null);
+            }
+        };
+
+        interface_data_load.loadData(list_data, load_num, sort_type, data_handler);
         return view;
     }
 
     public void loadData(){
-        if(sort_type == 0){
-            interface_data_load.loadDataSortByTime(list_data, load_num);
-        }
-        else{
-            interface_data_load.loadDataSortByWave(list_data, load_num);
-        }
+        interface_data_load.loadData(list_data, load_num, sort_type, data_handler);
     }
 
     public interface loadData {
-        public void loadDataSortByTime(List<Map<String, String>> data_list, int load_num);
-        public void loadDataSortByWave(List<Map<String, String>> data_list, int load_num);
+        public void loadData(JSONArray data_list, int load_num, int sort_type,
+                             Handler handler);
     }
 
 }

@@ -1,6 +1,7 @@
 package com.example.myapplication;
 
 import android.util.JsonReader;
+import android.util.Log;
 
 import org.json.JSONObject;
 
@@ -18,7 +19,7 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 
 public class HttpRequest {
-    private final static String BASE_URL = "http://183.172.242.183:5000";
+    private final static String BASE_URL = SystemService.getBaseUrl();
 
     public static String post(String url0, String data, String content_type){
         try{
@@ -29,12 +30,11 @@ public class HttpRequest {
             httpURLConnection.setReadTimeout(3000);
             httpURLConnection.setDoInput(true);
             httpURLConnection.setDoOutput(true);
-            if(content_type == "json"){
+            if(content_type.equals("json")){
                 httpURLConnection.setRequestProperty("Content-type",
                         "application/json;charset=UTF-8");
             }
             httpURLConnection.connect();
-
 
             DataOutputStream dataOutputStream = new DataOutputStream(
                     httpURLConnection.getOutputStream());
@@ -42,11 +42,11 @@ public class HttpRequest {
             dataOutputStream.flush();
             dataOutputStream.close();
 
-
             int code = httpURLConnection.getResponseCode();
             if (code==200){
                 final InputStream inputStream = httpURLConnection.getInputStream();
-                return resolveResponseStream(inputStream);
+                String result = resolveResponseStream(inputStream);
+                return result;
             }
             else{
                 return "error";
@@ -68,7 +68,8 @@ public class HttpRequest {
             int code = httpURLConnection.getResponseCode();
             if (code==200){
                 final InputStream inputStream = httpURLConnection.getInputStream();
-                return resolveResponseStream(inputStream);
+                String result = resolveResponseStream(inputStream);
+                return result;
             }
             else{
                 return "error";
@@ -81,16 +82,17 @@ public class HttpRequest {
 
     private static String resolveResponseStream(InputStream inputStream){
         try {
-            StringBuffer stringBuffer = new StringBuffer();
-            String str=null;
+            StringBuilder stringBuilder = new StringBuilder();
+            String str;
             BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
 
             while ((str=bufferedReader.readLine())!=null){
-                stringBuffer.append(str);
+                stringBuilder.append(str);
             }
             bufferedReader.close();
             inputStream.close();
-            return stringBuffer.toString();
+
+            return stringBuilder.toString();
         } catch (IOException e) {
             e.printStackTrace();
             return "error";

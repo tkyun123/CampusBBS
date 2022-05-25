@@ -15,7 +15,7 @@
             android:id="@+id/share_browse_recycler_item_profile_photo"
             android:layout_width="@dimen/share_browse_recycler_item_photo_size"
             android:layout_height="@dimen/share_browse_recycler_item_photo_size"
-            android:src="@drawable/test_profile_photo"
+            android:src="@drawable/default_profile_photo"
             android:scaleType="fitCenter"/>
         <TextView
             android:id="@+id/share_browse_recycler_item_nickName"
@@ -30,8 +30,7 @@
             android:gravity="center_vertical"
             android:textSize="@dimen/share_browse_recycler_item_follow_textSize"
             android:layout_marginStart="@dimen/share_browse_recycler_item_follow_marginLeft"
-            android:textColor="@color/state_followed_color"
-            android:text="@string/state_followed"/>
+            android:textColor="@color/state_followed_color" />
     </LinearLayout>
 
     <TextView

@@ -1,8 +1,13 @@
 package com.example.myapplication;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
@@ -15,6 +20,12 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.tabs.TabLayout;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -22,23 +33,28 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 public class MessageBrowse extends Fragment {
-    private List<Map<String, String>> list_data = new ArrayList<>();
-    private final int load_num = -1;  // load_num = -1 表示加载全部数据
-
+    private JSONArray list_data = new JSONArray();
+    private final int load_num = 10;  // load_num = -1 表示加载全部数据
 
     public MessageRecyclerAdapter recycler_adapter;
     public RecyclerView recycler;
 
-    private MessageBrowse.loadData interface_data_load;
+    private TabLayout tabLayout;
+    private int message_type = Consts.MESSAGE_LIKE_OR_COMMENT;
 
+    Handler data_handler;
+//    private MessageBrowse.loadData interface_data_load;
+    ImageView loading_icon;
+    Animation rotate;
+
+    int sy;
     private boolean pullup = false; // 记录滑动状态，以便上滑更新
-    public MessageBrowse(MessageBrowse.loadData data_load) {
+    public MessageBrowse() {
         // Required empty public constructor
 
-        interface_data_load = data_load;
-        interface_data_load.loadData(list_data, load_num);
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -50,59 +66,134 @@ public class MessageBrowse extends Fragment {
         recycler.setAdapter(recycler_adapter);
         recycler.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        ImageView loading_icon = view.findViewById(R.id.message_loading_icon);
-        Animation rotate = AnimationUtils.loadAnimation(getContext(), R.anim.loading_anim);
+        loading_icon = view.findViewById(R.id.message_loading_icon);
+        rotate = AnimationUtils.loadAnimation(getContext(), R.anim.loading_anim);
 
-        recycler.addOnScrollListener(new RecyclerView.OnScrollListener() {
+        tabLayout = view.findViewById(R.id.message_browse_tab);
+        init_tab();
+
+        recycler.setOnTouchListener(new View.OnTouchListener() {
+            @SuppressLint("ClickableViewAccessibility")
             @Override
-            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
-                super.onScrollStateChanged(recyclerView, newState);
-                // 下拉加载，这里选择一次加载完
-//                if(!recyclerView.canScrollVertically(1)){
-//                    loadData();
-//                    recycler_adapter.notifyDataSetChanged();
-//                }
-                // 上拉刷新
-                if(recyclerView.canScrollVertically(-1)){
-                    pullup = false;
-                }
-                if(!recyclerView.canScrollVertically(-1)){
-                    if(newState == RecyclerView.SCROLL_STATE_DRAGGING){
-                        pullup = true;
-                    }
-                    if(newState  == RecyclerView.SCROLL_STATE_SETTLING
-                        && pullup){
-                        loading_icon.setAnimation(rotate);
-                        list_data.clear();
-                        loadData();
-                        TimerTask task = new TimerTask() {
-                            @Override
-                            public void run() {
-                                loading_icon.setAnimation(null);
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                if(!recycler.canScrollVertically(-1) ||
+                        !recycler.canScrollVertically(1)){
+                    int y = (int)motionEvent.getY();
+                    switch (motionEvent.getAction()){
+                        case MotionEvent.ACTION_DOWN:
+                            sy = y;
+                            break;
+                        case MotionEvent.ACTION_UP:
+                            int offset_y = y - sy;
+                            // 顶部刷新
+                            if(!recycler.canScrollVertically(-1)
+                                    &&offset_y>30){
+                                loading_icon.setAnimation(rotate);
+                                SystemService.clearJsonArray(list_data);
+                                loadData();
+                                Log.d("", "onScrollStateChanged: 1");
                             }
-                        };
-                        Timer timer = new Timer();
-                        timer.schedule(task, 500);
-                        recycler_adapter.notifyDataSetChanged();
-                        pullup = false;
+
+                            // 底部加载
+                            if(!recycler.canScrollVertically(1)
+                                    &&offset_y<-30){
+                                loading_icon.setAnimation(rotate);
+                                loadData();
+                                Log.d("", "onScrollStateChanged: 2");
+                            }
+                            break;
+                        default:
+                            break;
                     }
                 }
+                return false;
             }
         });
 
         TextView message_clearAll_textView = view.findViewById(R.id.message_clearAll_textView);
         message_clearAll_textView.setOnClickListener(view1 -> {
-            list_data.clear();
+            SystemService.clearJsonArray(list_data);
             recycler_adapter.notifyDataSetChanged();
         });
+
+        data_handler = new Handler(Looper.getMainLooper()){
+            @Override
+            public void handleMessage(@NonNull Message msg) {
+                super.handleMessage(msg);
+                if(msg.what == 0){
+                    recycler_adapter.notifyDataSetChanged();
+                    loading_icon.setAnimation(null);
+                }
+            }
+        };
+
+        loading_icon.setAnimation(rotate);
+        loadData();
         return view;
     }
 
+    private void init_tab(){
+        tabLayout.addTab(tabLayout.newTab().setText("点赞或评论"));
+        tabLayout.addTab(tabLayout.newTab().setText("关注的人"));
+
+        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                switch (tab.getPosition()){
+                    case 0:
+                        message_type = Consts.MESSAGE_LIKE_OR_COMMENT;
+                        break;
+                    case 1:
+                        message_type = Consts.MESSAGE_FOLLOW;
+                        break;
+                }
+                SystemService.clearJsonArray(list_data);
+                loading_icon.setAnimation(rotate);
+                loadData();
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
+    }
     public void loadData(){
-        interface_data_load.loadData(list_data, load_num);
+//        interface_data_load.loadData(list_data, load_num);
+        Thread thread = new Thread(){
+            @Override
+            public void run() {
+                super.run();
+                Message message = new Message();
+                try {
+                    int page_index = (list_data.length()+load_num-1)/load_num;
+                    int user_id = SystemService.getUserId(getActivity());
+
+                    String result = HttpRequest.post("/API",
+                            "","form");
+                    JSONObject jsonObject = new JSONObject(result);
+                    JSONArray array = jsonObject.getJSONArray("data");
+                    for(int i=0;i<array.length();i++){
+                        list_data.put(array.getJSONObject(i));
+                    }
+                    message.what = 0;
+                }catch (JSONException e){
+                    e.printStackTrace();
+                    message.what = -1;
+                }
+                data_handler.sendMessage(message);
+            }
+        };
+        thread.start();
     }
 
-    public interface loadData {
-        public void loadData(List<Map<String, String>> data_list, int load_num);
-    }
+//    public interface loadData {
+//        public void loadData(JSONArray data_list, int load_num);
+//    }
+
 }

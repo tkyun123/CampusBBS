@@ -30,7 +30,7 @@
                 android:orientation="vertical"
                 android:paddingHorizontal="@dimen/share_detail_padding">
                 <TextView
-                    android:id="@+id/sharedPost_title"
+                    android:id="@+id/share_detail_title"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textSize="@dimen/share_detail_title_TextSize"
@@ -44,19 +44,18 @@
                         android:id="@+id/share_detail_photo"
                         android:layout_width="@dimen/share_detail_photo_size"
                         android:layout_height="@dimen/share_detail_photo_size"
-                        android:src="@drawable/test_profile_photo"
+                        android:src="@drawable/default_profile_photo"
                         android:scaleType="fitCenter"/>
                     <TextView
                         android:id="@+id/share_detail_nickName"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
-                        android:text="欧米牛坦"
                         android:gravity="center_vertical"
                         android:textSize="@dimen/share_detail_nickName_textSize"/>
                 </LinearLayout>
 
                 <TextView
-                    android:id="@+id/sharedPost_content"
+                    android:id="@+id/shared_detail_content"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/share_detail_content_marginTop"
@@ -78,18 +77,17 @@
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="@dimen/share_location_weight"
-                        android:gravity="center"
-                        android:text="北京海淀"/>
+                        android:gravity="center"/>
 
                     <TextView
                         android:id="@+id/share_detail_time"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="@dimen/share_time_weight"
-                        android:gravity="center"
-                        android:text="2022-4-16"/>
+                        android:gravity="center"/>
 
                     <LinearLayout
+                        android:id="@+id/share_detail_like_layout"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="@dimen/share_like_weight"
@@ -103,15 +101,21 @@
                         <TextView
                             android:id="@+id/share_detail_like_num"
                             android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:text="134"/>
+                            android:layout_height="match_parent"/>
                     </LinearLayout>
                     <ImageView
+                        android:id="@+id/share_detail_comment_add_button"
                         android:layout_width="0dp"
                         android:layout_height="@dimen/share_comment_iconSize"
                         android:layout_weight="@dimen/share_comment_weight"
                         android:src="@drawable/comment_icon"/>
                 </LinearLayout>
+                <ImageView
+                    android:layout_gravity="center_horizontal"
+                    android:id="@+id/share_detail_share_icon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/share_icon"/>
             </LinearLayout>
 
             <LinearLayout
@@ -120,7 +124,7 @@
                 android:background="@color/third_dark_line_color"
                 android:layout_marginTop="@dimen/floor_marginTop"/>
             <RelativeLayout
-                android:id="@+id/floor_sort_layout"
+                android:id="@+id/floor_layout"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/floor_sort_height"
                 android:layout_marginRight="@dimen/floor_sort_marginRight">
@@ -129,18 +133,23 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/floor_label_marginLeft"
                     android:text="@string/floor_label"/>
-                <ImageView
+                <LinearLayout
+                    android:id="@+id/floor_sort_layout"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:src="@drawable/sort_icon"
-                    android:layout_toLeftOf="@id/floor_sort_text"/>
-                <TextView
-                    android:id="@+id/floor_sort_text"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:text="@string/sort_by_time_text"
-                    android:layout_alignParentRight="true"
-                    android:gravity="center"/>
+                    android:orientation="horizontal"
+                    android:layout_alignParentEnd="true">
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:src="@drawable/sort_icon" />
+                    <TextView
+                        android:id="@+id/floor_sort_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:text="@string/sort_earliest"
+                        android:gravity="center"/>
+                </LinearLayout>
             </RelativeLayout>
 
             <androidx.recyclerview.widget.RecyclerView

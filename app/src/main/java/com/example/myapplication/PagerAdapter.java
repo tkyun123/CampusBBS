@@ -54,17 +54,7 @@ public class PagerAdapter extends FragmentPagerAdapter {
                 }, true);
                 return share_browse;
             case 1:
-                message_browse = new MessageBrowse((data_list, load_num) -> {
-                    if(load_num == -1){
-                        for(int i=0;i<10;i++){
-                            Map<String, String> data = new HashMap<>();
-                            data.put("content","**点赞了你的动态");
-                            data.put("time","2022-5-1");
-                            data_list.add(data);
-                        }
-                    }
-                });
-                return message_browse;
+                return new MessageBrowse();
             case 2:
                 return new SharePost();
             case 3:
@@ -94,15 +84,13 @@ public class PagerAdapter extends FragmentPagerAdapter {
                     String result = HttpRequest.post("/API/get_page_posts",
                             String.format("page_size=%s&page_index=%s&order_type=%s&uid=%s",
                                     load_num, page_index, type, user_id),
-                            null);
+                            "form");
                     JSONObject jsonObject = new JSONObject(result);
-//                    Log.d("", result);
                     JSONArray array = jsonObject.getJSONArray("data");
                     Log.d("array:", String.valueOf(array));
                     for(int i=0;i<array.length();i++){
                         data_list.put(array.getJSONObject(i));
                     }
-                    Log.d("", String.valueOf(data_list.length()));
                     message.what = 0;
                 }catch (JSONException e) {
                     e.printStackTrace();

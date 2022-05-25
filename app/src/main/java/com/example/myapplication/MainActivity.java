@@ -69,17 +69,24 @@ public class MainActivity extends AppCompatActivity {
 //        editor.clear();
 //        editor.commit();
 
+        if(!SystemService.checkLogin(this)){
+            pager.setCurrentItem(map.get(R.id.tab_personInfo));
+            navigator.setSelectedItemId(R.id.tab_personInfo);
+        }
+
         navigator.setOnItemSelectedListener(item -> {
-            pager.setCurrentItem(map.get(item.getItemId()));
-            return true;
-//            if(item.getItemId() != R.id.tab_personInfo && !SystemService.checkLogin(this)){
+//            pager.setCurrentItem(map.get(item.getItemId()));
+//            return true;
+            if(item.getItemId() != R.id.tab_personInfo && !SystemService.checkLogin(this)){
 //                startActivity(new Intent(this, LoginActivity.class));
-//                return false;
-//            }
-//            else{
-//                pager.setCurrentItem(map.get(item.getItemId()));
-//                return true;
-//            }
+                pager.setCurrentItem(map.get(R.id.tab_personInfo));
+                navigator.setSelectedItemId(R.id.tab_personInfo);
+                return false;
+            }
+            else{
+                pager.setCurrentItem(map.get(item.getItemId()));
+                return true;
+            }
         });
 
         BottomNavigationMenuView menu = (BottomNavigationMenuView)navigator.getChildAt(0);
@@ -95,5 +102,7 @@ public class MainActivity extends AppCompatActivity {
         // 子目录直到草稿删除再删除
         FileOperation.createDir(this, "/drafts");
         FileOperation.clearDir(this, "/multimedia");
+
     }
+
 }

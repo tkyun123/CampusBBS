@@ -2,6 +2,9 @@ package com.example.myapplication;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
@@ -31,8 +34,6 @@ public class ShareRecyclerAdapter extends RecyclerView.Adapter<ShareRecyclerView
     public JSONArray data;
     public FragmentActivity my_activity;
 
-    SimpleDateFormat date_format = new SimpleDateFormat("yyyy-MM-dd", Locale.CHINESE);
-
     public ShareRecyclerAdapter(Context context, JSONArray list_data,
                                 FragmentActivity activity) {
         my_inflater = LayoutInflater.from(context);
@@ -56,10 +57,39 @@ public class ShareRecyclerAdapter extends RecyclerView.Adapter<ShareRecyclerView
             holder.location_textView.setText(object.getString("position"));
 
             Date date = new Date(object.getLong("post_time")*1000);
-            holder.time_textView.setText(date_format.format(date));
+            holder.time_textView.setText(Consts.date_format.format(date));
             holder.like_num_textView.setText(String.valueOf(object.getInt("agree_count")));
             holder.pid = object.getInt("pid");
             holder.like_state = object.getInt("agree_state");
+
+            holder.user_id = object.getInt("uid");
+
+            if(object.getInt("relation") == 1){
+                holder.follow_textView.setText(R.string.follow);
+            }
+
+            String url = object.getString("pic_url");
+            if(!url.equals("null")){
+                url = SystemService.getBaseUrl()+object.getString("pic_url");
+                Handler img_handler = new Handler(Looper.getMainLooper()){
+                    @Override
+                    public void handleMessage(@NonNull Message msg) {
+                        super.handleMessage(msg);
+                        Bundle bundle = msg.getData();
+                        holder.profile_photo_imageView.setImageBitmap(bundle.getParcelable("image"));
+                    }
+                };
+                SystemService.getImage(url, img_handler);
+            }
+
+            if(holder.user_id != SystemService.getUserId(my_activity)){
+                holder.profile_photo_imageView.setOnClickListener(view -> {
+                    Intent intent = new Intent(my_activity, UserInfoActivity.class);
+                    intent.putExtra("user_id", holder.user_id);
+                    my_activity.startActivity(intent);
+                });
+            }
+
             if(holder.like_state == 1){
                 holder.like_icon.setImageResource(R.drawable.like_icon);
             }
