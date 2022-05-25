@@ -21,8 +21,8 @@
     <string name="search_result_text">搜索结果</string>
     <string name="search_empty_text">无</string>
 
-    <string name="follow_user_nickName_label">用户名:</string>
-    <string name="follow_user_browse_share_text">查看动态</string>
+    <string name="user_browse_nickName_label">用户名：</string>
+    <string name="user_browse_introduction_label">简介：</string>
     <string name="check_user_info_text">个人主页</string>
     <string name="follow">关注</string>
     <string name="unfollow">取消关注</string>
@@ -33,15 +33,20 @@
 
     <string name="sort_by_time_text">按时间</string>
     <string name="sort_by_wave_text">按热度</string>
+    <string name="sort_earliest">最早</string>
+    <string name="sort_latest">最近</string>
     <string name="sort_all_text">所有人</string>
     <string name="sort_follow_text">仅关注的人</string>
 
     <string name="user_info_following_text">关注</string>
+    <string name="user_info_block_text">屏蔽</string>
     <string name="user_info_followed_text">粉丝</string>
     <string name="user_info_share_text">动态</string>
     <string name="user_info_nickName_default">游客</string>
     <string name="user_info_introduction_default">这个人什么也没写</string>
+    <string name="user_info_modify_text">修改信息</string>
     <string name="user_info_login_text">登录</string>
+    <string name="user_info_logout_text">退出登录</string>
 
     <string name="comment_label">评论</string>
     <string name="floor_label">楼层</string>
@@ -99,4 +104,7 @@
     <string name="info_modify_origin_password_text">原始密码</string>
     <string name="info_modify_password_first_input_text">新密码</string>
     <string name="info_modify_password_second_input_text">再次输入新密码</string>
+
+    <string name="title_activity_relation_user">用户</string>
+    <string name="title_activity_user_info">主页</string>
 </resources>

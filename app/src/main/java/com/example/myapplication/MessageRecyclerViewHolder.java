@@ -12,13 +12,13 @@ public class MessageRecyclerViewHolder extends RecyclerView.ViewHolder {
 
     public TextView content_textView;
     public TextView time_textView;
-    public ImageView delete_icon;
+//    public ImageView delete_icon;
 
     public MessageRecyclerViewHolder(View itemView, RecyclerView.Adapter adapter) {
         super(itemView);
         my_adapter = adapter;
         content_textView = itemView.findViewById(R.id.message_content_textView);
         time_textView = itemView.findViewById(R.id.message_time_textView);
-        delete_icon = itemView.findViewById(R.id.message_delete_icon);
+//        delete_icon = itemView.findViewById(R.id.message_delete_icon);
     }
 }

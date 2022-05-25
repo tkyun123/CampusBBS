@@ -28,6 +28,7 @@ import java.util.Map;
 
 public class UserShareActivity extends AppCompatActivity {
 
+    private int user_id;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,6 +42,9 @@ public class UserShareActivity extends AppCompatActivity {
         tool_bar.setNavigationOnClickListener(view -> {
             this.finish();
         });
+
+        Intent intent = getIntent();
+        user_id = intent.getIntExtra("user_id", 0);
 
 //        Intent intent = getIntent();
 

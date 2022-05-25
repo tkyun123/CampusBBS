@@ -10,5 +10,4 @@ public class UserInfoStorage {
     public String introduction;
     public String profile_photo_url;
     public String token;
-
 }

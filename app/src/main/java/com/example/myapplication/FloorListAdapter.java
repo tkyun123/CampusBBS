@@ -3,6 +3,10 @@ package com.example.myapplication;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,28 +18,28 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 public class FloorListAdapter extends RecyclerView.Adapter<FloorListViewHolder> {
     public LayoutInflater my_inflater;
-    public List<Map<String,String>> data;
-    public FragmentActivity my_activity;
+    public JSONArray data;
+    public Activity my_activity;
+    private int my_pid;
 //    private ActivityResultLauncher comment_add_launcher;
 
-    public FloorListAdapter(Context context, List<Map<String,String>> list_data,
-                            FragmentActivity activity) {
+    public FloorListAdapter(Context context, JSONArray list_data,
+                            Activity activity) {
         my_inflater = LayoutInflater.from(context);
         data = list_data;
         my_activity = activity;
-
-//        comment_add_launcher = my_activity.registerForActivityResult(
-//                new ActivityResultContracts.StartActivityForResult(), result -> {
-//                    if(result.getResultCode() == Activity.RESULT_OK){
-//                        Intent intent = result.getData();
-//                        Log.d("", intent.getStringExtra("content"));
-//                    }
-//                });
     }
 
     @NonNull
@@ -47,27 +51,115 @@ public class FloorListAdapter extends RecyclerView.Adapter<FloorListViewHolder> 
 
     @Override
     public void onBindViewHolder(@NonNull FloorListViewHolder holder, int position) {
-        holder.nickName_textView.setText(data.get(position).get("nickName"));
-        holder.content_textView.setText(data.get(position).get("content"));
-        holder.floor_num_textView.setText("第"+(position+1)+"楼");
-        holder.comment_show.setOnClickListener(view -> {
-            Intent intent = new Intent(my_activity, CommentActivity.class);
-            my_activity.startActivity(intent);
-        });
+        try {
+            JSONObject object = data.getJSONObject(position);
+            holder.nickName_textView.setText(object.getString("nickname"));
+            holder.content_textView.setText(object.getString("text"));
+            Date date = new Date(object.getLong("time")*1000);
 
-        holder.add_comment_button.setOnClickListener(view -> {
-            if(!SystemService.checkLogin(my_activity)){
-                my_activity.startActivity(new Intent(my_activity, LoginActivity.class));
+            holder.location_textView.setText(object.getString("position"));
+            holder.time_textView.setText(Consts.date_format.format(date));
+            int fid = object.getInt("fid");
+            holder.floor_num_textView.setText(String.format("第%s楼", fid));
+            holder.like_num_textView.setText(String.valueOf(
+                    object.getInt("agree_count")));
+            holder.like_state = object.getInt("agree_state");
+
+            holder.user_id = object.getInt("uid");
+
+            String url = object.getString("pic_url");
+            if(!url.equals("null")){
+                url = SystemService.getBaseUrl()+url;
+                Handler img_handler = new Handler(Looper.getMainLooper()){
+                    @Override
+                    public void handleMessage(@NonNull Message msg) {
+                        super.handleMessage(msg);
+                        Bundle bundle = msg.getData();
+                        holder.profile_photo_imageView.setImageBitmap(bundle.getParcelable("image"));
+                    }
+                };
+                SystemService.getImage(url, img_handler);
             }
-            else{
-                my_activity.startActivity(new Intent(my_activity, CommentAddActivity.class));
+
+            if(holder.user_id != SystemService.getUserId(my_activity)){
+                holder.profile_photo_imageView.setOnClickListener(view -> {
+                    Intent intent = new Intent(my_activity, UserInfoActivity.class);
+                    intent.putExtra("user_id", holder.user_id);
+                    my_activity.startActivity(intent);
+                });
             }
-        });
+
+            holder.comment_show.setOnClickListener(view -> {
+                Intent intent = new Intent(my_activity, CommentActivity.class);
+                intent.putExtra("pid", my_pid);
+                intent.putExtra("fid", fid);
+                intent.putExtra("comment_type", 0);
+                my_activity.startActivity(intent);
+            });
+
+            holder.add_comment_button.setOnClickListener(view -> {
+                Intent intent = new Intent(my_activity, CommentAddActivity.class);
+                intent.putExtra("pid", my_pid);
+                intent.putExtra("fid", fid);
+                my_activity.startActivity(intent);
+            });
+
+            if(holder.like_state == 1){
+                holder.like_icon.setImageResource(R.drawable.like_icon);
+            }
+
+            Handler give_like_handle = new Handler(Looper.getMainLooper()){
+                @Override
+                public void handleMessage(@NonNull Message msg) {
+                    super.handleMessage(msg);
+                    if(msg.what == 0){
+                        holder.like_state = 1;
+                        holder.like_icon.setImageResource(R.drawable.like_icon);
+                        int like_num = Integer.parseInt(
+                                holder.like_num_textView.getText().toString())+1;
+                        holder.like_num_textView.setText(String.valueOf(like_num));
+                    }
+                }
+            };
+
+            Handler cancel_like_handler = new Handler(Looper.getMainLooper()){
+                @Override
+                public void handleMessage(@NonNull Message msg) {
+                    super.handleMessage(msg);
+                    if(msg.what == 0){
+                        holder.like_state = 0;
+                        holder.like_icon.setImageResource(R.drawable.unlike_icon);
+                        int like_num = Integer.parseInt(
+                                holder.like_num_textView.getText().toString())-1;
+                        holder.like_num_textView.setText(String.valueOf(like_num));
+                    }
+                }
+            };
+
+            holder.floor_like_layout.setOnClickListener(view -> {
+                Handler handler;
+                if(holder.like_state == 0){
+                    handler = give_like_handle;
+                }
+                else{
+                    handler = cancel_like_handler;
+                }
+                ShareOperation.change_like_state(SystemService.getUserId(my_activity),
+                        my_pid, position+1, handler, holder.like_state);
+            });
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
     }
 
     @Override
     public int getItemCount() {
-        return data.size();
+        return data.length();
+    }
+
+    public void setPid(int pid){
+        my_pid = pid;
     }
 
 }

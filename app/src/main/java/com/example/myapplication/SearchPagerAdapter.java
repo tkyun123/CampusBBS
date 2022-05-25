@@ -1,11 +1,14 @@
 package com.example.myapplication;
 
 import android.os.Build;
+import android.os.Handler;
 
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentStatePagerAdapter;
+
+import org.json.JSONArray;
 
 import java.util.HashMap;
 import java.util.List;
@@ -31,113 +34,69 @@ public class SearchPagerAdapter extends FragmentStatePagerAdapter {
             case 0:
                 share_browse = new ShareBrowse(new ShareBrowse.loadData() {
                     @Override
-                    public void loadDataSortByTime(List<Map<String, String>> data_list, int load_num) {
-                        while(load_num>0){
-                            Map<String, String> data = new HashMap<>();
-                            data.put("title","全部动态"+(data_list.size()+1));
-                            data.put("content","内容(按时间)");
-                            data_list.add(data);
-                            load_num--;
-                        }
+                    public void loadDataSortByTime(JSONArray data_list, int load_num,
+                                                   Handler handler, int sort_all) {
+
                     }
 
                     @Override
-                    public void loadDataSortByWave(List<Map<String, String>> data_list, int load_num) {
-                        while(load_num>0){
-                            Map<String, String> data = new HashMap<>();
-                            data.put("title","全部动态"+(data_list.size()+1));
-                            data.put("content","内容(按热度)");
-                            data_list.add(data);
-                            load_num--;
-                        }
+                    public void loadDataSortByWave(JSONArray data_list, int load_num,
+                                                   Handler handler, int sort_all) {
+
                     }
-                });
+                }, true);
                 return share_browse;
             case 1:
                 share_browse = new ShareBrowse(new ShareBrowse.loadData() {
                     @Override
-                    public void loadDataSortByTime(List<Map<String, String>> data_list, int load_num) {
-                        while(load_num>0){
-                            Map<String, String> data = new HashMap<>();
-                            data.put("title","文字动态"+(data_list.size()+1));
-                            data.put("content","内容(按时间)");
-                            data_list.add(data);
-                            load_num--;
-                        }
+                    public void loadDataSortByTime(JSONArray data_list, int load_num,
+                                                   Handler handler, int sort_all) {
+
                     }
 
                     @Override
-                    public void loadDataSortByWave(List<Map<String, String>> data_list, int load_num) {
-                        while(load_num>0){
-                            Map<String, String> data = new HashMap<>();
-                            data.put("title","文字动态"+(data_list.size()+1));
-                            data.put("content","内容(按热度)");
-                            data_list.add(data);
-                            load_num--;
-                        }
+                    public void loadDataSortByWave(JSONArray data_list, int load_num,
+                                                   Handler handler, int sort_all) {
+
                     }
-                });
+
+                }, true);
                 return share_browse;
             case 2:
                 share_browse = new ShareBrowse(new ShareBrowse.loadData() {
                     @Override
-                    public void loadDataSortByTime(List<Map<String, String>> data_list, int load_num) {
-                        while(load_num>0){
-                            Map<String, String> data = new HashMap<>();
-                            data.put("title","视频动态"+(data_list.size()+1));
-                            data.put("content","内容(按时间)");
-                            data_list.add(data);
-                            load_num--;
-                        }
+                    public void loadDataSortByTime(JSONArray data_list, int load_num,
+                                                   Handler handler, int sort_all) {
+
                     }
 
                     @Override
-                    public void loadDataSortByWave(List<Map<String, String>> data_list, int load_num) {
-                        while(load_num>0){
-                            Map<String, String> data = new HashMap<>();
-                            data.put("title","视频动态"+(data_list.size()+1));
-                            data.put("content","内容(按热度)");
-                            data_list.add(data);
-                            load_num--;
-                        }
+                    public void loadDataSortByWave(JSONArray data_list, int load_num,
+                                                   Handler handler, int sort_all) {
+
                     }
-                });
+                }, true);
                 return share_browse;
             case 3:
                 share_browse = new ShareBrowse(new ShareBrowse.loadData() {
                     @Override
-                    public void loadDataSortByTime(List<Map<String, String>> data_list, int load_num) {
-                        while(load_num>0){
-                            Map<String, String> data = new HashMap<>();
-                            data.put("title","音频动态"+(data_list.size()+1));
-                            data.put("content","内容(按时间)");
-                            data_list.add(data);
-                            load_num--;
-                        }
+                    public void loadDataSortByTime(JSONArray data_list, int load_num,
+                                                   Handler handler, int sort_all) {
+
                     }
 
                     @Override
-                    public void loadDataSortByWave(List<Map<String, String>> data_list, int load_num) {
-                        while(load_num>0){
-                            Map<String, String> data = new HashMap<>();
-                            data.put("title","音频动态"+(data_list.size()+1));
-                            data.put("content","内容(按热度)");
-                            data_list.add(data);
-                            load_num--;
-                        }
+                    public void loadDataSortByWave(JSONArray data_list, int load_num,
+                                                   Handler handler, int sort_all) {
+
                     }
-                });
+                }, true);
                 return share_browse;
             case 4:
                 user_browse = new UserBrowse(new UserBrowse.loadData() {
                     @Override
-                    public void loadData(List<Map<String, String>> data_list, int load_num) {
-                        while(load_num>0){
-                            Map<String, String> data = new HashMap<>();
-                            data.put("nickName","用户"+(data_list.size()+1));
-                            data_list.add(data);
-                            load_num--;
-                        }
+                    public void loadData(JSONArray data_list, int load_num, Handler handler) {
+
                     }
                 });
                 return user_browse;

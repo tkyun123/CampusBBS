@@ -12,15 +12,20 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
 public class MessageRecyclerAdapter extends RecyclerView.Adapter<MessageRecyclerViewHolder> {
     public LayoutInflater my_inflater;
-    public List<Map<String,String>> data;
+    public JSONArray data;
     public FragmentActivity my_activity;
 
-    public MessageRecyclerAdapter(Context context, List<Map<String,String>> list_data,
+    public MessageRecyclerAdapter(Context context, JSONArray list_data,
                                   FragmentActivity activity) {
         my_inflater = LayoutInflater.from(context);
         data = list_data;
@@ -43,16 +48,23 @@ public class MessageRecyclerAdapter extends RecyclerView.Adapter<MessageRecycler
 
     @Override
     public void onBindViewHolder(@NonNull MessageRecyclerViewHolder holder, int position) {
-        holder.content_textView.setText(data.get(position).get("content"));
-        holder.time_textView.setText(data.get(position).get("time"));
-        holder.delete_icon.setOnClickListener(view -> {
-            data.remove(position);
-            this.notifyDataSetChanged();
-        });
+        try {
+            JSONObject object = data.getJSONObject(position);
+            holder.content_textView.setText(object.getString("text"));
+            Date date = new Date(object.getLong("post_time")*1000);
+            holder.time_textView.setText(Consts.date_format.format(date));
+
+//            holder.delete_icon.setOnClickListener(view -> {
+//                data.remove(position);
+//                this.notifyItemRemoved(position);
+//            });
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
     public int getItemCount() {
-        return data.size();
+        return data.length();
     }
 }

@@ -3,13 +3,18 @@ package com.example.myapplication;
 import android.app.AlertDialog;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 public class PasswordModify extends Fragment {
 
@@ -17,6 +22,7 @@ public class PasswordModify extends Fragment {
     private String first_input_password = "";
     private String second_input_password = "";
 
+    private final static int PASSWORD_MODIFIED = 3;
     public PasswordModify() {
         // Required empty public constructor
     }
@@ -68,5 +74,16 @@ public class PasswordModify extends Fragment {
     }
 
     private void changePassword(){ // to do
+        Handler handler = new Handler(Looper.getMainLooper()){
+            @Override
+            public void handleMessage(@NonNull Message msg) {
+                super.handleMessage(msg);
+                if(msg.what == 0) {
+                    getActivity().setResult(PASSWORD_MODIFIED);
+                    Toast.makeText(getContext(), "修改成功", Toast.LENGTH_SHORT)
+                            .show();
+                };
+            }
+        };
     }
 }

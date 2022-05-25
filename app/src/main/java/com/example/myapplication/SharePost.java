@@ -113,14 +113,7 @@ public class SharePost extends Fragment {
         TextView share_post = view.findViewById(R.id.share_detail_postButton);
 
         share_post.setOnClickListener(view1 -> {
-            share_title = edit_share_title.getText().toString();
-            share_content = edit_share_content.getText().toString();
-            if (share_title.equals("") || share_content.equals("")) {
-                AlertDialog message = new AlertDialog.Builder(getContext())
-                        .setMessage("标题或内容不能为空").create();
-                message.show();
-            }
-            else{
+            if(checkPostValid()){
                 loading_icon.setAnimation(rotate);
                 postShare(share_title, share_content);
             }
@@ -259,24 +252,6 @@ public class SharePost extends Fragment {
         Log.d("path:", path);
     }
 
-//    private void filepathToUri(String filetype){
-//        File file = getFile(filetype);
-//        save_uri = FileProvider.getUriForFile(
-//                getContext(),
-//                getContext().getPackageName()+".fileProvider",
-//                file);
-//    }
-//
-//    private File getFile(String filetype){
-//        // 根据时间戳生成文件
-//        long n = 0;
-//        String path;
-//        File file;
-//        path = String.format("%s/%s%s",SAVE_PATH, new Date().getTime(), filetype);
-//        file = new File(path);
-//        return file;
-//    }
-
     private String generatePath(String filetype){
         // 根据时间戳生成文件路径
         long n = 0;
@@ -305,7 +280,7 @@ public class SharePost extends Fragment {
                     R.layout.video_add_item, null
             );
             multimedia_layout.addView(new_add_view);
-            VideoView new_add_videoView = new_add_view.findViewById(R.id.new_add_videoView);
+            VideoView new_add_videoView = (VideoView) new_add_view.findViewById(R.id.new_add_videoView);
             new_add_videoView.setMediaController(new MediaController(this.getContext()));
             new_add_videoView.setVideoURI(uri);
             if(multimedia_state == MULTIMEDIA_AUDIO){
@@ -459,7 +434,7 @@ public class SharePost extends Fragment {
             }
         });
         video_add.setOnClickListener(view1 -> {
-            if(checkValid(AUDIO)){
+            if(checkValid(VIDEO)){
                 addMultimedia(MULTIMEDIA_VIDEO);
             }
         });
@@ -475,6 +450,22 @@ public class SharePost extends Fragment {
         if((type == AUDIO || type == VIDEO) && multimedia_num >= 1){
             multimedia_popupWindow.dismiss();
             Toast.makeText(getContext(), "最多添加一个音视频资源", Toast.LENGTH_SHORT)
+                    .show();
+            return false;
+        }
+        return true;
+    }
+
+    private boolean checkPostValid(){
+        share_title = edit_share_title.getText().toString();
+        share_content = edit_share_content.getText().toString();
+        if (share_title.equals("") || share_content.equals("")) {
+            Toast.makeText(getContext(), "标题或内容不能为空", Toast.LENGTH_SHORT)
+                    .show();
+            return false;
+        }
+        if(share_type != TEXT && multimedia_num == 0){
+            Toast.makeText(getContext(), "未添加多媒体资源", Toast.LENGTH_SHORT)
                     .show();
             return false;
         }

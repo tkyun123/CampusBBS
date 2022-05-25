@@ -78,7 +78,7 @@ public class RegisterActivity extends AppCompatActivity {
                 super.run();
                 String result = HttpRequest.post("/API/register",
                         String.format("nickname=%s&password=%s&email=%s", nickName,
-                                password, email), null);
+                                password, email), "form");
                 Message message = new Message();
                 if(result.equals("error")){
                     message.what = -1;

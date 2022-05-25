@@ -10,43 +10,75 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
+
             <ImageView
                 android:id="@+id/user_info_profile_photo"
-                android:layout_width="0dp"
+                android:layout_width="@dimen/user_info_profile_photo_size"
                 android:layout_height="@dimen/user_info_profile_photo_size"
-                android:layout_weight="@dimen/user_info_profile_photo_weight"
-                android:src="@drawable/test_profile_photo" />
+                android:src="@drawable/default_profile_photo"
+                android:scaleType="fitCenter"/>
+
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:orientation="vertical"
-                android:layout_weight="@dimen/user_info_nickName_weight">
+                android:layout_weight="1"
+                android:orientation="vertical">
+
                 <TextView
                     android:id="@+id/user_info_nickName"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
                     android:text="@string/user_info_nickName_default"
-                    android:textSize="@dimen/user_info_nickName_textSize"
-                    android:gravity="center_vertical"/>
+                    android:textSize="@dimen/user_info_nickName_textSize" />
+
                 <TextView
                     android:id="@+id/user_info_introduction"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
                     android:text="@string/user_info_introduction_default"
-                    android:textSize="@dimen/user_info_introduction_textSize"
-                    android:layout_gravity="center_vertical"/>
+                    android:textSize="@dimen/user_info_introduction_textSize" />
             </LinearLayout>
+
+            <Button
+                android:id="@+id/user_info_modify_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:text="@string/user_info_modify_text"
+                android:visibility="invisible"/>
+
             <Button
                 android:id="@+id/user_info_login_button"
-                android:layout_width="@dimen/user_info_login_button_width"
-                android:layout_height="@dimen/user_info_login_button_height"
-                android:text="@string/user_info_login_text"
-                android:layout_gravity="center_vertical"/>
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:text="@string/user_info_login_text" />
         </LinearLayout>
+
+        <RelativeLayout
+            android:id="@+id/user_info_relation_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <Button
+                android:id="@+id/user_info_follow_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toStartOf="@id/user_info_block_button"
+                android:text="@string/follow"/>
+            <Button
+                android:id="@+id/user_info_block_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:text="@string/block"/>
+        </RelativeLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -58,6 +90,7 @@
             android:layout_height="@dimen/user_info_item_height"
             android:orientation="horizontal">
             <LinearLayout
+                android:id="@+id/user_info_following_layout"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="@dimen/user_info_item_weight"
@@ -74,6 +107,24 @@
                     android:text="@string/user_info_following_text"/>
             </LinearLayout>
             <LinearLayout
+                android:id="@+id/user_info_block_layout"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="@dimen/user_info_item_weight"
+                android:orientation="vertical"
+                android:gravity="center">
+                <TextView
+                    android:id="@+id/user_info_block_num"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="0"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/user_info_block_text"/>
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/user_info_followed_layout"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="@dimen/user_info_item_weight"
@@ -90,6 +141,7 @@
                     android:text="@string/user_info_followed_text"/>
             </LinearLayout>
             <LinearLayout
+                android:id="@+id/user_info_share_layout"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="@dimen/user_info_item_weight"

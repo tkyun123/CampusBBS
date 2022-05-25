@@ -1,5 +1,7 @@
 package com.example.myapplication;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -12,6 +14,9 @@ import androidx.fragment.app.FragmentContainerView;
 import com.google.android.material.tabs.TabLayout;
 
 public class InfoModifyActivity extends AppCompatActivity {
+    private String nickname;
+    private String introduction;
+    private Uri uri;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -22,16 +27,20 @@ public class InfoModifyActivity extends AppCompatActivity {
         setSupportActionBar(tool_bar);
         tool_bar.setNavigationIcon(R.drawable.back_icon);
 
+        this.setResult(RESULT_CANCELED);
         tool_bar.setNavigationOnClickListener(view -> {
-            this.setResult(RESULT_CANCELED);
             this.finish();
         });
 
+        Intent intent = getIntent();
         TabLayout tabLayout = findViewById(R.id.info_modify_tab);
         tabLayout.addTab(tabLayout.newTab().setText("基本信息"));
         tabLayout.addTab(tabLayout.newTab().setText("修改密码"));
 
-        Fragment basic_info_modify_fragment = new BasicInfoModify();
+        Fragment basic_info_modify_fragment = new BasicInfoModify(
+                intent.getStringExtra("nickName"),
+                intent.getStringExtra("introduction"),
+                intent.getStringExtra("photo_path"));
         Fragment info_modify_password_fragment = new PasswordModify();
 
         getSupportFragmentManager().beginTransaction().replace(

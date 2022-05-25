@@ -8,6 +8,7 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationManager;
@@ -18,10 +19,8 @@ import android.os.Handler;
 import android.os.Message;
 import android.util.Base64;
 import android.util.Log;
-import android.view.animation.AnimationUtils;
 
 import androidx.core.app.ActivityCompat;
-import androidx.navigation.ui.AppBarConfiguration;
 
 import com.amap.api.services.core.AMapException;
 import com.amap.api.services.core.LatLonPoint;
@@ -34,9 +33,9 @@ import com.example.myapplication.datatype.UserInfoStorage;
 import org.json.JSONArray;
 
 import java.io.ByteArrayOutputStream;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URL;
 import java.util.List;
 
 public class SystemService {
@@ -137,10 +136,7 @@ public class SystemService {
     public static boolean checkLogin(Activity activity){
         SharedPreferences sharedPreferences = activity.getSharedPreferences(
                 "login", Context.MODE_PRIVATE);
-        if(sharedPreferences.getString("nickName", null) == null){
-            return false;
-        }
-        return true;
+        return sharedPreferences.getInt("user_id", -1) != -1;
     }
 
     public static void addInfo(Activity activity, UserInfoStorage user){
@@ -149,9 +145,9 @@ public class SystemService {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString("token", user.token);
         editor.putInt("user_id", user.user_id);
-        editor.putString("nickName", user.nickName);
-        editor.putString("introduction", user.introduction);
-        editor.putString("profile_photo_url", user.profile_photo_url);
+//        editor.putString("nickName", user.nickName);
+//        editor.putString("introduction", user.introduction);
+//        editor.putString("profile_photo_url", user.profile_photo_url);
         editor.apply();
     }
 
@@ -164,47 +160,70 @@ public class SystemService {
         user.profile_photo_url = sharedPreferences.getString("profile_photo_url", null);
     }
 
+    public static void clearInfo(Activity activity){
+        SharedPreferences sharedPreferences = activity.getSharedPreferences(
+                "login", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.clear();
+        editor.apply();
+    }
+
     public static int getUserId(Activity activity){
         SharedPreferences sharedPreferences = activity.getSharedPreferences(
                 "login", Context.MODE_PRIVATE);
         return sharedPreferences.getInt("user_id", -1);
     }
 
-
-
-    public static String imageUriToBase64(Uri uri, ContentResolver cr) {
-        try {
-            Bitmap bitmap = BitmapFactory.decodeStream(cr.openInputStream(uri));
-            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
-            return Base64.encodeToString(byteArrayOutputStream.toByteArray(), Base64.DEFAULT);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return "error";
-        }
-    }
-
-    public static String videoUriToBase64(Uri uri, ContentResolver cr){
-        try {
-            int byte_size = 1024;
-            InputStream inputStream = cr.openInputStream(uri);
-            byte[] bytes = new byte[byte_size];
-            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-            int len;
-            while((len=inputStream.read(bytes))!=-1){
-                byteArrayOutputStream.write(bytes,0 ,len);
-            }
-
-            return Base64.encodeToString(byteArrayOutputStream.toByteArray(), Base64.DEFAULT);
-        } catch (IOException e) {
-            e.printStackTrace();
-            return "error";
-        }
-    }
-
     public static void clearJsonArray(JSONArray jsonArray){
-        while(jsonArray.length()>1){
+        while(jsonArray.length()>0){
             jsonArray.remove(0);
         }
+    }
+
+    // 保持原图比例进行缩放
+    public static Bitmap bitmapResize(Bitmap bitmap, int n_width, int n_height){
+        int width = bitmap.getWidth();
+        int height = bitmap.getHeight();
+
+        if(width <= n_width && height <= n_height){
+            return bitmap;
+        }
+        float scale = (float) n_width / width;
+        float height_scale = (float) n_height / height;
+        if(height_scale < scale){
+            scale = height_scale;
+        }
+        Matrix matrix = new Matrix();
+        matrix.postScale(scale, scale);
+
+        return Bitmap.createBitmap(bitmap, 0, 0, width, height, matrix, true);
+    }
+
+    public static Bitmap getBitmapFromUrl(String url){
+        try{
+            return BitmapFactory.decodeStream(new URL(url).openStream());
+        }catch (IOException e){
+            e.printStackTrace();
+            return null;
+        }
+    }
+    public static String getBaseUrl(){
+        return "http://183.172.179.163:5000";
+    }
+
+    public static void getImage(String url, Handler handler){
+        Thread thread = new Thread(){
+            @Override
+            public void run() {
+                super.run();
+                Message message = new Message();
+                Bitmap bitmap = getBitmapFromUrl(url);
+                Bundle bundle = new Bundle();
+                bundle.putParcelable("image", bitmap);
+                message.setData(bundle);
+                handler.sendMessage(message);
+            }
+        };
+        thread.start();
     }
 }
