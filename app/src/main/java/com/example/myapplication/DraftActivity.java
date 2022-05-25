@@ -3,6 +3,7 @@ package com.example.myapplication;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -37,16 +38,16 @@ public class DraftActivity extends AppCompatActivity {
         );
         int user_id = sharedPreferences.getInt("user_id", -1);
 
-
         File file= new File("/data/data/"+getPackageName().toString()+"/shared_prefs","draft_"+ user_id +".xml");
         if(file.exists()) {
+            //file.delete();
             SharedPreferences share = getSharedPreferences("draft_" + user_id, DraftActivity.this.MODE_PRIVATE);
             totalDraft = share.getInt("num",0);
             for(int i = 0; i < totalDraft; i ++) {
                 Map<String, String> map = new HashMap<>();
-                map.put("id", share.getString("id" + i,"-1"));
-                map.put("title", share.getString("title" + i,""));
-                map.put("content", share.getString("content" + i,""));
+                map.put("id", (i + 1) + "");
+                map.put("title", share.getString("title" + (i + 1),""));
+                map.put("content", share.getString("content" + (i + 1),""));
                 data.add(map);
             }
         }

@@ -43,6 +43,12 @@ public class DraftEditActivity extends AppCompatActivity {
             finish();
         });
 
+        titleEdit = findViewById(R.id.draft_edit_title);
+        contentEdit = findViewById(R.id.draft_edit_content);
+
+        deleteButton = findViewById(R.id.draft_edit_deleteButton);
+        postButton = findViewById(R.id.draft_edit_postButton);
+
         Intent intent = getIntent();
         titleEdit.setText(intent.getStringExtra("draft_title"));
         contentEdit.setText(intent.getStringExtra("draft_content"));
@@ -55,50 +61,6 @@ public class DraftEditActivity extends AppCompatActivity {
         SharedPreferences sharedPreferences = DraftEditActivity.this.getSharedPreferences(
                 "draft_" + user_id, Context.MODE_PRIVATE
         );
-
-        titleEdit = findViewById(R.id.draft_edit_title);
-        contentEdit = findViewById(R.id.draft_edit_content);
-
-        titleEdit.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                String newTitle = s.toString();
-
-                SharedPreferences.Editor editor = sharedPreferences.edit();
-                editor.putString("title" + draft_id, newTitle);
-                editor.commit();
-            }
-        });
-
-        contentEdit.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                String newContent = s.toString();
-
-                SharedPreferences.Editor editor = sharedPreferences.edit();
-                editor.putString("content" + draft_id, newContent);
-                editor.commit();
-            }
-        });
-
-        deleteButton = findViewById(R.id.draft_edit_deleteButton);
-        postButton = findViewById(R.id.draft_edit_postButton);
 
         deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override

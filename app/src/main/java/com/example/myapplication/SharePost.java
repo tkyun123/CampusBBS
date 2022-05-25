@@ -1,8 +1,8 @@
 package com.example.myapplication;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -13,6 +13,7 @@ import android.os.Bundle;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.SwitchCompat;
 import androidx.fragment.app.Fragment;
 
@@ -94,6 +95,10 @@ public class SharePost extends Fragment {
     private String location = null;
     public static Handler location_handler;
 
+    private int user_id;
+    private String draft_id;
+    private Boolean is_saved = false;
+
     public SharePost() {
         // Required empty public constructor
     }
@@ -109,33 +114,59 @@ public class SharePost extends Fragment {
         edit_share_title = view.findViewById(R.id.share_edit_title);
         edit_share_content = view.findViewById(R.id.share_edit_content);
 
-        edit_share_title.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+        SharedPreferences sharedPreferences = getActivity().getSharedPreferences(
+                "login", Context.MODE_PRIVATE
+        );
+        user_id = sharedPreferences.getInt("user_id", -1);
 
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
-            }
-        });
+        SharedPreferences sharedPreferencesDraft = getActivity().getSharedPreferences(
+                "draft_" + user_id, Context.MODE_PRIVATE
+        );
+        int totalDraft = sharedPreferencesDraft.getInt("num",0);
+        draft_id = totalDraft + 1 + "";
 
         loading_icon = view.findViewById(R.id.sharePost_loading_icon);
         rotate = AnimationUtils.loadAnimation(getContext(), R.anim.loading_anim);
 
         TextView share_post = view.findViewById(R.id.share_detail_postButton);
+        TextView save_post = view.findViewById(R.id.share_detail_saveButton);
+        TextView new_post = view.findViewById(R.id.share_detail_newButton);
 
         share_post.setOnClickListener(view1 -> {
             if(checkPostValid()){
                 loading_icon.setAnimation(rotate);
                 postShare(share_title, share_content);
             }
+        });
+
+        //新建键
+        new_post.setOnClickListener(view1 -> {
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+            builder.setTitle("注意");
+            builder.setMessage("新建动态会覆盖当前内容，确认新建？");
+            builder.setCancelable(true);
+            builder.setPositiveButton("确认", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    newShare();
+                    dialogInterface.dismiss();
+                }
+            });
+            builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    dialogInterface.dismiss();
+                }
+            });
+            AlertDialog dialog = builder.create();
+            dialog.show();
+        });
+
+        //保存键
+        save_post.setOnClickListener(view1 -> {
+            share_title = edit_share_title.getText().toString();
+            share_content = edit_share_content.getText().toString();
+            saveShare(share_title, share_content);
         });
 
         multimedia_layout = my_view.findViewById(R.id.share_post_new_add_multimedia_layout);
@@ -401,6 +432,63 @@ public class SharePost extends Fragment {
         thread.start();
     }
 
+    //新建
+    private void newShare(){
+        SharedPreferences sharedPreferencesDraft = getActivity().getSharedPreferences(
+                "draft_" + user_id, Context.MODE_PRIVATE
+        );
+        int totalDraft = sharedPreferencesDraft.getInt("num",0);
+        draft_id = totalDraft + 1 + "";
+        is_saved = false;
+        clearAll();
+    }
+
+    //保存
+    private void saveShare(String title, String content){
+        Handler handler = new Handler(Looper.getMainLooper()){
+            @Override
+            public void handleMessage(@NonNull Message msg) {
+                super.handleMessage(msg);
+                loading_icon.setAnimation(null);
+                if(msg.what == -1){
+                    Toast.makeText(getContext(), "保存失败，请稍后再试", Toast.LENGTH_SHORT)
+                            .show();
+                }
+                else{
+                    Toast.makeText(getContext(), "保存成功", Toast.LENGTH_SHORT)
+                            .show();
+                    is_saved = true;
+                }
+            }
+        };
+
+        Thread thread = new Thread(){
+            @Override
+            public void run() {
+                super.run();
+                Message message = new Message();
+                message.what = 0;
+
+                try {
+                    SharedPreferences sharedPreferencesDraft = getActivity().getSharedPreferences(
+                            "draft_" + user_id, Context.MODE_PRIVATE
+                    );
+                    SharedPreferences.Editor editor = sharedPreferencesDraft.edit();
+                    editor.putInt("num",  Integer.parseInt(draft_id));
+                    editor.putString("title" + draft_id, title);
+                    editor.putString("content" + draft_id, content);
+                    editor.commit();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    message.what = -1;
+                    return;
+                }
+                handler.sendMessage(message);
+            }
+        };
+        thread.start();
+    }
+
     private void clearAll(){
         edit_share_title.setText("");
         edit_share_content.setText("");
@@ -489,5 +577,13 @@ public class SharePost extends Fragment {
             return false;
         }
         return true;
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        share_title = edit_share_title.getText().toString();
+        share_content = edit_share_content.getText().toString();
+        saveShare(share_title, share_content);
     }
 }

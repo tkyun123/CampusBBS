@@ -40,6 +40,14 @@
                     android:text="@string/not_show_location_text"
                     android:layout_toRightOf="@id/show_location_switch"
                     android:layout_centerInParent="true"/>
+                <Spinner
+                    android:id="@+id/draft_select_share_type_spinner"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_centerInParent="true"
+                    android:layout_marginEnd="@dimen/select_share_type_spinner_marginEnd"
+                    android:layout_toStartOf="@id/draft_edit_postButton"
+                    android:entries="@array/share_type_array"/>
                 <TextView
                     android:id="@+id/draft_edit_deleteButton"
                     android:layout_width="wrap_content"
@@ -48,7 +56,16 @@
                     android:textColor="#ff0000"
                     android:textSize="@dimen/share_post_textSize"
                     android:layout_alignParentEnd="true"
-                    android:layout_marginEnd="@dimen/share_post_marginRight" />
+                    android:layout_marginEnd="5dp" />
+                <TextView
+                    android:id="@+id/draft_edit_saveButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:text="保存"
+                    android:textColor="@color/share_post_textColor"
+                    android:textSize="@dimen/share_post_textSize"
+                    android:layout_toLeftOf="@+id/draft_edit_deleteButton"
+                    android:layout_marginEnd="5dp" />
                 <TextView
                     android:id="@+id/draft_edit_postButton"
                     android:layout_width="wrap_content"
@@ -56,8 +73,8 @@
                     android:text="@string/shareButton_text"
                     android:textColor="@color/share_post_textColor"
                     android:textSize="@dimen/share_post_textSize"
-                    android:layout_toLeftOf="@+id/draft_edit_deleteButton"
-                    android:layout_marginEnd="@dimen/share_post_marginRight" />
+                    android:layout_toLeftOf="@+id/draft_edit_saveButton"
+                    android:layout_marginEnd="5dp" />
             </RelativeLayout>
 
             <EditText

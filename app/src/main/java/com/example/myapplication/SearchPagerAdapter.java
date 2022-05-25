@@ -108,35 +108,4 @@ public class SearchPagerAdapter extends FragmentStatePagerAdapter {
     public int getCount() {
         return mNumOfTabs;
     }
-
-    private void searchBrowseLoadData(JSONArray data_list,
-                                     int load_num, Handler handler, int type){
-//        Thread thread = new Thread(){
-//            @Override
-//            public void run() {
-//                super.run();
-//                Message message = new Message();
-//                try {
-//                    int page_index = (data_list.length()+load_num-1)/load_num;
-//                    int user_id = SystemService.getUserId(my_activity);
-//
-//                    String result = HttpRequest.post("/API/get_page_posts",
-//                            String.format("page_size=%s&page_index=%s&order_type=%s&uid=%s",
-//                                    load_num, page_index, type, user_id),
-//                            null);
-//                    JSONObject jsonObject = new JSONObject(result);
-//                    JSONArray array = jsonObject.getJSONArray("data");
-//                    for(int i=0;i<array.length();i++){
-//                        data_list.put(array.getJSONObject(i));
-//                    }
-//                    message.what = 0;
-//                }catch (JSONException e) {
-//                    e.printStackTrace();
-//                    message.what = -1;
-//                }
-//                handler.sendMessage(message);
-//            }
-//        };
-//        thread.start();
-    }
 }
