@@ -49,45 +49,41 @@ public class SearchPagerAdapter extends FragmentStatePagerAdapter {
             case 1:
                 share_browse = new ShareBrowse(new ShareBrowse.loadData() {
                     @Override
-                    public void loadDataSortByTime(JSONArray data_list, int load_num,
-                                                   Handler handler, int sort_all) {
-
+                    public void loadDataSortByTime(JSONArray data_list, int load_num, Handler handler, int sort_all) {
+                        // 加载文字数据
+                        int a = 1;
                     }
 
                     @Override
-                    public void loadDataSortByWave(JSONArray data_list, int load_num,
-                                                   Handler handler, int sort_all) {
+                    public void loadDataSortByWave(JSONArray data_list, int load_num, Handler handler, int sort_all) {
 
                     }
-
                 }, true);
                 return share_browse;
             case 2:
                 share_browse = new ShareBrowse(new ShareBrowse.loadData() {
                     @Override
-                    public void loadDataSortByTime(JSONArray data_list, int load_num,
-                                                   Handler handler, int sort_all) {
-
+                    public void loadDataSortByTime(JSONArray data_list, int load_num, Handler handler, int sort_all) {
+                        // 加载视频数据
+                        int a = 2;
                     }
 
                     @Override
-                    public void loadDataSortByWave(JSONArray data_list, int load_num,
-                                                   Handler handler, int sort_all) {
+                    public void loadDataSortByWave(JSONArray data_list, int load_num, Handler handler, int sort_all) {
 
                     }
-                }, true);
+                },true);
                 return share_browse;
             case 3:
                 share_browse = new ShareBrowse(new ShareBrowse.loadData() {
                     @Override
-                    public void loadDataSortByTime(JSONArray data_list, int load_num,
-                                                   Handler handler, int sort_all) {
-
+                    public void loadDataSortByTime(JSONArray data_list, int load_num, Handler handler, int sort_all) {
+                        // 加载音频数据
+                        int a = 3;
                     }
 
                     @Override
-                    public void loadDataSortByWave(JSONArray data_list, int load_num,
-                                                   Handler handler, int sort_all) {
+                    public void loadDataSortByWave(JSONArray data_list, int load_num, Handler handler, int sort_all) {
 
                     }
                 }, true);

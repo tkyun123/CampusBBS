@@ -148,6 +148,7 @@ public class MessageBrowse extends Fragment {
                         break;
                 }
                 SystemService.clearJsonArray(list_data);
+                loading_icon.setAnimation(rotate);
                 loadData();
             }
 
