@@ -17,7 +17,10 @@ import java.util.Map;
 public class DraftActivity extends AppCompatActivity {
 
     public int totalDraft;
+    public int validDraft = 0;
     public List<Map<String, String>> data = new ArrayList<>();
+
+    int user_id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,37 +39,64 @@ public class DraftActivity extends AppCompatActivity {
         SharedPreferences sharedPreferences = DraftActivity.this.getSharedPreferences(
                 "login", Context.MODE_PRIVATE
         );
-        int user_id = sharedPreferences.getInt("user_id", -1);
+        user_id = sharedPreferences.getInt("user_id", -1);
 
-        File file= new File("/data/data/"+getPackageName().toString()+"/shared_prefs","draft_"+ user_id +".xml");
+        File file= new File("/data/data/" + getPackageName() + "/shared_prefs","draft_"+ user_id +".xml");
         if(file.exists()) {
             //file.delete();
-            SharedPreferences share = getSharedPreferences("draft_" + user_id, DraftActivity.this.MODE_PRIVATE);
-            totalDraft = share.getInt("num",0);
-            for(int i = 0; i < totalDraft; i ++) {
-                Map<String, String> map = new HashMap<>();
-                map.put("id", (i + 1) + "");
-                map.put("title", share.getString("title" + (i + 1),""));
-                map.put("content", share.getString("content" + (i + 1),""));
-                data.add(map);
-            }
+            loadData();
         }
         else {
-            SharedPreferences share = getSharedPreferences("draft_" + user_id, DraftActivity.this.MODE_PRIVATE);
-            SharedPreferences.Editor editor = share.edit();
-            editor.putInt("num", 0);
-            editor.commit();
             totalDraft = 0;
+            validDraft = 0;
         }
 
         getSupportFragmentManager().beginTransaction().replace(
                 R.id.draft_fragment_container, new DraftBrowse(new DraftBrowse.loadData() {
                     @Override
                     public void loadDataSortByTime(List<Map<String, String>> data_list) {
-                        for(int i = 0; i < totalDraft; i ++) {
+                        for(int i = 0; i < validDraft; i ++) {
                             data_list.add(data.get(i));
                         }
                     }
                 })).commit();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        loadData();
+        getSupportFragmentManager().beginTransaction().replace(
+                R.id.draft_fragment_container, new DraftBrowse(new DraftBrowse.loadData() {
+                    @Override
+                    public void loadDataSortByTime(List<Map<String, String>> data_list) {
+                        for(int i = 0; i < validDraft; i ++) {
+                            data_list.add(data.get(i));
+                        }
+                    }
+                })).commit();
+    }
+
+    private void loadData() {
+        validDraft = 0;
+        data.clear();
+        SharedPreferences share = getSharedPreferences("draft_" + user_id, DraftActivity.this.MODE_PRIVATE);
+        totalDraft = share.getInt("num",0);
+        for(int i = 0; i < totalDraft; i ++) {
+            boolean is_deleted = share.getBoolean("is_deleted" + (i + 1),false);
+            String id = (i + 1) + "";
+            String newTitle = share.getString("title" + (i + 1),"");
+            String newContent = share.getString("content" + (i + 1),"");
+
+            if(!is_deleted) {
+                Map<String, String> map = new HashMap<>();
+                map.put("id", id);
+                map.put("title", newTitle);
+                map.put("content", newContent);
+                data.add(map);
+                validDraft += 1;
+            }
+        }
     }
 }

@@ -48,6 +48,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class SharePost extends Fragment {
@@ -119,6 +120,7 @@ public class SharePost extends Fragment {
         );
         user_id = sharedPreferences.getInt("user_id", -1);
 
+        // to do
         SharedPreferences sharedPreferencesDraft = getActivity().getSharedPreferences(
                 "draft_" + user_id, Context.MODE_PRIVATE
         );
@@ -383,6 +385,7 @@ public class SharePost extends Fragment {
                 else{
                     Toast.makeText(getContext(), "发布成功", Toast.LENGTH_SHORT)
                             .show();
+                    is_saved = false;
                 }
                 clearAll();
             }
@@ -398,6 +401,15 @@ public class SharePost extends Fragment {
                         "login", Context.MODE_PRIVATE
                 );
                 int user_id = sharedPreferences.getInt("user_id", -1);
+
+                if(is_saved) {
+                    SharedPreferences sharedPreferencesDraft = getActivity().getSharedPreferences(
+                            "draft_" + user_id, Context.MODE_PRIVATE
+                    );
+                    SharedPreferences.Editor editor = sharedPreferencesDraft.edit();
+                    editor.putBoolean("is_deleted" + draft_id, true);
+                    editor.commit();
+                }
 
                 JSONObject jsonObject = new JSONObject();
                 try {
@@ -470,6 +482,8 @@ public class SharePost extends Fragment {
                 message.what = 0;
 
                 try {
+                    Date date = new Date();
+                    SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                     SharedPreferences sharedPreferencesDraft = getActivity().getSharedPreferences(
                             "draft_" + user_id, Context.MODE_PRIVATE
                     );
@@ -477,6 +491,7 @@ public class SharePost extends Fragment {
                     editor.putInt("num",  Integer.parseInt(draft_id));
                     editor.putString("title" + draft_id, title);
                     editor.putString("content" + draft_id, content);
+                    editor.putBoolean("is_deleted" + draft_id, false);
                     editor.commit();
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -580,8 +595,9 @@ public class SharePost extends Fragment {
     }
 
     @Override
-    public void onDestroyView() {
-        super.onDestroyView();
+    public void onDestroy() {
+        super.onDestroy();
+
         share_title = edit_share_title.getText().toString();
         share_content = edit_share_content.getText().toString();
         saveShare(share_title, share_content);
