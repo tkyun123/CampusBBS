@@ -91,7 +91,9 @@ public class CommentBrowse extends Fragment {
                             if(!recycler.canScrollVertically(-1)
                                     &&offset_y>30){
                                 loading_icon.setAnimation(rotate);
+                                loading_icon.setVisibility(View.VISIBLE);
                                 SystemService.clearJsonArray(list_data);
+                                recycler_adapter.notifyDataSetChanged();
                                 loadData();
                                 Log.d("", "onScrollStateChanged: 1");
                             }
@@ -100,6 +102,7 @@ public class CommentBrowse extends Fragment {
                             if(!recycler.canScrollVertically(1)
                                     &&offset_y<-30){
                                 loading_icon.setAnimation(rotate);
+                                loading_icon.setVisibility(View.VISIBLE);
                                 loadData();
                                 Log.d("", "onScrollStateChanged: 2");
                             }
@@ -114,13 +117,13 @@ public class CommentBrowse extends Fragment {
 
         RelativeLayout comment_sort_layout = view.findViewById(R.id.comment_sort_layout);
         TextView sort_text = view.findViewById(R.id.sort_text);
-        comment_sort_layout.setOnClickListener(view1 -> {
-            sort_type = 1-sort_type;
-            sort_text.setText(sort_map.get(sort_type));
-            SystemService.clearJsonArray(list_data);
-            loadData();
-            recycler.scrollToPosition(0);
-        });
+//        comment_sort_layout.setOnClickListener(view1 -> {
+//            sort_type = 1-sort_type;
+//            sort_text.setText(sort_map.get(sort_type));
+//            SystemService.clearJsonArray(list_data);
+//            loadData();
+//            recycler.scrollToPosition(0);
+//        });
 
         data_handler = new Handler(Looper.getMainLooper()){
             @Override
@@ -130,9 +133,12 @@ public class CommentBrowse extends Fragment {
                     recycler_adapter.notifyDataSetChanged();
                 }
                 loading_icon.setAnimation(null);
+                loading_icon.setVisibility(View.INVISIBLE);
             }
         };
 
+        loading_icon.setAnimation(rotate);
+        loading_icon.setVisibility(View.VISIBLE);
         interface_data_load.loadData(list_data, load_num, sort_type, data_handler);
         return view;
     }

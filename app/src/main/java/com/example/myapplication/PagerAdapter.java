@@ -43,13 +43,15 @@ public class PagerAdapter extends FragmentPagerAdapter {
                     @Override
                     public void loadDataSortByTime(JSONArray data_list,
                                                    int load_num, Handler handler, int sort_all) {
-                        shareBrowseLoadData(data_list, load_num, handler, 0);
+                        shareBrowseLoadData(data_list, load_num, handler, Consts.SORT_BY_TIME,
+                                sort_all);
                     }
 
                     @Override
                     public void loadDataSortByWave(JSONArray data_list,
                                                    int load_num, Handler handler, int sort_all) {
-                        shareBrowseLoadData(data_list, load_num, handler, 1);
+                        shareBrowseLoadData(data_list, load_num, handler, Consts.SORT_BY_WAVE,
+                                sort_all);
                     }
                 }, true);
                 return share_browse;
@@ -71,7 +73,7 @@ public class PagerAdapter extends FragmentPagerAdapter {
     }
 
     private void shareBrowseLoadData(JSONArray data_list,
-                                     int load_num, Handler handler, int type){
+                                     int load_num, Handler handler, int type, int sort_all){
         Thread thread = new Thread(){
             @Override
             public void run() {
@@ -82,8 +84,8 @@ public class PagerAdapter extends FragmentPagerAdapter {
                     int user_id = SystemService.getUserId(my_activity);
 
                     String result = HttpRequest.post("/API/get_page_posts",
-                            String.format("page_size=%s&page_index=%s&order_type=%s&uid=%s",
-                                    load_num, page_index, type, user_id),
+                            String.format("page_size=%s&page_index=%s&order_type=%s&uid=%s&sort_type=%s",
+                                    load_num, page_index, type, user_id, sort_all),
                             "form");
                     JSONObject jsonObject = new JSONObject(result);
                     JSONArray array = jsonObject.getJSONArray("data");

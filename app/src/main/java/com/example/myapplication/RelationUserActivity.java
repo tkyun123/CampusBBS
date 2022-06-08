@@ -59,8 +59,7 @@ public class RelationUserActivity extends AppCompatActivity {
         getSupportFragmentManager().beginTransaction().replace(
                 R.id.relation_user_containerView, new UserBrowse((data_list, load_num, handler) -> {
                     loadUserDate(data_list, load_num, handler, relation_type);
-                })
-        );
+                })).commit();
     }
 
     private void loadUserDate(JSONArray data_list,
@@ -75,25 +74,25 @@ public class RelationUserActivity extends AppCompatActivity {
 
                     String url = "";
                     if(relation_type == Consts.RELATION_FOLLOW){
-                        url = SystemService.getBaseUrl()+"/API/get_sub";
+                        url = "/API/get_sub";
                     }
                     else if(relation_type == Consts.RELATION_BLOCK){
-                        url = SystemService.getBaseUrl()+"/API/get_block";
+                        url = "/API/get_block";
                     }
                     else if(relation_type == Consts.RELATION_FOLLOWED){
-                        url = SystemService.getBaseUrl()+"/API/get_";
+                        url = "/API/get__sub";
                     }
                     else{
-                        url = SystemService.getBaseUrl()+"/API";
+                        url = "/API";
                     }
                     String result = HttpRequest.post(url,
-                            String.format("page_size=%s&page_index=%s&uid=%s",
-                                    load_num, page_index,user_id),
-                            null);
+                            String.format("page_size=%s&page_index=%s&uid=%s&uid2=%s",
+                                    load_num, page_index,user_id,my_user_id),
+                            "form");
                     JSONObject jsonObject = new JSONObject(result);
-//                    Log.d("", result);
+                    Log.d("array1:", String.valueOf(jsonObject));
                     JSONArray array = jsonObject.getJSONArray("data");
-                    Log.d("array:", String.valueOf(array));
+
                     for(int i=0;i<array.length();i++){
                         data_list.put(array.getJSONObject(i));
                     }

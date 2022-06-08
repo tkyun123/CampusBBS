@@ -20,7 +20,6 @@
                 android:id="@+id/user_info_profile_photo"
                 android:layout_width="@dimen/user_info_profile_photo_size"
                 android:layout_height="@dimen/user_info_profile_photo_size"
-                android:src="@drawable/default_profile_photo"
                 android:scaleType="fitCenter"/>
 
             <LinearLayout
@@ -240,6 +239,36 @@
                 android:layout_toEndOf="@id/sub_menu_icon3"
                 android:layout_marginStart="5dp"
                 android:text="服务中心" />
+
+            <ImageView
+                android:src="@drawable/ic_right_arrow"
+                android:layout_width="30dp"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:padding="10dp" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/user_info_my_comment_layout"
+            android:layout_width="match_parent"
+            android:layout_height="45dp">
+            <ImageView
+                android:id="@+id/sub_menu_icon4"
+                android:layout_width="30dp"
+                android:layout_height="wrap_content"
+                android:padding="5dp"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="5dp"
+                android:src="@drawable/my_comment_icon" />
+
+            <TextView
+                android:id="@+id/sub_menu_text4"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:layout_toEndOf="@id/sub_menu_icon4"
+                android:layout_marginStart="5dp"
+                android:text="@string/user_info_my_comment" />
 
             <ImageView
                 android:src="@drawable/ic_right_arrow"

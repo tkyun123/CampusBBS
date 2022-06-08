@@ -39,11 +39,13 @@ public class CommentActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         comment_type = intent.getIntExtra("comment_type", -1);
-        if(comment_type == 0){
+        if(comment_type == Consts.COMMENT_FLOOR){
             pid = intent.getIntExtra("pid", -1);
             fid = intent.getIntExtra("fid", -1);
         }
-        uid = SystemService.getUserId(this);
+        else{
+            uid = SystemService.getUserId(this);
+        }
 
         CommentBrowse commentBrowse = new CommentBrowse(
                 this::loadData, comment_type);
@@ -62,10 +64,16 @@ public class CommentActivity extends AppCompatActivity {
                 try {
                     int page_index = (data_list.length()+load_num-1)/load_num;
                     String url = "/API/get_page_comments";
-                    String result = HttpRequest.post(url,
-                            String.format("uid=%s&pid=%s&fid=%s&page_index=%s&page_size=%s",
-                                    uid, pid,fid, page_index, load_num),
-                            "form");
+                    String data = String.format(
+                            "pid=%s&fid=%s&page_index=%s&page_size=%s",
+                            pid,fid, page_index, load_num);
+                    if(comment_type == Consts.COMMENT_USER){
+                        url = "/API/get_page_user_comments";
+                        data = String.format("uid=%s&page_index=%s&page_size=%s",
+                                uid, page_index, load_num);
+                    }
+
+                    String result = HttpRequest.post(url, data, "form");
                     JSONObject jsonObject = new JSONObject(result);
                     JSONArray array = jsonObject.getJSONArray("data");
                     for(int i=0;i<array.length();i++){

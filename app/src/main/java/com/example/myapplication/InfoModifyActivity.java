@@ -48,7 +48,6 @@ public class InfoModifyActivity extends AppCompatActivity {
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
-                Log.d("", String.valueOf(tab.getPosition()));
                 switch (tab.getPosition()){
                     case 0:
                         getSupportFragmentManager().beginTransaction()

@@ -67,6 +67,9 @@ public class ShareRecyclerAdapter extends RecyclerView.Adapter<ShareRecyclerView
             if(object.getInt("relation") == 1){
                 holder.follow_textView.setText(R.string.follow);
             }
+            else{
+                holder.follow_textView.setText("");
+            }
 
             String url = object.getString("pic_url");
             if(!url.equals("null")){
@@ -80,6 +83,9 @@ public class ShareRecyclerAdapter extends RecyclerView.Adapter<ShareRecyclerView
                     }
                 };
                 SystemService.getImage(url, img_handler);
+            }
+            else{
+                holder.profile_photo_imageView.setImageResource(R.drawable.default_profile_photo);
             }
 
             if(holder.user_id != SystemService.getUserId(my_activity)){

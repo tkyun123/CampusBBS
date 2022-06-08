@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.fragment.app.FragmentActivity;
@@ -18,6 +19,7 @@ public class UserRecyclerViewHolder extends RecyclerView.ViewHolder {
     public Button browse_share_button;
     public Button follow_state_button;
     public Button block_state_button;
+    public LinearLayout interact_layout;
 
     public int user_id;
     public int my_relation;
@@ -31,5 +33,6 @@ public class UserRecyclerViewHolder extends RecyclerView.ViewHolder {
         browse_share_button = itemView.findViewById(R.id.user_browse_share_button);
         follow_state_button = itemView.findViewById(R.id.user_follow_state_button);
         block_state_button = itemView.findViewById(R.id.user_block_state_button);
+        interact_layout = itemView.findViewById(R.id.user_browse_item_interact_layout);
     }
 }

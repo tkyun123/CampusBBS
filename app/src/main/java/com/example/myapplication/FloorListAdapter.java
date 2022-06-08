@@ -89,11 +89,19 @@ public class FloorListAdapter extends RecyclerView.Adapter<FloorListViewHolder> 
                 });
             }
 
+            if(holder.user_id != SystemService.getUserId(my_activity)){
+                holder.profile_photo_imageView.setOnClickListener(view -> {
+                    Intent intent = new Intent(my_activity, UserInfoActivity.class);
+                    intent.putExtra("user_id", holder.user_id);
+                    my_activity.startActivity(intent);
+                });
+            }
+
             holder.comment_show.setOnClickListener(view -> {
                 Intent intent = new Intent(my_activity, CommentActivity.class);
                 intent.putExtra("pid", my_pid);
                 intent.putExtra("fid", fid);
-                intent.putExtra("comment_type", 0);
+                intent.putExtra("comment_type", Consts.COMMENT_FLOOR);
                 my_activity.startActivity(intent);
             });
 

@@ -6,6 +6,7 @@ import android.graphics.BitmapFactory;
 import android.media.MediaCodec;
 import android.net.Uri;
 import android.util.Base64;
+import android.util.Log;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -15,10 +16,12 @@ import java.nio.charset.StandardCharsets;
 
 public class Codec {
 
-    public static String imageUriToBase64(Uri uri, ContentResolver cr) {
+    public static String imageUriToBase64(Uri uri, ContentResolver cr, boolean resize) {
         try {
             Bitmap bitmap = BitmapFactory.decodeStream(cr.openInputStream(uri));
-            bitmap = SystemService.bitmapResize(bitmap, 50, 50);
+            if(resize){
+                bitmap = SystemService.bitmapResize(bitmap, 50, 50);
+            }
             ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
             bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
             return Base64.encodeToString(byteArrayOutputStream.toByteArray(), Base64.DEFAULT);
@@ -40,11 +43,31 @@ public class Codec {
                 byteArrayOutputStream.write(bytes,0 ,len);
             }
 
-            return byteArrayOutputStream.toString("UTF-8");
-//            return Base64.encodeToString(byteArrayOutputStream.toByteArray(), Base64.DEFAULT);
+//            return byteArrayOutputStream.toString("UTF-8");
+            return Base64.encodeToString(byteArrayOutputStream.toByteArray(), Base64.DEFAULT);
         } catch (IOException e) {
             e.printStackTrace();
             return "error";
         }
     }
+
+//    public static byte[] videoUriToBase64(Uri uri, ContentResolver cr){
+//        try {
+//            int byte_size = 1024;
+//            InputStream inputStream = cr.openInputStream(uri);
+//
+//            byte[] bytes = new byte[byte_size];
+//            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+//            int len;
+//            while((len=inputStream.read(bytes))!=-1){
+//                byteArrayOutputStream.write(bytes,0 ,len);
+//            }
+//
+//            return byteArrayOutputStream.toByteArray();
+////            return Base64.encodeToString(byteArrayOutputStream.toByteArray(), Base64.DEFAULT);
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//            return null;
+//        }
+//    }
 }

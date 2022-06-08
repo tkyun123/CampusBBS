@@ -2,15 +2,22 @@ package com.example.myapplication;
 
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.NotificationCompat;
 import androidx.viewpager.widget.ViewPager;
 
 import android.annotation.SuppressLint;
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
+import android.net.wifi.aware.WifiAwareNetworkSpecifier;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.JsonReader;
 import android.util.Log;
@@ -40,6 +47,8 @@ public class MainActivity extends AppCompatActivity {
     public ViewPager pager;
     public PagerAdapter adapter;
     public BottomNavigationView navigator;
+    public Menu menu;
+
     @SuppressLint({"NonConstantResourceId", "RestrictedApi"})
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +64,7 @@ public class MainActivity extends AppCompatActivity {
         adapter = new PagerAdapter(getSupportFragmentManager(),navigator.getMaxItemCount(), this);
         pager.setAdapter(adapter);
 
+        menu = navigator.getMenu();
 
         Map<Integer, Integer> map = new HashMap<>();
         map.put(R.id.tab_browse, 0);
@@ -101,8 +111,23 @@ public class MainActivity extends AppCompatActivity {
         // 草稿箱多媒体资源的根目录；每创建一个草稿，这个目录下创建一个子目录(可以通过时间戳来分别)用来存储多媒体资源的缓存
         // 子目录直到草稿删除再删除
         FileOperation.createDir(this, "/drafts");
-        FileOperation.clearDir(this, "/multimedia");
+//        FileOperation.clearDir(this, "/multimedia");
 
+        // 音视频缓存目录
+        FileOperation.createDir(this,  "/tmp");
+
+        if(SystemService.checkLogin(this)){
+            Intent intent = new Intent(this, AskForNoticeService.class);
+            intent.putExtra("user_id",  SystemService.getUserId(this));
+            startService(intent);
+        }
+//        SystemService.clearInfo(this);
+        FileOperation.listFile(this, "");
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        FileOperation.clearDir(this, "/tmp");
+    }
 }

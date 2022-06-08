@@ -32,10 +32,16 @@ import com.example.myapplication.datatype.UserInfoStorage;
 
 import org.json.JSONArray;
 
+import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 public class SystemService {
@@ -151,15 +157,6 @@ public class SystemService {
         editor.apply();
     }
 
-    public static void getInfo(Activity activity, UserInfoStorage user) {
-        SharedPreferences sharedPreferences = activity.getSharedPreferences(
-                "login", Context.MODE_PRIVATE);
-        user.user_id = sharedPreferences.getInt("user_id", -1);
-        user.nickName = sharedPreferences.getString("nickName", null);
-        user.introduction = sharedPreferences.getString("introduction", null);
-        user.profile_photo_url = sharedPreferences.getString("profile_photo_url", null);
-    }
-
     public static void clearInfo(Activity activity){
         SharedPreferences sharedPreferences = activity.getSharedPreferences(
                 "login", Context.MODE_PRIVATE);
@@ -199,16 +196,20 @@ public class SystemService {
         return Bitmap.createBitmap(bitmap, 0, 0, width, height, matrix, true);
     }
 
+    public static String getBaseUrl(){
+        return "http://183.172.178.102:5000";
+    }
+
     public static Bitmap getBitmapFromUrl(String url){
         try{
-            return BitmapFactory.decodeStream(new URL(url).openStream());
+            final InputStream inputStream = new URL(url).openStream();
+            Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
+            inputStream.close();
+            return bitmap;
         }catch (IOException e){
             e.printStackTrace();
             return null;
         }
-    }
-    public static String getBaseUrl(){
-        return "http://183.172.179.163:5000";
     }
 
     public static void getImage(String url, Handler handler){
@@ -220,6 +221,42 @@ public class SystemService {
                 Bitmap bitmap = getBitmapFromUrl(url);
                 Bundle bundle = new Bundle();
                 bundle.putParcelable("image", bitmap);
+                message.setData(bundle);
+                handler.sendMessage(message);
+            }
+        };
+        thread.start();
+    }
+
+
+    // 根据url获取网络流并将数据保存在本地，返回文件路径uri
+    public static void getVideo(Context context, String url, String file_name, Handler handler){
+        Thread thread = new Thread(){
+            @Override
+            public void run() {
+                super.run();
+                Message message = new Message();
+                String save_path = FileOperation.generatePath(context, "/tmp", file_name);
+                FileOperation.saveFileFromUrl(url, save_path);
+                Bundle bundle = new Bundle();
+                bundle.putParcelable("uri", FileOperation.getUriFromFilepath(context, save_path));
+                message.setData(bundle);
+                handler.sendMessage(message);
+            }
+        };
+        thread.start();
+    }
+
+    public static void getAudio(Context context, String url,  String file_name, Handler handler){
+        Thread thread = new Thread(){
+            @Override
+            public void run() {
+                super.run();
+                Message message = new Message();
+                String save_path = FileOperation.generatePath(context, "/tmp", file_name);
+                FileOperation.saveFileFromUrl(url, save_path);
+                Bundle bundle = new Bundle();
+                bundle.putParcelable("uri", FileOperation.getUriFromFilepath(context, save_path));
                 message.setData(bundle);
                 handler.sendMessage(message);
             }

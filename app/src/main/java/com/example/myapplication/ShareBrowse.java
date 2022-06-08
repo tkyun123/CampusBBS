@@ -49,7 +49,7 @@ public class ShareBrowse extends Fragment{
     public TextView sort_text;
 
     private final Map<Integer, Integer> sort_map = new HashMap<>();
-    private int sort_all_type = 1;  // 只查看已关注的人还是所有人
+    private int sort_all_type = Consts.SORT_ALL;  // 只查看已关注的人还是所有人
     private int sort_type = 0; // 默认按时间排序
 
     private boolean sort_all = false;
@@ -101,7 +101,9 @@ public class ShareBrowse extends Fragment{
                             if(!recycler.canScrollVertically(-1)
                                     &&offset_y>30){
                                 loading_icon.setAnimation(rotate);
+                                loading_icon.setVisibility(View.VISIBLE);
                                 SystemService.clearJsonArray(list_data);
+                                recycler_adapter.notifyDataSetChanged();
                                 loadData();
                                 Log.d("", "onScrollStateChanged: 1");
                             }
@@ -110,6 +112,8 @@ public class ShareBrowse extends Fragment{
                             if(!recycler.canScrollVertically(1)
                                     &&offset_y<-30){
                                 loading_icon.setAnimation(rotate);
+                                loading_icon.setVisibility(View.VISIBLE);
+                                recycler_adapter.notifyDataSetChanged();
                                 loadData();
                                 Log.d("", "onScrollStateChanged: 2");
                             }
@@ -128,6 +132,7 @@ public class ShareBrowse extends Fragment{
             sort_type = 1-sort_type;
             sort_text.setText(sort_map.get(sort_type));
             SystemService.clearJsonArray(list_data);
+            recycler_adapter.notifyDataSetChanged();
             loadData();
             recycler.scrollToPosition(0);
         });
@@ -136,16 +141,18 @@ public class ShareBrowse extends Fragment{
             sort_all_layout = view.findViewById(R.id.share_sort_all_layout);
             sort_all_text = view.findViewById(R.id.share_sort_all_text);
             sort_all_layout.setOnClickListener(view1 -> {
-                sort_all_type = 1-sort_all_type;
-                Log.d("", String.valueOf(sort_all_type));
-                if(sort_all_type == 0){
-                    sort_all_text.setText(R.string.sort_follow_text);
-                }
-                else{
+                if(sort_all_type == Consts.SORT_FOLLOW){
+                    sort_all_type = Consts.SORT_ALL;
                     sort_all_text.setText(R.string.sort_all_text);
                 }
+                else{
+                    sort_all_type = Consts.SORT_FOLLOW;
+                    sort_all_text.setText(R.string.sort_follow_text);
+                }
                 SystemService.clearJsonArray(list_data);
+                recycler_adapter.notifyDataSetChanged();
                 loading_icon.setAnimation(rotate);
+                loading_icon.setVisibility(View.VISIBLE);
                 loadData();
                 recycler.scrollToPosition(0);
             });
@@ -161,9 +168,12 @@ public class ShareBrowse extends Fragment{
                     recycler_adapter.notifyDataSetChanged();
                 }
                 loading_icon.setAnimation(null);
+                loading_icon.setVisibility(View.INVISIBLE);
             }
         };
 
+        loading_icon.setAnimation(rotate);
+        loading_icon.setVisibility(View.VISIBLE);
         loadData();
         return view;
     }

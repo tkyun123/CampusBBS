@@ -24,7 +24,7 @@
                 android:id="@+id/sort_text"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:text="@string/sort_earliest"
+                android:text="@string/sort_latest"
                 android:layout_alignParentRight="true"
                 android:gravity="center"/>
         </RelativeLayout>

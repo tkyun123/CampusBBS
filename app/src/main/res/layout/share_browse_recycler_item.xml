@@ -15,7 +15,6 @@
             android:id="@+id/share_browse_recycler_item_profile_photo"
             android:layout_width="@dimen/share_browse_recycler_item_photo_size"
             android:layout_height="@dimen/share_browse_recycler_item_photo_size"
-            android:src="@drawable/default_profile_photo"
             android:scaleType="fitCenter"/>
         <TextView
             android:id="@+id/share_browse_recycler_item_nickName"

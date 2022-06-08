@@ -3,8 +3,10 @@ package com.example.myapplication;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.drawable.Icon;
 import android.media.Image;
+import android.nfc.cardemulation.HostNfcFService;
 import android.os.Build;
 import android.os.Bundle;
 
@@ -21,6 +23,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,9 +33,11 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.MediaController;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.VideoView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -101,6 +106,7 @@ public class ShareBrowseDetailActivity extends AppCompatActivity {
         floor_sort_layout.setOnClickListener(view -> {
             sort_type = 1-sort_type;
             SystemService.clearJsonArray(list_data);
+            adapter.notifyDataSetChanged();
             loading_icon.setAnimation(rotate);
             loadData();
             sort_text.setText(sort_type == 0?R.string.sort_earliest:
@@ -144,6 +150,7 @@ public class ShareBrowseDetailActivity extends AppCompatActivity {
                                     &&offset_y>30){
                                 loading_icon.setAnimation(rotate);
                                 SystemService.clearJsonArray(list_data);
+                                adapter.notifyDataSetChanged();
                                 loadData();
                                 Log.d("", "onScrollStateChanged: 1");
                             }
@@ -182,10 +189,10 @@ public class ShareBrowseDetailActivity extends AppCompatActivity {
                                     load_num, page_index, sort_type, user_id, pid),
                             "form");
                     JSONObject jsonObject = new JSONObject(result);
-//                    Log.d("", result);
                     JSONArray array = jsonObject.getJSONArray("data");
 
-                    if(!main_floor_init_flag){
+                    if(page_index == 0){
+                        // 首页额外处理
                         main_floor_object = array.getJSONObject(0);
                         for(int i=1;i<array.length();i++){
                             list_data.put(array.getJSONObject(i));
@@ -220,6 +227,8 @@ public class ShareBrowseDetailActivity extends AppCompatActivity {
         LinearLayout like_layout = findViewById(R.id.share_detail_like_layout);
         ImageView comment_add_textView = findViewById(R.id.share_detail_comment_add_button);
         ImageView share_icon = findViewById(R.id.share_detail_share_icon);
+
+        LinearLayout multimedia_layout =  findViewById(R.id.share_detail_multimedia_layout);
 
         int uid = SystemService.getUserId(this);
 
@@ -265,6 +274,96 @@ public class ShareBrowseDetailActivity extends AppCompatActivity {
             like_state = main_floor_object.getInt("agree_state");
 
             String url = main_floor_object.getString("pic_url");
+
+            int type = main_floor_object.getInt("type");
+            int share_type = -1;
+            if(type == 0){
+                share_type = Consts.TYPE_TEXT;
+
+            }
+            else if(type == 1){
+                share_type = Consts.TYPE_AUDIO;
+            }
+            else if(type == 2){
+                share_type = Consts.TYPE_VIDEO;
+            }
+
+            JSONArray url_array = main_floor_object.getJSONArray("urls");
+            Log.d("urls:", String.valueOf(url_array));
+            View new_add_view = null;
+            if(url_array.length()>0){
+                for(int i=0;i<url_array.length();i++){
+                    String multimedia_url = SystemService.getBaseUrl()+url_array.getString(i);
+                    switch (share_type){
+                        case Consts.TYPE_TEXT:
+                            new_add_view = LayoutInflater.from(this).inflate(
+                                    R.layout.image_add_item, null
+                            );
+                            ImageView new_add_imageView = new_add_view.findViewById(
+                                    R.id.new_add_imageView);
+                            SystemService.getImage(multimedia_url,
+                                    new Handler(Looper.getMainLooper()){
+                                        @Override
+                                        public void handleMessage(@NonNull Message msg) {
+                                            super.handleMessage(msg);
+                                            Bitmap bitmap = msg.getData().getParcelable("image");
+                                            new_add_imageView.setImageBitmap(bitmap);
+                                        }
+                                    });
+                            new_add_view.findViewById(R.id.multimedia_delete_icon).setVisibility(
+                                    View.INVISIBLE
+                            );
+                            break;
+                        case Consts.TYPE_AUDIO:
+                            new_add_view = LayoutInflater.from(this).inflate(
+                                    R.layout.audio_add_item, null
+                            );
+                            VideoView new_add_audioView = new_add_view.findViewById(
+                                    R.id.new_add_videoView);
+                            new_add_audioView.setBackground(getResources().getDrawable(
+                                    R.drawable.audio_background));
+                            new_add_audioView.setMediaController(new MediaController(this));
+                            SystemService.getAudio(this, multimedia_url,
+                                    String.format("%s_%s.mp3", pid, i),
+                                    new Handler(Looper.getMainLooper()){
+                                        @Override
+                                        public void handleMessage(@NonNull Message msg) {
+                                            super.handleMessage(msg);
+                                            new_add_audioView.setVideoURI(
+                                                    msg.getData().getParcelable("uri"));
+                                            new_add_audioView.start();
+                                        }
+                                    });
+                            new_add_view.findViewById(R.id.multimedia_delete_icon).setVisibility(
+                                    View.INVISIBLE
+                            );
+                            break;
+                        case Consts.TYPE_VIDEO:
+                            new_add_view = LayoutInflater.from(this).inflate(
+                                    R.layout.video_add_item, null
+                            );
+                            VideoView new_add_videoView = new_add_view.findViewById(
+                                    R.id.new_add_videoView);
+                            new_add_videoView.setMediaController(new MediaController(this));
+                            SystemService.getVideo(this, multimedia_url,
+                                    String.format("%s_%s.mp4", pid, i),
+                                    new Handler(Looper.getMainLooper()){
+                                        @Override
+                                        public void handleMessage(@NonNull Message msg) {
+                                            super.handleMessage(msg);
+                                            new_add_videoView.setVideoURI(
+                                                    msg.getData().getParcelable("uri"));
+                                        }
+                                    });
+                            new_add_view.findViewById(R.id.multimedia_delete_icon).setVisibility(
+                                    View.INVISIBLE
+                            );
+                            break;
+                    };
+                    multimedia_layout.addView(new_add_view);
+                }
+            }
+
             if(!url.equals("null")){
                 url = SystemService.getBaseUrl()+url;
                 Handler img_handler = new Handler(Looper.getMainLooper()){

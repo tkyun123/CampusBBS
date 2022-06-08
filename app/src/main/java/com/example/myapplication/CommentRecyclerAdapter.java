@@ -99,7 +99,7 @@ public class CommentRecyclerAdapter extends RecyclerView.Adapter<CommentRecycler
                 my_activity.startActivity(intent);
             });
 
-            if(comment_type == 1){
+            if(comment_type == Consts.COMMENT_USER){
                 // 自己的评论，增加删除按钮
                 Handler handler = new Handler(Looper.getMainLooper()){
                     @Override
@@ -114,7 +114,7 @@ public class CommentRecyclerAdapter extends RecyclerView.Adapter<CommentRecycler
                     }
                 };
                 holder.delete_icon.setOnClickListener(view -> {
-
+                    deleteComment(holder.pid, holder.fid, holder.cid, handler);
                 });
             }
         } catch (JSONException e) {
@@ -127,7 +127,7 @@ public class CommentRecyclerAdapter extends RecyclerView.Adapter<CommentRecycler
         return data.length();
     }
 
-    private void deleteComment(int uid, int pid, int fid, int cid,
+    private void deleteComment(int pid, int fid, int cid,
                                Handler handler){
         Thread thread = new Thread(){
             @Override
@@ -135,11 +135,16 @@ public class CommentRecyclerAdapter extends RecyclerView.Adapter<CommentRecycler
                 super.run();
                 Message message = new Message();
                 try{
-                    String result = HttpRequest.post("",
-                            "",
+                    String result = HttpRequest.post("/API/del_comment",
+                            String.format("pid=%s&fid=%s&cid=%s",pid,fid,cid),
                             "form");
                     JSONObject jsonObject = new JSONObject(result);
-                    message.what = 0;
+                    if(jsonObject.getInt("state") == 1){
+                        message.what = 0;
+                    }
+                    else{
+                        message.what = -1;
+                    }
                 }catch (JSONException e){
                     e.printStackTrace();
                     message.what = -1;

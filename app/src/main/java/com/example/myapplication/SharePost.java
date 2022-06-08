@@ -80,9 +80,6 @@ public class SharePost extends Fragment {
     private final static int MULTIMEDIA_VIDEO= 3;
     private int multimedia_state = MULTIMEDIA_IMAGE;// 0表示选择图片，1表示选择音乐, 2表示视频
 
-//    private int image_num = 0;
-//    private int audio_num = 0;
-//    private int video_num = 0;
     private int multimedia_num = 0;
 
     private final JSONArray multimedia_list = new JSONArray();
@@ -115,6 +112,7 @@ public class SharePost extends Fragment {
         share_post.setOnClickListener(view1 -> {
             if(checkPostValid()){
                 loading_icon.setAnimation(rotate);
+                loading_icon.setVisibility(View.VISIBLE);
                 postShare(share_title, share_content);
             }
         });
@@ -130,7 +128,6 @@ public class SharePost extends Fragment {
         image_add_launcher = registerForActivityResult(
                 new ActivityResultContracts.TakePicture(), (result)->{
                     if(result){
-
                         addMultimediaView(save_uri);
                     }
                 }
@@ -176,7 +173,6 @@ public class SharePost extends Fragment {
                 super.handleMessage(msg);
                 if(msg.what == 0){
                     location = msg.getData().getString("location");
-                    Log.d("", location);
                 }
                 loading_icon.setAnimation(null);
             }
@@ -249,12 +245,10 @@ public class SharePost extends Fragment {
             intent.putExtra(MediaStore.EXTRA_OUTPUT, save_uri);
             video_add_launcher.launch(intent);
         }
-        Log.d("path:", path);
     }
 
     private String generatePath(String filetype){
         // 根据时间戳生成文件路径
-        long n = 0;
         String path;
         path = String.format("%s/%s%s",SAVE_PATH, new Date().getTime(), filetype);
         return path;
@@ -296,13 +290,13 @@ public class SharePost extends Fragment {
 //            new_add_videoView.start();
         }
         try{
-            object.put("uri", uri);
+            object.put("uri", uri.toString());
             object.put("type", type);
         } catch (JSONException e) {
             e.printStackTrace();
         }
         multimedia_list.put(object);
-        ImageView delete_icon = new_add_view.findViewById(R.id.image_delete_icon);
+        ImageView delete_icon = new_add_view.findViewById(R.id.multimedia_delete_icon);
         delete_icon.setOnClickListener((view) -> {
             multimedia_layout.removeView(new_add_view);
             multimedia_list.remove(multimedia_list.length()-1);
@@ -325,6 +319,7 @@ public class SharePost extends Fragment {
             @Override
             public void handleMessage(@NonNull Message msg) {
                 super.handleMessage(msg);
+                loading_icon.setVisibility(View.INVISIBLE);
                 loading_icon.setAnimation(null);
                 if(msg.what == -1){
                     Toast.makeText(getContext(), "发布失败，请稍后再试", Toast.LENGTH_SHORT)
@@ -333,8 +328,8 @@ public class SharePost extends Fragment {
                 else{
                     Toast.makeText(getContext(), "发布成功", Toast.LENGTH_SHORT)
                             .show();
+                    clearAll();
                 }
-                clearAll();
             }
         };
 
@@ -344,10 +339,8 @@ public class SharePost extends Fragment {
                 super.run();
                 Message message = new Message();
                 message.what = 0;
-                SharedPreferences sharedPreferences = getActivity().getSharedPreferences(
-                        "login", Context.MODE_PRIVATE
-                );
-                int user_id = sharedPreferences.getInt("user_id", -1);
+
+                int user_id = SystemService.getUserId(getActivity());
 
                 JSONObject jsonObject = new JSONObject();
                 try {
@@ -355,26 +348,88 @@ public class SharePost extends Fragment {
                     jsonObject.put("title", title);
                     jsonObject.put("text", content);
                     jsonObject.put("theme", 0);
-                    jsonObject.put("type",0);
+                    int type = -1;
+                    if(share_type == TEXT || share_type == IMAGE){
+                        type = 0;
+                    }
+                    else if(share_type == VIDEO){
+                        type = 2;
+                    }
+                    else if(share_type == AUDIO){
+                        type = 1;
+                    }
+                    jsonObject.put("type",type);
                     if(location_switch.isChecked()){
                         jsonObject.put("position", location);
                     }
                     else{
                         jsonObject.put("position","");
                     }
+
+                    String result = HttpRequest.post("/API/new_post",
+                            jsonObject.toString(), "json");
+
+                    if(result.equals("error")){
+                        message.what = -1;
+                    }
+                    else{
+                        message.what = 0;
+                        // 传输多媒体资源
+                        if(share_type != TEXT){
+                            JSONObject post_result = new JSONObject(result);
+                            int pid = post_result.getInt("pid");
+
+                            JSONObject object = new JSONObject();
+                            JSONArray list = new JSONArray();
+
+                            object.put("uid", user_id);
+                            object.put("pid", pid);
+                            object.put("fid", 0);
+                            for(int i=0;i<multimedia_list.length();i++){
+                                JSONObject multimedia_object = new JSONObject();
+                                Uri add_uri = Uri.parse(multimedia_list.getJSONObject(i).
+                                        getString("uri"));
+                                if(share_type == IMAGE){
+                                    multimedia_object.put("mul_type", "pic");
+                                    multimedia_object.put("filename",
+                                            String.format("%s_%s.jpg", pid, user_id));
+                                    multimedia_object.put("data",
+                                            Codec.imageUriToBase64(add_uri,
+                                                    getActivity().getContentResolver(),
+                                                    false));
+                                }
+                                else if(share_type == VIDEO) {
+                                    multimedia_object.put("mul_type", "video");
+                                    multimedia_object.put("filename",
+                                            String.format("%s_%s.mp4", pid, user_id));
+                                    multimedia_object.put("data",
+                                            Codec.videoUriToBase64(add_uri, getActivity().getContentResolver()));
+                                }
+                                else if(share_type == AUDIO){
+                                    multimedia_object.put("mul_type", "video");
+                                    multimedia_object.put("filename",
+                                            String.format("%s_%s.mp3", pid, user_id));
+                                    multimedia_object.put("data",
+                                            Codec.videoUriToBase64(add_uri, getActivity().getContentResolver()));
+                                }
+                                list.put(multimedia_object);
+                            }
+                            object.put("source_data", list);
+
+                            String multimedia_result = HttpRequest.post("/API/update",
+                                    object.toString(), "json");
+                            JSONObject multimedia_object = new JSONObject(multimedia_result);
+                            if(multimedia_object.getInt("update_state") == 1){
+                                message.what = 0;
+                            }
+                            else{
+                                message.what = -1;
+                            }
+                        }
+                    }
                 } catch (JSONException e) {
                     e.printStackTrace();
                     message.what = -1;
-                    return;
-                }
-                Log.d("", jsonObject.toString());
-                String result = HttpRequest.post("/API/new_post",
-                        jsonObject.toString(), "json");
-                if(result.equals("error")){
-                    message.what = -1;
-                }
-                else{
-                    message.what = 0;
                 }
                 handler.sendMessage(message);
             }

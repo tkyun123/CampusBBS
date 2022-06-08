@@ -30,6 +30,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MyApplication"
         android:usesCleartextTraffic="true">
+        <service android:name=".AskForNoticeService" />
         <activity
             android:name=".UserInfoActivity"
             android:exported="false" />

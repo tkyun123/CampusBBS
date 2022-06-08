@@ -70,6 +70,7 @@ public class UserBrowse extends Fragment {
                     recycler_adapter.notifyDataSetChanged();
                 }
                 loading_icon.setAnimation(null);
+                loading_icon.setVisibility(View.INVISIBLE);
             }
         };
 
@@ -90,7 +91,9 @@ public class UserBrowse extends Fragment {
                             if(!recycler.canScrollVertically(-1)
                                     &&offset_y>30){
                                 loading_icon.setAnimation(rotate);
+                                loading_icon.setVisibility(View.VISIBLE);
                                 SystemService.clearJsonArray(list_data);
+                                recycler_adapter.notifyDataSetChanged();
                                 loadData();
                                 Log.d("", "onScrollStateChanged: 1");
                             }
@@ -99,6 +102,7 @@ public class UserBrowse extends Fragment {
                             if(!recycler.canScrollVertically(1)
                                     &&offset_y<-30){
                                 loading_icon.setAnimation(rotate);
+                                loading_icon.setVisibility(View.VISIBLE);
                                 loadData();
                                 Log.d("", "onScrollStateChanged: 2");
                             }
@@ -112,8 +116,8 @@ public class UserBrowse extends Fragment {
         });
 
         loading_icon.setAnimation(rotate);
+        loading_icon.setVisibility(View.VISIBLE);
         interface_data_load.loadData(list_data, load_num, handler);
-
         return view;
     }
 

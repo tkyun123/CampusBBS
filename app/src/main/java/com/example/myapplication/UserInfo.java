@@ -68,6 +68,8 @@ public class UserInfo extends Fragment {
     private Button follow_button;
     private Button block_button;
 
+    private RelativeLayout my_comment_layout;
+
     private ImageView loading_icon;
     private Animation rotate;
 
@@ -121,6 +123,8 @@ public class UserInfo extends Fragment {
 
         follow_button = view.findViewById(R.id.user_info_follow_button);
         block_button = view.findViewById(R.id.user_info_block_button);
+
+        my_comment_layout = view.findViewById(R.id.user_info_my_comment_layout);
 
         RelativeLayout relation_layout = view.findViewById(R.id.user_info_relation_layout);
         if(my_flag == FLAG_SELF){
@@ -177,6 +181,9 @@ public class UserInfo extends Fragment {
     }
 
     private void changeToLogoutState(){
+        Intent intent = new Intent(getContext(), AskForNoticeService.class);
+        getActivity().stopService(intent);
+
         login_button.setText(R.string.user_info_login_text);
         login_button.setOnClickListener((view1 -> {
             login_launcher.launch(new Intent(getActivity(), LoginActivity.class));
@@ -281,6 +288,12 @@ public class UserInfo extends Fragment {
                             });
                             photo_path = url;
                         }
+                        else{
+                            profile_photo_imageView.post(() -> {
+                                profile_photo_imageView.setImageResource(
+                                        R.drawable.default_profile_photo);
+                            });
+                        }
 
                         message.setData(bundle);
                         message.what = 0;
@@ -307,6 +320,11 @@ public class UserInfo extends Fragment {
                         user.user_id = user_id;
                         SystemService.addInfo(getActivity(), user);
                         getUserInfo();
+
+                        Intent notice_check_intent = new Intent(
+                                getActivity(), AskForNoticeService.class);
+                        notice_check_intent.putExtra("user_id", user_id);
+                        getActivity().startService(notice_check_intent);
                     }
                 });
         info_modify_launcher = registerForActivityResult(
@@ -325,12 +343,15 @@ public class UserInfo extends Fragment {
             getActivity().startActivity(intent);
         });
 
-        block_layout.setOnClickListener(view1 -> {
-            Intent intent = new Intent(getActivity(), RelationUserActivity.class);
-            intent.putExtra("type", Consts.RELATION_BLOCK);
-            intent.putExtra("user_id", user_id);
-            getActivity().startActivity(intent);
-        });
+        // 不能查看他人的屏蔽列表
+        if(user_id == SystemService.getUserId(getActivity())) {
+            block_layout.setOnClickListener(view1 -> {
+                Intent intent = new Intent(getActivity(), RelationUserActivity.class);
+                intent.putExtra("type", Consts.RELATION_BLOCK);
+                intent.putExtra("user_id", user_id);
+                getActivity().startActivity(intent);
+            });
+        }
 
         followed_layout.setOnClickListener(view1 -> {
             Intent intent = new Intent(getActivity(), RelationUserActivity.class);
@@ -342,6 +363,13 @@ public class UserInfo extends Fragment {
         share_layout.setOnClickListener(view1 -> {
             Intent intent = new Intent(getActivity(), UserShareActivity.class);
             intent.putExtra("user_id", user_id);
+            getActivity().startActivity(intent);
+        });
+
+        my_comment_layout.setOnClickListener(view -> {
+            Intent intent = new Intent(getActivity(), CommentActivity.class);
+            intent.putExtra("user_id", user_id);
+            intent.putExtra("comment_type", Consts.COMMENT_USER);
             getActivity().startActivity(intent);
         });
     }
@@ -380,6 +408,7 @@ public class UserInfo extends Fragment {
             ShareOperation.change_relation(agent_id, user_id,
                     handler, new_relation);
         });
+
         block_button.setOnClickListener(view -> {
             int new_relation;
             if(relation != Consts.RELATION_BLOCK){

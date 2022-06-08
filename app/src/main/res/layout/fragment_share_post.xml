@@ -133,5 +133,4 @@
             android:backgroundTint="@color/white"
             android:layout_alignParentEnd="true"/>
     </RelativeLayout>
-
 </FrameLayout>

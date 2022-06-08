@@ -51,7 +51,7 @@ public class MessageRecyclerAdapter extends RecyclerView.Adapter<MessageRecycler
         try {
             JSONObject object = data.getJSONObject(position);
             holder.content_textView.setText(object.getString("text"));
-            Date date = new Date(object.getLong("post_time")*1000);
+            Date date = new Date(object.getLong("time")*1000);
             holder.time_textView.setText(Consts.date_format.format(date));
 
 //            holder.delete_icon.setOnClickListener(view -> {

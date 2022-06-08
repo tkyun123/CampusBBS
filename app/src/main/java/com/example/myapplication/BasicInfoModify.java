@@ -159,7 +159,7 @@ public class BasicInfoModify extends Fragment {
                                     user_id, nickName, introduction),
                             "form");
                     JSONObject jsonObject = new JSONObject(result);
-                    if(jsonObject.getInt("user_change_state") == 1){
+                    if(jsonObject.getInt("user_info_state") == 1){
                         message.what = 0;
                     }
                     else{
@@ -174,9 +174,11 @@ public class BasicInfoModify extends Fragment {
                         image_object.put("mul_type", "pic");
                         image_object.put("filename", String.format("%s.jpg",user_id));
                         image_object.put("data",
-                                Codec.imageUriToBase64(new_uri, getActivity().getContentResolver()));
+                                Codec.imageUriToBase64(new_uri, getActivity().getContentResolver(),
+                                        true));
                         image_list.put(image_object);
                         object.put("source_data", image_list);
+
 
                         String profile_photo_result = HttpRequest.post("/API/update",
                                 object.toString(), "json");

@@ -25,6 +25,11 @@
                 android:textColor="@color/message_clearAll_textColor" />
         </RelativeLayout>
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="@color/fourth_dark_line_color"/>
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/message_recyclerView"
             android:layout_width="match_parent"

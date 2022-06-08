@@ -1,10 +1,13 @@
 package com.example.myapplication;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
+import android.media.Image;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
+import android.util.AttributeSet;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -16,6 +19,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -46,6 +50,8 @@ public class MessageBrowse extends Fragment {
 //    private MessageBrowse.loadData interface_data_load;
     ImageView loading_icon;
     Animation rotate;
+
+    private boolean uncheck = false;
 
     int sy;
     private boolean pullup = false; // 记录滑动状态，以便上滑更新
@@ -89,7 +95,9 @@ public class MessageBrowse extends Fragment {
                             if(!recycler.canScrollVertically(-1)
                                     &&offset_y>30){
                                 loading_icon.setAnimation(rotate);
+                                loading_icon.setVisibility(View.VISIBLE);
                                 SystemService.clearJsonArray(list_data);
+                                recycler_adapter.notifyDataSetChanged();
                                 loadData();
                                 Log.d("", "onScrollStateChanged: 1");
                             }
@@ -98,6 +106,7 @@ public class MessageBrowse extends Fragment {
                             if(!recycler.canScrollVertically(1)
                                     &&offset_y<-30){
                                 loading_icon.setAnimation(rotate);
+                                loading_icon.setVisibility(View.VISIBLE);
                                 loadData();
                                 Log.d("", "onScrollStateChanged: 2");
                             }
@@ -123,11 +132,20 @@ public class MessageBrowse extends Fragment {
                 if(msg.what == 0){
                     recycler_adapter.notifyDataSetChanged();
                     loading_icon.setAnimation(null);
+                    loading_icon.setVisibility(View.INVISIBLE);
+                    if(msg.arg1 == 0){
+                        uncheck = true;
+                        MainActivity mainActivity = (MainActivity) getActivity();
+                        String str = "!"+getActivity()
+                                .getResources().getString(R.string.tab_message);
+                        mainActivity.menu.findItem(R.id.tab_message).setTitle(str);
+                    }
                 }
             }
         };
 
         loading_icon.setAnimation(rotate);
+        loading_icon.setVisibility(View.VISIBLE);
         loadData();
         return view;
     }
@@ -148,7 +166,9 @@ public class MessageBrowse extends Fragment {
                         break;
                 }
                 SystemService.clearJsonArray(list_data);
+                recycler_adapter.notifyDataSetChanged();
                 loading_icon.setAnimation(rotate);
+                loading_icon.setVisibility(View.VISIBLE);
                 loadData();
             }
 
@@ -174,12 +194,22 @@ public class MessageBrowse extends Fragment {
                     int page_index = (list_data.length()+load_num-1)/load_num;
                     int user_id = SystemService.getUserId(getActivity());
 
-                    String result = HttpRequest.post("/API",
-                            "","form");
+                    String result = HttpRequest.post("/API/get_notice",
+                            String.format("uid=%s&page_size=%s&page_index=%s&type=%s",
+                                    user_id, load_num, page_index, message_type),
+                            "form");
                     JSONObject jsonObject = new JSONObject(result);
                     JSONArray array = jsonObject.getJSONArray("data");
                     for(int i=0;i<array.length();i++){
                         list_data.put(array.getJSONObject(i));
+                    }
+
+                    int uncheck_num = jsonObject.getInt("uncheck");
+                    if(uncheck_num > 0){
+                        message.arg1 = 0;
+                    }
+                    else{
+                        message.arg1 = -1;
                     }
                     message.what = 0;
                 }catch (JSONException e){
@@ -192,7 +222,17 @@ public class MessageBrowse extends Fragment {
         thread.start();
     }
 
-//    public interface loadData {
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if(isVisibleToUser){
+            uncheck = false;
+            MainActivity mainActivity = (MainActivity) getActivity();
+            mainActivity.menu.findItem(R.id.tab_message).setTitle(R.string.tab_message);
+        }
+    }
+
+    //    public interface loadData {
 //        public void loadData(JSONArray data_list, int load_num);
 //    }
 

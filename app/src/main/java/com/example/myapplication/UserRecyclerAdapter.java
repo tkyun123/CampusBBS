@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -45,10 +46,19 @@ public class UserRecyclerAdapter extends RecyclerView.Adapter<UserRecyclerViewHo
         try {
             JSONObject object = data.getJSONObject(position);
             holder.nickName_textView.setText(object.getString("nickname"));
-            holder.introduction_textView.setText(object.getString("intro"));
+            String introduction = object.getString("intro");
+            if(introduction.equals("null")){
+                introduction = my_activity.getResources().getString(
+                        R.string.user_info_introduction_default);
+            }
+            holder.introduction_textView.setText(introduction);
             holder.user_id = object.getInt("uid");
-            int relation= object.getInt("relation");
 
+            if(holder.user_id == SystemService.getUserId(my_activity)){
+                holder.interact_layout.setVisibility(View.INVISIBLE);
+            }
+
+            int relation= object.getInt("relation");
             if(relation == -1){
                 holder.my_relation = Consts.RELATION_NONE;
                 holder.follow_state_button.setText(R.string.follow);
@@ -77,6 +87,9 @@ public class UserRecyclerAdapter extends RecyclerView.Adapter<UserRecyclerViewHo
                     }
                 };
                 SystemService.getImage(url, img_handler);
+            }
+            else{
+                holder.profile_photo.setImageResource(R.drawable.default_profile_photo);
             }
 
             Handler relation_change_handler = new Handler(Looper.getMainLooper()){
@@ -124,7 +137,7 @@ public class UserRecyclerAdapter extends RecyclerView.Adapter<UserRecyclerViewHo
             });
 
             holder.browse_share_button.setOnClickListener(view -> {
-                Intent intent = new Intent(my_activity, UserShareActivity.class);
+                Intent intent = new Intent(my_activity, UserInfoActivity.class);
                 intent.putExtra("user_id", holder.user_id);
                 my_activity.startActivity(intent);
             });
