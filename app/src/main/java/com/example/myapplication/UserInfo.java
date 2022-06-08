@@ -65,6 +65,9 @@ public class UserInfo extends Fragment {
     private TextView followed_num_textView;
     private TextView share_num_textView;
 
+    private RelativeLayout relation_layout;
+    private LinearLayout items_more_layout;
+
     private Button follow_button;
     private Button block_button;
 
@@ -126,7 +129,9 @@ public class UserInfo extends Fragment {
 
         my_comment_layout = view.findViewById(R.id.user_info_my_comment_layout);
 
-        RelativeLayout relation_layout = view.findViewById(R.id.user_info_relation_layout);
+        relation_layout = view.findViewById(R.id.user_info_relation_layout);
+        items_more_layout = view.findViewById(R.id.user_info_items_more);
+
         if(my_flag == FLAG_SELF){
             init_launcher();
             relation_layout.removeAllViews();
@@ -154,6 +159,7 @@ public class UserInfo extends Fragment {
         }
         else{
             login_button.setVisibility(View.INVISIBLE);
+            items_more_layout.setVisibility(View.INVISIBLE);
             init_activities();
             init_relation_button();
             getUserInfo();
