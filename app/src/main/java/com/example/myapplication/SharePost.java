@@ -120,7 +120,6 @@ public class SharePost extends Fragment {
         );
         user_id = sharedPreferences.getInt("user_id", -1);
 
-        // to do
         SharedPreferences sharedPreferencesDraft = getActivity().getSharedPreferences(
                 "draft_" + user_id, Context.MODE_PRIVATE
         );
@@ -467,8 +466,10 @@ public class SharePost extends Fragment {
                             .show();
                 }
                 else{
-                    Toast.makeText(getContext(), "保存成功", Toast.LENGTH_SHORT)
-                            .show();
+                    Toast toast = Toast.makeText(getContext(), "保存成功", Toast.LENGTH_SHORT);
+                    toast.setGravity(Gravity.CENTER, 0, 0);
+                    toast.show();
+
                     is_saved = true;
                 }
             }
@@ -483,7 +484,8 @@ public class SharePost extends Fragment {
 
                 try {
                     Date date = new Date();
-                    SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                    SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+                    String realDate = df.format(date);
                     SharedPreferences sharedPreferencesDraft = getActivity().getSharedPreferences(
                             "draft_" + user_id, Context.MODE_PRIVATE
                     );
@@ -492,6 +494,14 @@ public class SharePost extends Fragment {
                     editor.putString("title" + draft_id, title);
                     editor.putString("content" + draft_id, content);
                     editor.putBoolean("is_deleted" + draft_id, false);
+                    editor.putString("date" + draft_id, realDate);
+                    editor.putInt("type" + draft_id, share_type);
+                    if(location_switch.isChecked()) {
+                        editor.putString("location" + draft_id, location);
+                    }
+                    else {
+                        editor.putString("location" + draft_id, "");
+                    }
                     editor.commit();
                 } catch (Exception e) {
                     e.printStackTrace();

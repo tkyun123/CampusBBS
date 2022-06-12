@@ -98,7 +98,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/share_post_new_add_multimedia_layout"
+                android:id="@+id/draft_edit_new_add_multimedia_layout"
                 android:orientation="vertical">
             </LinearLayout>
 

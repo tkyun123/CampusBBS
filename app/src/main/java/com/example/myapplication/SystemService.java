@@ -208,7 +208,7 @@ public class SystemService {
         }
     }
     public static String getBaseUrl(){
-        return "http://183.172.179.163:5000";
+        return "http://183.172.178.136:5000";
     }
 
     public static void getImage(String url, Handler handler){

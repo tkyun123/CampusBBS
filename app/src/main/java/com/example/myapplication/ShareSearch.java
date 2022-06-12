@@ -47,8 +47,9 @@ public class ShareSearch extends Fragment {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                    String search_content = search_edit_text.getText().toString();
                     getChildFragmentManager().beginTransaction().replace(
-                            R.id.search_result, new SearchShareBrowse()).commit();
+                            R.id.search_result, new SearchShareBrowse(search_content)).commit();
                     return false;
                 }
                 return false;

@@ -88,12 +88,18 @@ public class DraftActivity extends AppCompatActivity {
             String id = (i + 1) + "";
             String newTitle = share.getString("title" + (i + 1),"");
             String newContent = share.getString("content" + (i + 1),"");
+            String newDate = share.getString("date" + (i + 1),"");
+            String newLocation = share.getString("location" + (i + 1),"");
+            int newType = share.getInt("type" + (i + 1),0);
 
             if(!is_deleted) {
                 Map<String, String> map = new HashMap<>();
                 map.put("id", id);
                 map.put("title", newTitle);
                 map.put("content", newContent);
+                map.put("date", newDate);
+                map.put("location", newLocation);
+                map.put("type", newType + "");
                 data.add(map);
                 validDraft += 1;
             }
