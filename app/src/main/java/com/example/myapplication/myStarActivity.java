@@ -39,6 +39,6 @@ public class myStarActivity extends AppCompatActivity {
                     public void loadDataSortByWave(JSONArray data_list, int load_num, Handler handler, int sort_all) {
 
                     }
-                }, true)).commit();
+                }, true, true)).commit();
     }
 }

@@ -53,6 +53,7 @@ public class ShareBrowse extends Fragment{
     private int sort_type = 0; // 默认按时间排序
 
     private boolean sort_all = false;
+    private boolean sort_all2 = false;
 
     private loadData interface_data_load;
 
@@ -60,13 +61,14 @@ public class ShareBrowse extends Fragment{
 
     int sy;
 
-    public ShareBrowse(loadData data_load, boolean _sort_all) {
+    public ShareBrowse(loadData data_load, boolean _sort_all, boolean _sort_all2) {
         // Required empty public constructor
         sort_map.put(0, R.string.sort_by_time_text);
         sort_map.put(1, R.string.sort_by_wave_text);
         interface_data_load = data_load;
         sort_all = _sort_all;   // 设置是否显示sort_all选择项；例如显示某个人的动态就不需要
                                 // 显示，只需要时间/热度排序
+        sort_all2 = _sort_all2;
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -126,17 +128,6 @@ public class ShareBrowse extends Fragment{
             }
         });
 
-        sort_layout = view.findViewById(R.id.share_sort_layout);
-        sort_text = view.findViewById(R.id.share_sort_text);
-        sort_layout.setOnClickListener(view1->{
-            sort_type = 1-sort_type;
-            sort_text.setText(sort_map.get(sort_type));
-            SystemService.clearJsonArray(list_data);
-            recycler_adapter.notifyDataSetChanged();
-            loadData();
-            recycler.scrollToPosition(0);
-        });
-
         if(sort_all){
             sort_all_layout = view.findViewById(R.id.share_sort_all_layout);
             sort_all_text = view.findViewById(R.id.share_sort_all_text);
@@ -159,6 +150,19 @@ public class ShareBrowse extends Fragment{
             sort_all_layout.setVisibility(View.VISIBLE);
         }
 
+        if(sort_all2) {
+            sort_layout = view.findViewById(R.id.share_sort_layout);
+            sort_text = view.findViewById(R.id.share_sort_text);
+            sort_layout.setOnClickListener(view1->{
+                sort_type = 1-sort_type;
+                sort_text.setText(sort_map.get(sort_type));
+                SystemService.clearJsonArray(list_data);
+                recycler_adapter.notifyDataSetChanged();
+                loadData();
+                recycler.scrollToPosition(0);
+            });
+            sort_layout.setVisibility(View.VISIBLE);
+        }
 
         data_handler = new Handler(Looper.getMainLooper()) {
             @Override
