@@ -1,6 +1,7 @@
 package com.example.myapplication;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -54,6 +55,7 @@ public class UserInfo extends Fragment {
     private ImageView profile_photo_imageView;
     private Button info_modify_button;
     private Button login_button;
+
     private RelativeLayout draft_layout;
 
     private LinearLayout following_layout;

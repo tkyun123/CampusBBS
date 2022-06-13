@@ -24,10 +24,16 @@
 <!--                android:layout_height="match_parent"-->
 <!--                android:layout_weight="12"-->
 <!--                android:entries="@array/search_type" />-->
+            <ImageView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:src="@drawable/share_search_icon"/>
             <EditText
                 android:id="@+id/search_edit_text"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="match_parent"
+                android:layout_weight="10"
                 android:singleLine="true"
                 android:hint="@string/search_hint"
                 android:background="@drawable/search_input_style"

@@ -54,13 +54,32 @@
 <!--                    android:layout_centerInParent="true"-->
 <!--                    android:layout_toRightOf="@id/select_share_type_button"-->
 <!--                    android:text="@string/share_type_Text" />-->
+                <TextView
+                    android:id="@+id/share_detail_newButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:text="新建"
+                    android:textColor="@color/share_post_textColor"
+                    android:textSize="@dimen/share_post_textSize"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginEnd="5dp" />
+
+                <TextView
+                    android:id="@+id/share_detail_saveButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_toLeftOf="@+id/share_detail_newButton"
+                    android:layout_marginEnd="5dp"
+                    android:text="保存"
+                    android:textColor="@color/share_post_textColor"
+                    android:textSize="@dimen/share_post_textSize" />
 
                 <TextView
                     android:id="@+id/share_detail_postButton"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:layout_alignParentEnd="true"
-                    android:layout_marginEnd="@dimen/share_post_marginRight"
+                    android:layout_toLeftOf="@+id/share_detail_saveButton"
+                    android:layout_marginEnd="5dp"
                     android:text="@string/shareButton_text"
                     android:textColor="@color/share_post_textColor"
                     android:textSize="@dimen/share_post_textSize" />

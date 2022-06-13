@@ -128,6 +128,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        Log.d("a","destroy");
         FileOperation.clearDir(this, "/tmp");
     }
 }

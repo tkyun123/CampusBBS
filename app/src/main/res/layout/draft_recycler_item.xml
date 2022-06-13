@@ -14,7 +14,6 @@
         android:textSize="@dimen/share_browse_recycler_item_titleSize"
         android:id="@+id/draft_recycler_item_title"/>
 
-
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

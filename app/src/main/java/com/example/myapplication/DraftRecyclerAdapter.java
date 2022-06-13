@@ -33,6 +33,10 @@ public class DraftRecyclerAdapter extends RecyclerView.Adapter<DraftRecyclerView
     public void onBindViewHolder(DraftRecyclerViewHolder holder, int position) {
         holder.title_textView.setText(data.get(position).get("title"));
         holder.content_textView.setText(data.get(position).get("content"));
+        holder.date_textView.setText(data.get(position).get("date"));
+        holder.location_textView.setText(data.get(position).get("location"));
+        holder.draft_id = data.get(position).get("id");
+        holder.type = data.get(position).get("type");
     }
 
     @Override

@@ -30,7 +30,7 @@ public class DraftBrowse extends Fragment {
 
     public DraftBrowse(DraftBrowse.loadData data_load) {
         interface_data_load = data_load;
-        interface_data_load.loadDataSortByTime(list_data, load_num);
+        interface_data_load.loadDataSortByTime(list_data);
     }
 
     @Override
@@ -79,10 +79,10 @@ public class DraftBrowse extends Fragment {
     }
 
     public void loadData(){
-        interface_data_load.loadDataSortByTime(list_data, load_num);
+        interface_data_load.loadDataSortByTime(list_data);
     }
 
     public interface loadData {
-        public void loadDataSortByTime(List<Map<String, String>> data_list, int load_num);
+        public void loadDataSortByTime(List<Map<String, String>> data_list);
     }
 }

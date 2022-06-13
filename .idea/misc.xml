@@ -111,6 +111,9 @@
         <entry key="..\:/study/3.2/MobileAppDevelopment/w7/app/src/main/res/layout/share_browse_list_item.xml" value="0.20471014492753623" />
         <entry key="..\:/study/3.2/MobileAppDevelopment/w7/app/src/main/res/layout/share_browse_recycler_item.xml" value="0.1" />
         <entry key="..\:/study/3.2/MobileAppDevelopment/w7/app/src/main/res/menu/main_navigator_menu.xml" value="0.13703703703703704" />
+        <entry key="app/src/main/res/layout/activity_draft_edit.xml" value="0.16111111111111112" />
+        <entry key="app/src/main/res/layout/draft_recycler_item.xml" value="0.129981884057971" />
+        <entry key="app/src/main/res/layout/fragment_draft_browse.xml" value="0.17274569402228976" />
       </map>
     </option>
   </component>
