@@ -125,6 +125,8 @@ public class DraftEditActivity extends AppCompatActivity {
         loading_icon = findViewById(R.id.draftEdit_loading_icon);
         rotate = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.loading_anim);
 
+        scrollView = findViewById(R.id.draft_edit_scrollView);
+
         Toolbar tool_bar = findViewById(R.id.draft_edit_tool_bar);
         setSupportActionBar(tool_bar);
         tool_bar.setNavigationIcon(R.drawable.back_icon);
@@ -171,6 +173,7 @@ public class DraftEditActivity extends AppCompatActivity {
         contentEdit.setText(intent.getStringExtra("draft_content"));
         draft_id = intent.getStringExtra("draft_id");
         type = Integer.parseInt(intent.getStringExtra("type"));
+        oldLocation = intent.getStringExtra("location");
 
         // 新加
         multimedia_layout = findViewById(R.id.draft_edit_new_add_multimedia_layout);
@@ -206,7 +209,8 @@ public class DraftEditActivity extends AppCompatActivity {
 
         location_switch = findViewById(R.id.show_location_switch);
         TextView location_textView = findViewById(R.id.show_location_textView);
-        if(oldLocation != "") {
+        if(oldLocation.length() > 0) {
+            //Log.d("oldlocation", oldLocation);
             location_switch.setChecked(true);
             location_textView.setText(R.string.show_location_text);
             location = oldLocation;
@@ -386,25 +390,87 @@ public class DraftEditActivity extends AppCompatActivity {
                     jsonObject.put("title", title);
                     jsonObject.put("text", content);
                     jsonObject.put("theme", 0);
-                    jsonObject.put("type",0);
+                    int type = -1;
+                    if(share_type == TEXT || share_type == IMAGE){
+                        type = 0;
+                    }
+                    else if(share_type == VIDEO){
+                        type = 2;
+                    }
+                    else if(share_type == AUDIO){
+                        type = 1;
+                    }
+                    jsonObject.put("type",type);
                     if(location_switch.isChecked()){
                         jsonObject.put("position", location);
                     }
                     else{
                         jsonObject.put("position","");
                     }
+                    Log.d("json", jsonObject.toString());
+                    String result = HttpRequest.post("/API/new_post",
+                            jsonObject.toString(), "json");
+                    if(result.equals("error")){
+                        message.what = -1;
+                    }
+                    else{
+                        message.what = 0;
+                        // 传输多媒体资源
+                        if(share_type != TEXT){
+                            JSONObject post_result = new JSONObject(result);
+                            int pid = post_result.getInt("pid");
+
+                            JSONObject object = new JSONObject();
+                            JSONArray list = new JSONArray();
+
+                            object.put("uid", user_id);
+                            object.put("pid", pid);
+                            object.put("fid", 0);
+                            for(int i=0;i<multimedia_list.length();i++){
+                                JSONObject multimedia_object = new JSONObject();
+                                Uri add_uri = Uri.parse(multimedia_list.getJSONObject(i).
+                                        getString("uri"));
+                                if(share_type == IMAGE){
+                                    multimedia_object.put("mul_type", "pic");
+                                    multimedia_object.put("filename",
+                                            String.format("%s_%s.jpg", pid, user_id));
+                                    multimedia_object.put("data",
+                                            Codec.imageUriToBase64(add_uri,
+                                                    DraftEditActivity.this.getContentResolver(),
+                                                    false));
+                                }
+                                else if(share_type == VIDEO) {
+                                    multimedia_object.put("mul_type", "video");
+                                    multimedia_object.put("filename",
+                                            String.format("%s_%s.mp4", pid, user_id));
+                                    multimedia_object.put("data",
+                                            Codec.videoUriToBase64(add_uri, DraftEditActivity.this.getContentResolver()));
+                                }
+                                else if(share_type == AUDIO){
+                                    multimedia_object.put("mul_type", "video");
+                                    multimedia_object.put("filename",
+                                            String.format("%s_%s.mp3", pid, user_id));
+                                    multimedia_object.put("data",
+                                            Codec.videoUriToBase64(add_uri, DraftEditActivity.this.getContentResolver()));
+                                }
+                                list.put(multimedia_object);
+                            }
+                            object.put("source_data", list);
+
+                            String multimedia_result = HttpRequest.post("/API/update",
+                                    object.toString(), "json");
+                            JSONObject multimedia_object = new JSONObject(multimedia_result);
+                            if(multimedia_object.getInt("update_state") == 1){
+                                message.what = 0;
+                            }
+                            else{
+                                message.what = -1;
+                            }
+                        }
+                    }
                 } catch (JSONException e) {
                     e.printStackTrace();
                     message.what = -1;
-                    return;
-                }
-                String result = HttpRequest.post("/API/new_post",
-                        jsonObject.toString(), "json");
-                if(result.equals("error")){
-                    message.what = -1;
-                }
-                else{
-                    message.what = 0;
                 }
                 handler.sendMessage(message);
             }
@@ -477,11 +543,9 @@ public class DraftEditActivity extends AppCompatActivity {
             intent.putExtra(MediaStore.EXTRA_OUTPUT, save_uri);
             video_add_launcher.launch(intent);
         }
-        Log.d("path:", path);
     }
 
     private String generatePath(String filetype){
-        long n = 0;
         String path;
         path = String.format("%s/%s%s",SAVE_PATH, new Date().getTime(), filetype);
         return path;

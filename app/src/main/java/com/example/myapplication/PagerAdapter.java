@@ -53,7 +53,7 @@ public class PagerAdapter extends FragmentPagerAdapter {
                         shareBrowseLoadData(data_list, load_num, handler, Consts.SORT_BY_WAVE,
                                 sort_all);
                     }
-                }, true);
+                }, true, true);
                 return share_browse;
             case 1:
                 return new MessageBrowse();

@@ -62,7 +62,7 @@ public class UserShareActivity extends AppCompatActivity {
                                                    Handler handler, int sort_all) {
                         loadData(data_list, load_num, handler, Consts.SORT_BY_WAVE);
                     }
-                }, false)).commit();
+                }, false, true)).commit();
     }
 
     private void loadData(JSONArray data_list, int load_num, Handler handler, int sort_type){
