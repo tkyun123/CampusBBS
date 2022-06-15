@@ -115,6 +115,9 @@ public class FloorListAdapter extends RecyclerView.Adapter<FloorListViewHolder> 
             if(holder.like_state == 1){
                 holder.like_icon.setImageResource(R.drawable.like_icon);
             }
+            else{
+                holder.like_icon.setImageResource(R.drawable.unlike_icon);
+            }
 
             Handler give_like_handle = new Handler(Looper.getMainLooper()){
                 @Override

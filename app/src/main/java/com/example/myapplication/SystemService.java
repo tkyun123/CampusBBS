@@ -197,7 +197,7 @@ public class SystemService {
     }
 
     public static String getBaseUrl(){
-        return "http://183.172.178.102:5000";
+        return "http://183.172.179.134:5000";
     }
 
     public static Bitmap getBitmapFromUrl(String url){

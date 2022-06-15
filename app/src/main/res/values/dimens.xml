@@ -146,7 +146,7 @@
     <dimen name="register_icon_width">50dp</dimen>
     <dimen name="register_input_width">200dp</dimen>
 
-    <dimen name="select_share_type_spinner_marginEnd">20dp</dimen>
+    <dimen name="select_share_type_spinner_marginEnd">10dp</dimen>
 
     <dimen name="basic_info_modify_profile_photo_size">80dp</dimen>
     <dimen name="info_modify_input_width">200dp</dimen>

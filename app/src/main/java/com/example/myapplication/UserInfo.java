@@ -140,6 +140,7 @@ public class UserInfo extends Fragment {
             follow_button.setVisibility(View.INVISIBLE);
             block_button.setVisibility(View.INVISIBLE);
             if(!SystemService.checkLogin(getActivity())){
+                profile_photo_imageView.setImageResource(R.drawable.default_profile_photo);
                 login_button.setOnClickListener((view1 -> {
                     login_launcher.launch(new Intent(getActivity(), LoginActivity.class));
                 }));

@@ -33,6 +33,9 @@
         android:usesCleartextTraffic="true">
         <service android:name=".AskForNoticeService" />
         <activity
+            android:name=".InfoModifyActivity"
+            android:exported="false"/>
+        <activity
             android:name=".UserInfoActivity"
             android:exported="false" />
         <activity

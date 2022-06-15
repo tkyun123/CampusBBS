@@ -65,7 +65,7 @@ public class ShareRecyclerAdapter extends RecyclerView.Adapter<ShareRecyclerView
             holder.user_id = object.getInt("uid");
 
             if(object.getInt("relation") == 1){
-                holder.follow_textView.setText(R.string.follow);
+                holder.follow_textView.setText("已关注");
             }
             else{
                 holder.follow_textView.setText("");
@@ -98,6 +98,9 @@ public class ShareRecyclerAdapter extends RecyclerView.Adapter<ShareRecyclerView
 
             if(holder.like_state == 1){
                 holder.like_icon.setImageResource(R.drawable.like_icon);
+            }
+            else{
+                holder.like_icon.setImageResource(R.drawable.unlike_icon);
             }
 
             Handler give_like_handle = new Handler(Looper.getMainLooper()){

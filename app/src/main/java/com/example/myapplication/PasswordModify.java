@@ -16,6 +16,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 public class PasswordModify extends Fragment {
 
     private String origin_password = "";
@@ -82,8 +86,38 @@ public class PasswordModify extends Fragment {
                     getActivity().setResult(PASSWORD_MODIFIED);
                     Toast.makeText(getContext(), "修改成功", Toast.LENGTH_SHORT)
                             .show();
-                };
+                }
+                else if(msg.what == -1){
+                    Toast.makeText(getContext(), "修改失败", Toast.LENGTH_SHORT)
+                            .show();
+                }
             }
         };
+        Thread thread = new Thread(){
+            @Override
+            public void run() {
+                super.run();
+                Message message = new Message();
+                try {
+                    int user_id = SystemService.getUserId(getActivity());
+                    String result = HttpRequest.post("/API/password_change",
+                            String.format("uid=%s&new_password=%s&old_password=%s",
+                                    user_id,first_input_password, origin_password),
+                            "form");
+                    JSONObject jsonObject = new JSONObject(result);
+                    if(jsonObject.getInt("state") == 1){
+                        message.what = 0;
+                    }
+                    else{
+                        message.what = -1;
+                    }
+                }catch (JSONException e) {
+                    e.printStackTrace();
+                    message.what = -1;
+                }
+                handler.sendMessage(message);
+            }
+        };
+        thread.start();
     }
 }
