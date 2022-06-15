@@ -70,12 +70,12 @@ public class SearchPagerAdapter extends FragmentStatePagerAdapter {
                 share_browse = new ShareBrowse(new ShareBrowse.loadData() {
                     @Override
                     public void loadDataSortByTime(JSONArray data_list, int load_num, Handler handler, int sort_all) {
-                        shareBrowseLoadData(data_list, load_num, handler, 1, keyWord);
+                        shareBrowseLoadData(data_list, load_num, handler, 2, keyWord);
                     }
 
                     @Override
                     public void loadDataSortByWave(JSONArray data_list, int load_num, Handler handler, int sort_all) {
-                        shareBrowseLoadData(data_list, load_num, handler, 1, keyWord);
+                        shareBrowseLoadData(data_list, load_num, handler, 2, keyWord);
                     }
                 },false, false);
                 return share_browse;
@@ -83,12 +83,12 @@ public class SearchPagerAdapter extends FragmentStatePagerAdapter {
                 share_browse = new ShareBrowse(new ShareBrowse.loadData() {
                     @Override
                     public void loadDataSortByTime(JSONArray data_list, int load_num, Handler handler, int sort_all) {
-                        shareBrowseLoadData(data_list, load_num, handler, 2, keyWord);
+                        shareBrowseLoadData(data_list, load_num, handler, 1, keyWord);
                     }
 
                     @Override
                     public void loadDataSortByWave(JSONArray data_list, int load_num, Handler handler, int sort_all) {
-                        shareBrowseLoadData(data_list, load_num, handler, 2, keyWord);
+                        shareBrowseLoadData(data_list, load_num, handler, 1, keyWord);
                     }
                 }, false, false);
                 return share_browse;

@@ -173,6 +173,7 @@ public class DraftEditActivity extends AppCompatActivity {
         contentEdit.setText(intent.getStringExtra("draft_content"));
         draft_id = intent.getStringExtra("draft_id");
         type = Integer.parseInt(intent.getStringExtra("type"));
+        oldLocation = intent.getStringExtra("location");
 
         // 新加
         multimedia_layout = findViewById(R.id.draft_edit_new_add_multimedia_layout);
@@ -208,7 +209,8 @@ public class DraftEditActivity extends AppCompatActivity {
 
         location_switch = findViewById(R.id.show_location_switch);
         TextView location_textView = findViewById(R.id.show_location_textView);
-        if(oldLocation != "") {
+        if(oldLocation.length() > 0) {
+            //Log.d("oldlocation", oldLocation);
             location_switch.setChecked(true);
             location_textView.setText(R.string.show_location_text);
             location = oldLocation;
@@ -405,6 +407,7 @@ public class DraftEditActivity extends AppCompatActivity {
                     else{
                         jsonObject.put("position","");
                     }
+                    Log.d("json", jsonObject.toString());
                     String result = HttpRequest.post("/API/new_post",
                             jsonObject.toString(), "json");
                     if(result.equals("error")){
