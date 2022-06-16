@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">My Application</string>
+    <string name="app_name">论坛</string>
     <string name="tab_browse">动态浏览</string>
     <string name="tab_message">消息</string>
     <string name="tab_follow">关注</string>

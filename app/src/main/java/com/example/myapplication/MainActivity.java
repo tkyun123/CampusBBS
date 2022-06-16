@@ -73,11 +73,6 @@ public class MainActivity extends AppCompatActivity {
         map.put(R.id.tab_search,3);
         map.put(R.id.tab_personInfo,4);
 
-//        SharedPreferences sharedPreferences = getSharedPreferences(
-//                "login", Context.MODE_PRIVATE);
-//        SharedPreferences.Editor editor = sharedPreferences.edit();
-//        editor.clear();
-//        editor.commit();
 
         if(!SystemService.checkLogin(this)){
             pager.setCurrentItem(map.get(R.id.tab_personInfo));
@@ -108,6 +103,7 @@ public class MainActivity extends AppCompatActivity {
         // 发布时多媒体资源的缓存目录，发布后立即清空
         FileOperation.createDir(this, "/multimedia");
 
+        // TODO(未实现草稿箱存储多媒体资源)
         // 草稿箱多媒体资源的根目录；每创建一个草稿，这个目录下创建一个子目录(可以通过时间戳来分别)用来存储多媒体资源的缓存
         // 子目录直到草稿删除再删除
         FileOperation.createDir(this, "/drafts");
@@ -119,6 +115,7 @@ public class MainActivity extends AppCompatActivity {
         if(SystemService.checkLogin(this)){
             Intent intent = new Intent(this, AskForNoticeService.class);
             intent.putExtra("user_id",  SystemService.getUserId(this));
+            stopService(intent);
             startService(intent);
         }
 //        SystemService.clearInfo(this);

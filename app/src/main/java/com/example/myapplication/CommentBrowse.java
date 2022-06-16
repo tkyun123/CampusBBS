@@ -115,8 +115,8 @@ public class CommentBrowse extends Fragment {
             }
         });
 
-        RelativeLayout comment_sort_layout = view.findViewById(R.id.comment_sort_layout);
-        TextView sort_text = view.findViewById(R.id.sort_text);
+//        RelativeLayout comment_sort_layout = view.findViewById(R.id.comment_sort_layout);
+//        TextView sort_text = view.findViewById(R.id.sort_text);
 //        comment_sort_layout.setOnClickListener(view1 -> {
 //            sort_type = 1-sort_type;
 //            sort_text.setText(sort_map.get(sort_type));

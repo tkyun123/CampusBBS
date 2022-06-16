@@ -63,8 +63,8 @@ public class SystemService {
             criteria.setCostAllowed(false);
 
             String best_provider = locationManager.getBestProvider(criteria, true);
+            List<String> providers = locationManager.getProviders(true);
             if (best_provider == null) {
-                List<String> providers = locationManager.getProviders(true);
                 if (providers != null && providers.size() > 0) {
                     best_provider = providers.get(0);
                 }
@@ -88,13 +88,18 @@ public class SystemService {
             }
             Location location = locationManager.getLastKnownLocation(best_provider);
             if(location == null){
+                // 若best_provider(一般是gps)定位失败，则使用网络定位
+                location = locationManager.getLastKnownLocation("network");
+            }
+            if(location == null){
+                // 若网络定位也失败，则使用best_provider请求位置更新
                 Log.d("", "未找到location");
-                    locationManager.requestLocationUpdates(best_provider, 3600 * 1000,
-                            100, location1 -> {
-                                if (location1 != null) {
-                                    getFromLocation(context, location1, handler);
-                                }
-                            });
+                locationManager.requestLocationUpdates(best_provider, 3600 * 1000,
+                        100, location1 -> {
+                            if (location1 != null) {
+                                getFromLocation(context, location1, handler);
+                            }
+                        });
             }
             else{
                 getFromLocation(context, location, handler);
@@ -117,10 +122,10 @@ public class SystemService {
                     Log.d("Location", String.format("latitude:%s, longitude:%s",
                             location.getLatitude(), location.getLongitude()));
 
-                    LatLonPoint latLonPoint = new LatLonPoint(
-                            39.92, 116.46);
 //                    LatLonPoint latLonPoint = new LatLonPoint(
-//                            location.getLatitude(), location.getLongitude());
+//                            39.92, 116.46);
+                    LatLonPoint latLonPoint = new LatLonPoint(
+                            location.getLatitude(), location.getLongitude());
                     RegeocodeQuery regeocodeQuery = new RegeocodeQuery(
                             latLonPoint, 25, GeocodeSearch.GPS);
                     RegeocodeAddress address = geocodeSearch.getFromLocation(regeocodeQuery);
@@ -197,7 +202,7 @@ public class SystemService {
     }
 
     public static String getBaseUrl(){
-        return "http://183.172.179.134:5000";
+        return "http://183.172.180.32:5000";
     }
 
     public static Bitmap getBitmapFromUrl(String url){

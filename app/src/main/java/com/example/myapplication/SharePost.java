@@ -1,5 +1,6 @@
 package com.example.myapplication;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -78,6 +79,7 @@ public class SharePost extends Fragment {
     private ActivityResultLauncher image_add_launcher;
     private ActivityResultLauncher audio_add_launcher;
     private ActivityResultLauncher video_add_launcher;
+    private ActivityResultLauncher location_launcher;
 
     private final static int MULTIMEDIA_IMAGE = 1;
     private final static int MULTIMEDIA_AUDIO= 2;
@@ -202,6 +204,23 @@ public class SharePost extends Fragment {
                     }
                 }
         );
+        location_launcher = registerForActivityResult(
+                new ActivityResultContracts.RequestMultiplePermissions(), result -> {
+                    if(result.get(Manifest.permission.ACCESS_COARSE_LOCATION)
+                       && result.get(Manifest.permission.ACCESS_FINE_LOCATION)){
+                        location = SystemService.DEFAULT_LOCATION;
+                        loading_icon.setAnimation(rotate);
+                        loading_icon.setVisibility(View.VISIBLE);
+                        SystemService.getLocation(getContext(), location_handler);
+                    }
+                    else{
+                        Toast.makeText(getContext(), "权限获取失败", Toast.LENGTH_SHORT)
+                                .show();
+                    }
+                }
+        );
+
+
 
         location_switch = view.findViewById(R.id.show_location_switch);
         TextView location_textView = view.findViewById(R.id.show_location_textView);
@@ -209,9 +228,13 @@ public class SharePost extends Fragment {
             if (location_switch.isChecked()) {
                 location_textView.setText(R.string.show_location_text);
                 if(location == null){
-                    location = SystemService.DEFAULT_LOCATION;
-                    loading_icon.setAnimation(rotate);
-                    SystemService.getLocation(getContext(), location_handler);
+//                    location = SystemService.DEFAULT_LOCATION;
+//                    loading_icon.setAnimation(rotate);
+//                    SystemService.getLocation(getContext(), location_handler);
+                    String[] permissions = {
+                            Manifest.permission.ACCESS_COARSE_LOCATION,
+                            Manifest.permission.ACCESS_FINE_LOCATION };
+                    location_launcher.launch(permissions);
                 }
             } else {
                 location_textView.setText(R.string.not_show_location_text);
@@ -225,7 +248,12 @@ public class SharePost extends Fragment {
                 if(msg.what == 0){
                     location = msg.getData().getString("location");
                 }
+                else{
+                    Toast.makeText(getContext(), "获取位置失败", Toast.LENGTH_SHORT)
+                            .show();
+                }
                 loading_icon.setAnimation(null);
+                loading_icon.setVisibility(View.INVISIBLE);
             }
         };
 

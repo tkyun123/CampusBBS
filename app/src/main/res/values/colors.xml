@@ -9,7 +9,7 @@
     <color name="white">#FFFFFFFF</color>
     <color name="transparent">#00000000</color>
     <color name="colorToolbar">#F7F7F7</color>
-    <color name="color_main_navigator">#ccffff</color>
+    <color name="color_main_navigator">#f8f1f1</color>
     <color name="share_post_textColor">#3399ff</color>
     <color name="item_backgroundColor">#bdb9b9</color>
     <color name="item_background_border_color">#bdb9b9</color>
@@ -17,6 +17,11 @@
     <color name="second_dark_line_color">#595757</color>
     <color name="third_dark_line_color">#a3a0a0</color>
     <color name="fourth_dark_line_color">#f0e8e8</color>
+
+    <color name="color_primary">#f8f1f1</color>
+    <color name="color_primary_dark">#d3cece</color>
+    <color name="tab_check">#3379ed</color>
+    <color name="tab_uncheck">#a8a4a4</color>
 
     <color name="message_clearAll_textColor">#cf6363</color>
 

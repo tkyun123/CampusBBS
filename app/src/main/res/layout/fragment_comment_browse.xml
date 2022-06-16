@@ -10,24 +10,24 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <RelativeLayout
-            android:id="@+id/comment_sort_layout"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/comment_sort_height"
-            android:layout_marginRight="@dimen/comment_sort_marginRight">
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:src="@drawable/sort_icon"
-                android:layout_toLeftOf="@id/sort_text"/>
-            <TextView
-                android:id="@+id/sort_text"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:text="@string/sort_latest"
-                android:layout_alignParentRight="true"
-                android:gravity="center"/>
-        </RelativeLayout>
+<!--        <RelativeLayout-->
+<!--            android:id="@+id/comment_sort_layout"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="@dimen/comment_sort_height"-->
+<!--            android:layout_marginRight="@dimen/comment_sort_marginRight">-->
+<!--            <ImageView-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="match_parent"-->
+<!--                android:src="@drawable/sort_icon"-->
+<!--                android:layout_toLeftOf="@id/sort_text"/>-->
+<!--            <TextView-->
+<!--                android:id="@+id/sort_text"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="match_parent"-->
+<!--                android:text="@string/sort_latest"-->
+<!--                android:layout_alignParentRight="true"-->
+<!--                android:gravity="center"/>-->
+<!--        </RelativeLayout>-->
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/comment_browse_recyclerView"
