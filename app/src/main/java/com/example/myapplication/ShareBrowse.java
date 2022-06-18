@@ -150,9 +150,10 @@ public class ShareBrowse extends Fragment{
             sort_all_layout.setVisibility(View.VISIBLE);
         }
 
+        sort_text = view.findViewById(R.id.share_sort_text);
+        sort_text.setText(sort_map.get(sort_type));
         if(sort_all2) {
             sort_layout = view.findViewById(R.id.share_sort_layout);
-            sort_text = view.findViewById(R.id.share_sort_text);
             sort_layout.setOnClickListener(view1->{
                 sort_type = 1-sort_type;
                 sort_text.setText(sort_map.get(sort_type));
@@ -179,6 +180,7 @@ public class ShareBrowse extends Fragment{
         loading_icon.setAnimation(rotate);
         loading_icon.setVisibility(View.VISIBLE);
         loadData();
+
         return view;
     }
 
