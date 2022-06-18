@@ -65,7 +65,7 @@ public class AskForNoticeService extends Service {
         notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
             NotificationChannel notificationChannel = new NotificationChannel(Consts.channelId,
-                    Consts.channelName, NotificationManager.IMPORTANCE_LOW);
+                    Consts.channelName, NotificationManager.IMPORTANCE_HIGH);
             notificationManager.createNotificationChannel(notificationChannel);
         }
 
