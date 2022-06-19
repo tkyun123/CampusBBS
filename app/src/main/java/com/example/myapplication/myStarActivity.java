@@ -8,10 +8,6 @@ import androidx.appcompat.widget.Toolbar;
 
 import org.json.JSONArray;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 public class myStarActivity extends AppCompatActivity {
 
     @Override

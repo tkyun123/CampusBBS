@@ -1,11 +1,9 @@
 package com.example.myapplication;
 
-import android.content.Intent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 public class CommentRecyclerViewHolder extends RecyclerView.ViewHolder{

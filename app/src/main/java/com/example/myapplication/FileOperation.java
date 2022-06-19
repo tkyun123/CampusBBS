@@ -6,15 +6,11 @@ import android.util.Log;
 
 import androidx.core.content.FileProvider;
 
-import java.io.BufferedReader;
-import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.net.URL;
-import java.nio.charset.StandardCharsets;
 import java.util.Date;
 
 public class FileOperation {

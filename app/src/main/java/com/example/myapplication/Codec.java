@@ -3,16 +3,12 @@ package com.example.myapplication;
 import android.content.ContentResolver;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.media.MediaCodec;
 import android.net.Uri;
 import android.util.Base64;
-import android.util.Log;
 
 import java.io.ByteArrayOutputStream;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.charset.StandardCharsets;
 
 public class Codec {
 
@@ -43,31 +39,10 @@ public class Codec {
                 byteArrayOutputStream.write(bytes,0 ,len);
             }
 
-//            return byteArrayOutputStream.toString("UTF-8");
             return Base64.encodeToString(byteArrayOutputStream.toByteArray(), Base64.DEFAULT);
         } catch (IOException e) {
             e.printStackTrace();
             return "error";
         }
     }
-
-//    public static byte[] videoUriToBase64(Uri uri, ContentResolver cr){
-//        try {
-//            int byte_size = 1024;
-//            InputStream inputStream = cr.openInputStream(uri);
-//
-//            byte[] bytes = new byte[byte_size];
-//            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-//            int len;
-//            while((len=inputStream.read(bytes))!=-1){
-//                byteArrayOutputStream.write(bytes,0 ,len);
-//            }
-//
-//            return byteArrayOutputStream.toByteArray();
-////            return Base64.encodeToString(byteArrayOutputStream.toByteArray(), Base64.DEFAULT);
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//            return null;
-//        }
-//    }
 }

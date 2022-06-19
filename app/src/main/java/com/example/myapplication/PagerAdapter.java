@@ -1,13 +1,9 @@
 package com.example.myapplication;
 
 import android.app.Activity;
-import android.app.RecoverableSecurityException;
-import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Handler;
 import android.os.Message;
-import android.provider.MediaStore;
 import android.util.Log;
 
 import androidx.annotation.RequiresApi;
@@ -18,10 +14,6 @@ import androidx.fragment.app.FragmentPagerAdapter;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 public class PagerAdapter extends FragmentPagerAdapter {
     int mNumOfTabs;

@@ -2,12 +2,6 @@ package com.example.myapplication;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
@@ -19,8 +13,11 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import org.json.JSONArray;
 
@@ -114,16 +111,6 @@ public class CommentBrowse extends Fragment {
                 return false;
             }
         });
-
-//        RelativeLayout comment_sort_layout = view.findViewById(R.id.comment_sort_layout);
-//        TextView sort_text = view.findViewById(R.id.sort_text);
-//        comment_sort_layout.setOnClickListener(view1 -> {
-//            sort_type = 1-sort_type;
-//            sort_text.setText(sort_map.get(sort_type));
-//            SystemService.clearJsonArray(list_data);
-//            loadData();
-//            recycler.scrollToPosition(0);
-//        });
 
         data_handler = new Handler(Looper.getMainLooper()){
             @Override
