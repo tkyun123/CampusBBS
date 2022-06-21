@@ -1,0 +1,5 @@
+<form action="/API/web/user_del" method="post">
+    {{ form.csrf_token }}
+    {{ form.username.label }}{{ form.username }}
+    {{ form.submit }}
+</form>

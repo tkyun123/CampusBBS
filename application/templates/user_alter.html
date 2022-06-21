@@ -1,0 +1,6 @@
+<form action="/API/web/user_alter" method="post">
+    {{ form.csrf_token }}
+    {{ form.username.label }}{{ form.username }}
+    {{ form.password.label }}{{ form.password }}
+    {{ form.submit }}
+</form>
