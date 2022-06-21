@@ -1,0 +1,156 @@
+<resources>
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+    <dimen name="appbar_padding">16dp</dimen>
+    <dimen name="fab_margin">16dp</dimen>
+    <dimen name="appbar_padding_top">8dp</dimen>
+
+    <dimen name="share_browse_recycler_marginLeftAndRight">0dp</dimen>
+    <dimen name="share_browse_recycler_marginTop">0dp</dimen>
+    <dimen name="share_sort_height">30dp</dimen>
+    <dimen name="share_sort_marginRight">10dp</dimen>
+
+    <dimen name="share_browse_recycler_item_marginBottom">10dp</dimen>
+    <dimen name="share_browse_recycler_item_titleSize">30sp</dimen>
+    <dimen name="share_browse_recycler_item_contentSize">20sp</dimen>
+    <dimen name="share_browse_recycler_item_text_paddingLeft">10dp</dimen>
+    <dimen name="share_browse_recycler_item_photo_size">40dp</dimen>
+    <dimen name="share_browse_recycler_item_photo_marginTop">10dp</dimen>
+    <dimen name="share_browse_recycler_item_nickName_textSize">15sp</dimen>
+    <dimen name="share_browse_recycler_item_follow_textSize">15sp</dimen>
+    <dimen name="share_browse_recycler_item_follow_marginLeft">10dp</dimen>
+
+    <dimen name="share_detail_height">300dp</dimen>
+    <dimen name="share_detail_marginTop">20dp</dimen>
+    <dimen name="share_detail_padding">20dp</dimen>
+    <dimen name="share_detail_title_TextSize">30sp</dimen>
+    <dimen name="share_detail_content_TextSize">20sp</dimen>
+    <dimen name="share_detail_content_marginTop">20dp</dimen>
+    <dimen name="share_detail_photo_size">30dp</dimen>
+    <dimen name="share_detail_nickName_textSize">15sp</dimen>
+    <dimen name="share_detail_info_marginTop">40dp</dimen>
+
+    <dimen name="user_browse_recycler_item_marginBottom">10dp</dimen>
+    <dimen name="user_browse_recycler_marginLeftAndRight">0dp</dimen>
+    <dimen name="user_browse_recycler_marginTop">10dp</dimen>
+    <dimen name="user_recycler_item_paddingHorizontal">10dp</dimen>
+
+    <dimen name="share_post_textSize">20sp</dimen>
+    <dimen name="share_post_marginRight">30dp</dimen>
+    <dimen name="share_post_title_textSize">30sp</dimen>
+    <dimen name="share_post_content_textSize">20sp</dimen>
+
+    <dimen name="share_post_icon_size">40dp</dimen>
+    <dimen name="share_post_popup_marginTop">20dp</dimen>
+    <dimen name="share_post_popup_padding">20dp</dimen>
+
+    <dimen name="share_location_weight">1</dimen>
+    <dimen name="share_time_weight">1</dimen>
+    <dimen name="share_like_weight">1</dimen>
+    <dimen name="share_comment_weight">1</dimen>
+    <dimen name="share_like_iconSize">20dp</dimen>
+    <dimen name="share_comment_iconSize">20dp</dimen>
+    <dimen name="share_info_marginTop">20dp</dimen>
+
+    <dimen name="share_search_input_weight">5</dimen>
+    <dimen name="share_search_icon_weight">1</dimen>
+    <dimen name="share_search_input_height">40dp</dimen>
+    <dimen name="share_search_input_paddingLeft">10dp</dimen>
+    <dimen name="share_search_input_paddingTopAndBottom">5dp</dimen>
+    <dimen name="share_search_input_marginTop">10dp</dimen>
+    <dimen name="share_search_input_marginLeftAndRight">30dp</dimen>
+    <dimen name="search_line_marginTop">10dp</dimen>
+    <dimen name="search_text_marginLeft">10dp</dimen>
+    <dimen name="search_empty_textSize">30sp</dimen>
+
+    <dimen name="user_profile_photo_weight">1</dimen>
+    <dimen name="user_text_weight">3</dimen>
+    <dimen name="user_nickName_label_weight">1</dimen>
+    <dimen name="user_nickName_weight">3</dimen>
+    <dimen name="user_browse_share_weight">1</dimen>
+    <dimen name="user_follow_state_weight">1</dimen>
+    <dimen name="user_placeTaken_weight">1</dimen>
+    <dimen name="line_width">2dp</dimen>
+
+    <dimen name="user_share_marginTop">62dp</dimen>
+
+    <dimen name="user_info_profile_photo_weight">2</dimen>
+    <dimen name="user_info_nickName_weight">5</dimen>
+    <dimen name="user_info_item_weight">1</dimen>
+    <dimen name="user_info_item_height">60dp</dimen>
+    <dimen name="user_info_profile_photo_size">60dp</dimen>
+    <dimen name="user_info_nickName_textSize">20sp</dimen>
+    <dimen name="user_info_nickName_width">250dp</dimen>
+    <dimen name="user_info_login_button_weight">2</dimen>
+    <dimen name="user_info_login_button_height">40dp</dimen>
+    <dimen name="user_info_login_button_width">60dp</dimen>
+    <dimen name="user_info_introduction_textSize">15sp</dimen>
+
+    <dimen name="comment_label_textSize">20sp</dimen>
+    <dimen name="comment_span_state_iconSize">30dp</dimen>
+    <dimen name="comment_span_layout_spanned_marginTop">250dp</dimen>
+    <dimen name="comment_browse_recycler_marginLeftAndRight">0dp</dimen>
+    <dimen name="comment_browse_recycler_marginTop">0dp</dimen>
+
+    <dimen name="comment_recycler_item_marginBottom">0dp</dimen>
+    <dimen name="comment_recycler_item_photo_size">40dp</dimen>
+    <dimen name="comment_recycler_item_nickName_textSize">15sp</dimen>
+    <dimen name="comment_recycler_item_contentSize">20sp</dimen>
+    <dimen name="comment_recycler_item_paddingLeftAndRight">20dp</dimen>
+    <dimen name="comment_info_marginTop">20dp</dimen>
+    <dimen name="comment_location_weight">1</dimen>
+    <dimen name="comment_time_weight">1</dimen>
+    <dimen name="comment_like_weight">1</dimen>
+    <dimen name="comment_like_iconSize">20dp</dimen>
+
+    <dimen name="comment_sort_height">20dp</dimen>
+    <dimen name="comment_sort_marginRight">10dp</dimen>
+
+    <dimen name="floor_sort_height">20dp</dimen>
+    <dimen name="floor_sort_marginRight">10dp</dimen>
+    <dimen name="floor_label_marginLeft">10dp</dimen>
+    <dimen name="floor_marginTop">10dp</dimen>
+
+    <dimen name="floor_item_paddingLeftAndRight">20dp</dimen>
+    <dimen name="floor_item_photo_size">40dp</dimen>
+    <dimen name="floor_item_nickName_textSize">15sp</dimen>
+    <dimen name="floor_item_contentSize">20sp</dimen>
+    <dimen name="floor_info_marginTop">20dp</dimen>
+    <dimen name="floor_location_weight">1</dimen>
+    <dimen name="floor_time_weight">1</dimen>
+    <dimen name="floor_like_weight">1</dimen>
+    <dimen name="floor_comment_weight">1</dimen>
+    <dimen name="floor_like_iconSize">20dp</dimen>
+    <dimen name="floor_comment_iconSize">20dp</dimen>
+
+    <dimen name="loading_iconSize">30dp</dimen>
+    <dimen name="loading_icon_marginTop">50dp</dimen>
+
+    <dimen name="add_multimedia_width">300dp</dimen>
+    <dimen name="add_multimedia_height">250dp</dimen>
+    <dimen name="add_multimedia_marginTop">20dp</dimen>
+
+    <dimen name="comment_add_content_textSize">20sp</dimen>
+
+    <dimen name="message_paddingHorizontal">20dp</dimen>
+    <dimen name="message_paddingVertical">10dp</dimen>
+    <dimen name="message_content_textSize">20sp</dimen>
+    <dimen name="message_clearAll_marginEnd">20dp</dimen>
+    <dimen name="message_clearAll_textSize">15sp</dimen>
+
+    <dimen name="login_icon_width">50dp</dimen>
+    <dimen name="login_input_width">200dp</dimen>
+    <dimen name="login_confirm_button_marginLeft">40dp</dimen>
+
+    <dimen name="register_icon_width">50dp</dimen>
+    <dimen name="register_input_width">200dp</dimen>
+
+    <dimen name="select_share_type_spinner_marginEnd">10dp</dimen>
+
+    <dimen name="basic_info_modify_profile_photo_size">80dp</dimen>
+    <dimen name="info_modify_input_width">200dp</dimen>
+    <dimen name="basic_info_modify_input_marginStart">20dp</dimen>
+    <dimen name="info_modify_confirm_button_marginTop">20dp</dimen>
+    <dimen name="info_modify_confirm_button_width">50dp</dimen>
+</resources>

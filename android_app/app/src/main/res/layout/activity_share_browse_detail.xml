@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ShareBrowseDetailActivity">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/share_detail_tool_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/colorPrimary"
+        android:minHeight="?attr/actionBarSize"/>
+
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/detail_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="@dimen/share_detail_marginTop"
+        android:layout_below="@id/share_detail_tool_bar"
+        android:scrollbars="none">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingHorizontal="@dimen/share_detail_padding">
+                <TextView
+                    android:id="@+id/share_detail_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/share_detail_title_TextSize"
+                    android:textStyle="bold" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <ImageView
+                        android:id="@+id/share_detail_photo"
+                        android:layout_width="@dimen/share_detail_photo_size"
+                        android:layout_height="@dimen/share_detail_photo_size"
+                        android:src="@drawable/default_profile_photo"
+                        android:scaleType="fitCenter"/>
+                    <TextView
+                        android:id="@+id/share_detail_nickName"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:gravity="center_vertical"
+                        android:textSize="@dimen/share_detail_nickName_textSize"/>
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/shared_detail_content"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/share_detail_content_marginTop"
+                    android:textSize="@dimen/share_detail_content_TextSize"/>
+
+                <LinearLayout
+                    android:id="@+id/share_detail_multimedia_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="@dimen/share_detail_info_marginTop">
+                    <TextView
+                        android:id="@+id/share_detail_location"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="@dimen/share_location_weight"
+                        android:gravity="center"/>
+
+                    <TextView
+                        android:id="@+id/share_detail_time"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="@dimen/share_time_weight"
+                        android:gravity="center"/>
+
+                    <LinearLayout
+                        android:id="@+id/share_detail_like_layout"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="@dimen/share_like_weight"
+                        android:orientation="horizontal"
+                        android:gravity="center">
+                        <ImageView
+                            android:id="@+id/share_detail_like_icon"
+                            android:src="@drawable/unlike_icon"
+                            android:layout_width="@dimen/share_like_iconSize"
+                            android:layout_height="@dimen/share_like_iconSize" />
+                        <TextView
+                            android:id="@+id/share_detail_like_num"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"/>
+                    </LinearLayout>
+                    <ImageView
+                        android:id="@+id/share_detail_comment_add_button"
+                        android:layout_width="0dp"
+                        android:layout_height="@dimen/share_comment_iconSize"
+                        android:layout_weight="@dimen/share_comment_weight"
+                        android:src="@drawable/comment_icon"/>
+                </LinearLayout>
+                <ImageView
+                    android:layout_gravity="center_horizontal"
+                    android:id="@+id/share_detail_share_icon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/share_icon"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/line_width"
+                android:background="@color/third_dark_line_color"
+                android:layout_marginTop="@dimen/floor_marginTop"/>
+            <RelativeLayout
+                android:id="@+id/floor_layout"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/floor_sort_height"
+                android:layout_marginRight="@dimen/floor_sort_marginRight">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/floor_label_marginLeft"
+                    android:text="@string/floor_label"/>
+                <LinearLayout
+                    android:id="@+id/floor_sort_layout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal"
+                    android:layout_alignParentEnd="true">
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:src="@drawable/sort_icon" />
+                    <TextView
+                        android:id="@+id/floor_sort_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:text="@string/sort_earliest"
+                        android:gravity="center"/>
+                </LinearLayout>
+            </RelativeLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/share_detail_floor_list"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
+    <ImageView
+        android:id="@+id/share_detail_loading_icon"
+        android:layout_width="@dimen/loading_iconSize"
+        android:layout_height="@dimen/loading_iconSize"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/loading_icon_marginTop"
+        android:src="@drawable/loading_icon"
+        android:layout_below="@id/share_detail_tool_bar"
+        android:visibility="invisible"/>
+</RelativeLayout>

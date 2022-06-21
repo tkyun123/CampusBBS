@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/tab_browse"
+        android:icon="@drawable/share_browse_icon"
+        android:title="@string/tab_browse"/>
+    <item android:id="@+id/tab_message"
+        android:icon="@drawable/message_browse_icon"
+        android:title="@string/tab_message" />
+    <item android:id="@+id/tab_post"
+        android:icon="@drawable/share_post_icon"
+        android:title="" />
+    <item android:id="@+id/tab_search"
+        android:icon="@drawable/share_search_icon"
+        android:title="@string/tab_search"/>
+    <item android:id="@+id/tab_personInfo"
+        android:icon="@drawable/person_info_icon"
+        android:title="@string/tab_personInfo"/>
+</menu>

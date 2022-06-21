@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".SharePost">
+
+    <!-- TODO: Update blank fragment layout -->
+
+    <ScrollView
+        android:id="@+id/share_detail_scrollView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbars="none">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <androidx.appcompat.widget.SwitchCompat
+                    android:id="@+id/show_location_switch"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent" />
+
+                <TextView
+                    android:id="@+id/show_location_textView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_centerInParent="true"
+                    android:layout_toEndOf="@id/show_location_switch"
+                    android:text="@string/not_show_location_text" />
+
+                <Spinner
+                    android:id="@+id/select_share_type_spinner"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_centerInParent="true"
+                    android:layout_marginEnd="@dimen/select_share_type_spinner_marginEnd"
+                    android:layout_toStartOf="@id/share_detail_postButton"
+                    android:entries="@array/share_type_array"/>
+
+<!--                <TextView-->
+<!--                    android:id="@+id/select_share_type_textView"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="match_parent"-->
+<!--                    android:layout_centerInParent="true"-->
+<!--                    android:layout_toRightOf="@id/select_share_type_button"-->
+<!--                    android:text="@string/share_type_Text" />-->
+                <TextView
+                    android:id="@+id/share_detail_newButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:text="新建"
+                    android:textColor="@color/share_post_textColor"
+                    android:textSize="@dimen/share_post_textSize"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginEnd="5dp" />
+
+                <TextView
+                    android:id="@+id/share_detail_saveButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_toLeftOf="@+id/share_detail_newButton"
+                    android:layout_marginEnd="5dp"
+                    android:text="保存"
+                    android:textColor="@color/share_post_textColor"
+                    android:textSize="@dimen/share_post_textSize" />
+
+                <TextView
+                    android:id="@+id/share_detail_postButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_toLeftOf="@+id/share_detail_saveButton"
+                    android:layout_marginEnd="5dp"
+                    android:text="@string/shareButton_text"
+                    android:textColor="@color/share_post_textColor"
+                    android:textSize="@dimen/share_post_textSize" />
+            </RelativeLayout>
+
+            <EditText
+                android:id="@+id/share_edit_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/share_post_title_defaultText"
+                android:imeOptions="actionDone"
+                android:inputType="text"
+                android:maxLines="1"
+                android:textSize="@dimen/share_detail_title_TextSize"
+                android:theme="@style/share_post_input" />
+
+            <EditText
+                android:id="@+id/share_edit_content"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/share_post_content_defaultText"
+                android:textSize="@dimen/share_detail_content_TextSize"
+                android:theme="@style/share_post_input" />
+
+            <LinearLayout
+                android:id="@+id/share_post_new_add_multimedia_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"></LinearLayout>
+
+            <!--            <LinearLayout-->
+            <!--                android:layout_width="match_parent"-->
+            <!--                android:layout_height="wrap_content"-->
+            <!--                android:orientation="horizontal">-->
+            <!--                <ImageView-->
+            <!--                    android:id="@+id/share_post_image_add_icon"-->
+            <!--                    android:layout_width="0dp"-->
+            <!--                    android:layout_height="wrap_content"-->
+            <!--                    android:layout_weight="1"-->
+            <!--                    android:src="@drawable/image_select_icon"/>-->
+            <!--                <ImageView-->
+            <!--                    android:id="@+id/share_post_video_add_icon"-->
+            <!--                    android:layout_width="0dp"-->
+            <!--                    android:layout_height="wrap_content"-->
+            <!--                    android:layout_weight="1"-->
+            <!--                    android:src="@drawable/video_add_icon"/>-->
+            <!--            </LinearLayout>-->
+
+        </LinearLayout>
+    </ScrollView>
+
+    <ImageView
+        android:id="@+id/sharePost_loading_icon"
+        android:layout_width="@dimen/loading_iconSize"
+        android:layout_height="@dimen/loading_iconSize"
+        android:src="@drawable/loading_icon"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/loading_icon_marginTop"
+        android:visibility="invisible"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom">
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/share_post_floating_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/add_icon"
+            android:backgroundTint="@color/white"
+            android:layout_alignParentEnd="true"/>
+    </RelativeLayout>
+</FrameLayout>

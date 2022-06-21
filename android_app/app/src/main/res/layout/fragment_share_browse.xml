@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ShareBrowse">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/share_sort_height"
+            android:layout_marginHorizontal="@dimen/share_sort_marginRight">
+            <LinearLayout
+                android:id="@+id/share_sort_all_layout"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_alignParentStart="true"
+                android:visibility="invisible">
+                <ImageView
+                    android:id="@+id/share_sort_all_icon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/sort_icon"/>
+                <TextView
+                    android:id="@+id/share_sort_all_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:text="@string/sort_all_text"
+                    android:gravity="center" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/share_sort_layout"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_alignParentEnd="true"
+                android:visibility="invisible">
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/sort_icon"/>
+                <TextView
+                    android:id="@+id/share_sort_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:text="@string/sort_by_time_text"
+                    android:gravity="center"/>
+            </LinearLayout>
+        </RelativeLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/share_browse_recyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="@dimen/share_browse_recycler_marginLeftAndRight"
+            android:layout_marginRight="@dimen/share_browse_recycler_marginLeftAndRight"
+            android:layout_marginTop="@dimen/share_browse_recycler_marginTop"/>
+    </LinearLayout>
+
+
+    <ImageView
+        android:id="@+id/share_loading_icon"
+        android:layout_width="@dimen/loading_iconSize"
+        android:layout_height="@dimen/loading_iconSize"
+        android:src="@drawable/loading_icon"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/loading_icon_marginTop"
+        android:visibility="invisible"/>
+</FrameLayout>

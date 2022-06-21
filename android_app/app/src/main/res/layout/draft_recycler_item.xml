@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@drawable/item_background"
+    android:paddingLeft="@dimen/share_browse_recycler_item_text_paddingLeft"
+    android:layout_marginBottom="@dimen/share_browse_recycler_item_marginBottom">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textStyle="bold"
+        android:textSize="@dimen/share_browse_recycler_item_titleSize"
+        android:id="@+id/draft_recycler_item_title"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/share_browse_recycler_item_contentSize"
+        android:id="@+id/draft_recycler_item_content" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="@dimen/share_info_marginTop">
+        <TextView
+            android:id="@+id/share_location"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="@dimen/share_location_weight"
+            android:gravity="center"
+            android:text="北京海淀"/>
+        <TextView
+            android:id="@+id/share_time"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="@dimen/share_time_weight"
+            android:gravity="center"
+            android:text="2022-4-16"/>
+    </LinearLayout>
+
+</LinearLayout>
